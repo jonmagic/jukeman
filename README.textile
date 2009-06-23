@@ -1,0 +1,28 @@
+h1. Vanilla
+
+h2. Intro
+
+Besides being one of my fav flav's, this is a barebones app with just the right mix of gems and plugins and configuration to make a perfect vanilla puddin.
+
+h2. Gems
+
+* will_paginate
+* mocha
+* RedCloth
+* aasm
+* factory_girl
+* shoulda
+* quietbacktrace
+
+h2. Plugins
+
+* asset_packager
+* jrails
+* limerick_rake
+* squirrel
+
+h2. Configuration
+
+vanilla is configured to use sqlite3 for its db, and http basic auth for ALL controllers (because its setup in ApplicationController as a before filter). config/settings.yml is where the username and password go.
+
+...nuf said

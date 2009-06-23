@@ -1,0 +1,12 @@
+development: &non_production_settings
+  site_name: Global Auto
+  username: admin
+  password: password
+  
+test:
+  <<: *non_production_settings
+  
+production:
+  site_name: Global Auto
+  username: admin
+  password: password
