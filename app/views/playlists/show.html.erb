@@ -23,9 +23,17 @@
 
 <script>
   $(document).ready(function() {
+    
+    function resort_playlist_items(){
+      $('tr.sortable').each(function(i){
+        counter = i + 1
+        $(this).attr('id', 'item_'+counter);
+      });
+    };
+    
     // setup my footer button
-    $("#footer div.col1").append("<a href='/playlists/<%= @playlist.id %>/edit' class='edit_playlist'><img src='/images/icons/cd_edit.png' /> Playlist</a>");
-    $("#footer div.col1").append("<a href='javascript:void(0)' class='remove_playlist'><img src='/images/icons/delete.png' /> Playlist</a>");
+    $("#footer div.col1").append("<a href='/playlists/<%= @playlist.id %>/edit' class='edit_playlist' style='margin-right:5px'><img src='/images/icons/cd_edit.png' /> Playlist</a>");
+    $("#footer div.col1").append("<a href='javascript:void(0)' class='remove_playlist' style='margin-right:5px'><img src='/images/icons/delete.png' /> Playlist</a>");
 
 
     // make my songs draggable
@@ -37,10 +45,17 @@
     });
 
     // make my playlist songs sortable
-    $('table#songs').sortable({items: 'tr.sortable', handle:'img', containment:'window', axis:'y', update: function() {
-      var playlist_id = $('table#songs').attr('playlist_id');
-      $.post('/items/sort', 'playlist_id='+playlist_id+'&'+$(this).sortable('serialize'));
-    }});
+    $('table#songs').sortable({
+      items: 'tr.sortable',
+      handle:'img',
+      containment:'window',
+      axis:'y',
+      update: function() {
+        var playlist_id = $('table#songs').attr('playlist_id');
+        $.post('/items/sort', 'playlist_id='+playlist_id+'&'+$(this).sortable('serialize'));
+        resort_playlist_items();
+      }
+    });
     
     // this is my trashcan that just removes a song from a playlist
     $("#sidebar .trashcan").droppable({
@@ -60,9 +75,23 @@
           data: '_method=delete',
           success: function(){
             $('tr.item_'+ui.draggable.attr('item_id')).remove();
+            resort_playlist_items();
           }
         });
       }
+    });
+    
+    // bind my delete playlist button
+    $('a.remove_playlist').bind('click', function(){
+      var playlist_id = $("#songs").attr('playlist_id');
+      $.ajax({
+        url: '/playlists/'+playlist_id,
+        type: "POST",
+        data: '_method=delete',
+        success: function(){
+          window.location.href="/"
+        }
+      });
     });
   });
 </script>

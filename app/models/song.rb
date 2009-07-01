@@ -53,9 +53,9 @@ class Song < ActiveRecord::Base
       self.artist   = song.tag.artist
       self.duration = song.length
       self.album    = song.tag.album
-      if (1..125) === song.tag.genre.to_i
+      if song.tag.genre && (1..125) === song.tag.genre.to_i
         self.genre = GENRES[song.tag.genre.to_i]
-      elsif (1..125) === song.tag.genre_s.gsub(/\D/,'').to_i
+      elsif song.tag.genre_s && (1..125) === song.tag.genre_s.gsub(/\D/,'').to_i
         self.genre = GENRES[song.tag.genre_s.gsub(/\D/,'').to_i]
       else
         self.genre = ""

@@ -26,15 +26,5 @@ class Item < ActiveRecord::Base
       items[from.to_i-1].update_attributes(:ordinal => to)
     end
   end
-
-  def self.order(ids)
-    counter = 1
-    ids.each do |id|
-      item = Item.find(id)
-      item.ordinal = counter
-      item.save
-      counter += 1
-    end
-  end
   
 end

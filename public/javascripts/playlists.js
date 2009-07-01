@@ -1,4 +1,13 @@
 $(document).ready(function(){
+  
+  // Highlight the correct sidebar item
+  var highlight = $("#songs").attr('highlight');
+  $("#sidebar ul li a").each(function(){
+    if ($(this).attr("highlight") == highlight) {
+      $(this).parent("li").addClass("selected");
+      $(this).parent("li").removeClass("droppable_playlist");
+    };
+  });
 
   // make my playlists droppable
   $(".droppable_playlist").droppable({
@@ -15,14 +24,6 @@ $(document).ready(function(){
       var song_id = ui.draggable.attr('song_id');
       $.post('/items','item[playlist_id]='+playlist_id+'&item[song_id]='+song_id);
     }
-  });
-
-  // Highlight the correct sidebar item
-  var highlight = $("#songs").attr('highlight');
-  $("#sidebar ul li a").each(function(){
-    if ($(this).attr("highlight") == highlight) {
-      $(this).parent("li").addClass("selected");
-    };
   });
   
   // make the trash button clickable

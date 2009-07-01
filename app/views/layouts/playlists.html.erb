@@ -30,7 +30,7 @@
       <h2>PLAYLISTS</h2>
       <ul class="itu">
         <% @playlists.each do |playlist| %>
-          <li class="droppable_playlist" playlist_id="<%= playlist.id %>">
+          <li class="droppable_playlist" id="playlist_<%= playlist.id %>" playlist_id="<%= playlist.id %>">
             <a href="/playlists/<%= playlist.id %>" class="playlist" highlight="playlist_<%= playlist.id %>">
               <%= playlist.name %>
             </a>
@@ -50,8 +50,10 @@
     
     <div id="footer">
       <div class="col1">
+        <a href='/playlists/new'><img alt='Add' src='/images/icons/add.png' /> Playlist</a>
       </div>
       <div class="col2">
+        <a href='/songs/new'><img src='/images/icons/add.png' /> Song</a>
       </div>
       <div class="col3">
       </div>
