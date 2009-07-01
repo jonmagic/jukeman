@@ -1,5 +1,11 @@
+<h2>Edit Playlist</h2>
 <% form_for @playlist do |f| %>
   <p>Name: <%= f.text_field :name %></p>
-  <p>Description: <br /><%= f.text_area :description %></p>
-  <%= f.submit "Update" %>
+  <p><%= f.submit "Update" %></p>
 <% end %>
+
+<script>
+  $(document).ready(function() {
+    $('input#playlist_name').focus();
+  });
+</script>

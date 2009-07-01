@@ -13,6 +13,10 @@ class Playlist < ActiveRecord::Base
     def remove(name)
       Playlist.find_by_name(name).destroy!
     end
+
+    def add_song(playlist_name, song_uuid)
+      Item.create(:playlist_id => Playlist.find_by_name(playlist_name).id, :song_id => Song.find_by_uuid(song_uuid).id)
+    end
   end
 
 end

@@ -29,7 +29,8 @@ body#login fieldset {border:1px solid #444;padding:1em 1.5em;width:300px;}
 #header h1 {display:none;}
 #header ul {position:absolute;top:16px;}
 #header ul li {display:inline;}
-#header .header-button-itu {font-weight:bold;color:#252525;padding:5px 10px;background:url("../images/header-button-itu-inactive.png") repeat-x -5px;border:1px solid #494949;-moz-border-radius:5px;-webkit-border-radius:5px}
+#header .header-button-itu {font-weight:bold;color:#252525;padding:5px 10px 5px 5px;background:url("../images/header-button-itu-inactive.png") repeat-x -5px;border:1px solid #494949;-moz-border-radius:5px;-webkit-border-radius:5px}
+#header .header-button-itu img {margin-bottom:-4px;margin-right:4px;}
 #header .header-button-itu:hover {background:url("../images/header-button-itu-active.png") repeat-x -5px;}
 #header .header-button-m {font-weight:bold;color:#444;padding:5px 10px;background:url("../images/header-button-m-inactive.png") repeat-x -5px;border:1px solid #53585c;-moz-border-radius:12px;-webkit-border-radius:12px}
 #header .header-button-m:hover {background:url("../images/header-button-m-active.png") repeat-x -5px;}
@@ -41,7 +42,9 @@ body#login fieldset {border:1px solid #444;padding:1em 1.5em;width:300px;}
 #footer .col2 {position:absolute;top:5px;left:240px;}
 #footer .col3 {position:absolute;top:5px;right:5px;}
 #footer a {margin-right:5px;color:#252525;padding:2px 5px;background:url("../images/footer-button-itu-inactive.png") repeat-x -5px;border:1px solid #494949;-moz-border-radius:2px;-webkit-border-radius:2px}
+#footer a img {margin-bottom:-4px;}
 #footer a:hover {background:url("../images/footer-button-itu-active.png") repeat-x -5px;}
+.footer_hover
 
 /* Sidebar styles */
 #sidebar {background-color:#d1d7e2;}

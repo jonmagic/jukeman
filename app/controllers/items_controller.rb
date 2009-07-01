@@ -2,9 +2,10 @@ class ItemsController < ApplicationController
   layout false
 
   def create
-    @item = Item.new(params[:item])
+    @playlist = Playlist.find(params[:item][:playlist_id])
+    @song = Song.find(params[:item][:song_id])
 
-    if @item.save
+    if Journal.add_song_to_playlist(@playlist.name, @song.uuid)
       render :nothing => true, :response => 200
     else
       render :nothing => true, :response => 500
@@ -12,9 +13,9 @@ class ItemsController < ApplicationController
   end
   
   def sort
-    order = params[:item]
-    Item.order(order)
-    render :text => order.inspect
+    ordinals = params[:item]
+    Item.ordinal_shift(params[:playlist_id], ordinals)
+    render :text => 'Yay'
   end
   
   def update
@@ -22,7 +23,14 @@ class ItemsController < ApplicationController
   end
   
   def destroy
-    
+    @item = Item.find(params[:id])
+    @item.destroy
+
+    respond_to do |format|
+      format.html { redirect_to "/" }
+      format.json { render :nothing => true, :response => 200 }
+      format.xml  { head :ok }
+    end
   end
 
 end

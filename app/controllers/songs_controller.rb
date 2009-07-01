@@ -37,10 +37,10 @@ class SongsController < ApplicationController
         @song.save
         Journal.add_song(@song.url, @song.uuid)
         flash[:notice] = 'Song was successfully created.'
-        format.html { redirect_to "/" }
+        format.html { redirect_to "/songs/new" }
         format.xml  { render :xml => @song, :status => :created, :location => @song }
       else
-        format.html { redirect_to "/" }
+        format.html { redirect_to "/songs/new" }
         format.xml  { render :xml => @song.errors, :status => :unprocessable_entity }
       end
     end
@@ -52,6 +52,7 @@ class SongsController < ApplicationController
 
     respond_to do |format|
       format.html { redirect_to "/" }
+      format.json { render :nothing => true, :response => 200 }
       format.xml  { head :ok }
     end
   end

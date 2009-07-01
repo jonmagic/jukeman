@@ -14,7 +14,7 @@ class PlaylistsController < ApplicationController
   def create
     if Journal.new_playlist(params[:playlist][:name])
       flash[:notice] = "Successfully created playlist."
-      redirect_to "/"
+      redirect_to url_for(@playlist)
     else
       flash[:warning] = "Failed to create playlist."
       redirect_to :back

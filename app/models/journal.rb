@@ -4,13 +4,16 @@ class Journal < ActiveRecord::Base
       Journal.create(:command => command)
     end
 
+    # SONGS
     def add_song(url, uuid)
       Journal.record("Song.download(\"#{url}\", \"#{uuid}\")")
     end
 
+    # PLAYLISTS
     def new_playlist(name)
-      if Playlist.create(:name => name)
+      if @playlist = Playlist.create(:name => name)
         Journal.record("Playlist.create(\"#{name}\")")
+        return @playlist
       else
         nil
       end
@@ -24,16 +27,24 @@ class Journal < ActiveRecord::Base
       end
     end
 
-    def remove_playlist(name)
-      if Playlist.remove(name)
-        Journal.record("Playlist.remove(\"#{name}\")")
+    def remove_playlist(playlist_name)
+      if Playlist.remove(playlist_name)
+        Journal.record("Playlist.remove(\"#{playlist_name}\")")
       else
         nil
       end
     end
-  end
 
-  
+    def add_song_to_playlist(playlist_name, song_uuid)
+      if Playlist.add_song(playlist_name, song_uuid)
+        Journal.record("Playlist.add_song(\"#{playlist_name}\", \"#{song_uuid}\")")
+      else
+        nil
+      end
+    end
+
+    
+  end
 
   def apply
     eval(command)

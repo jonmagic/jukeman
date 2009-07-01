@@ -3,3 +3,9 @@
   <p>Name: <%= f.text_field :name %></p>
   <p><%= f.submit "Create" %></p>
 <% end %>
+
+<script>
+  $(document).ready(function() {
+    $('input#playlist_name').focus();
+  });
+</script>

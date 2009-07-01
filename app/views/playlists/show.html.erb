@@ -1,6 +1,7 @@
-<table class="itu" id="songs" highlight="playlist_<%= @playlist.id %>">
+<table class="itu" id="songs" playlist_id="<%= @playlist.id %>" highlight="playlist_<%= @playlist.id %>">
   <thead>
     <tr>
+      <th></th>
       <th></th>
       <th>Name</th>
       <th>Time</th>
@@ -10,8 +11,9 @@
     </tr>
   </thead>
   <% @items.each do |item| %>
-    <tr class="sortable" id="item_<%= item.id %>">
-      <td><a href="javascript:void(0)"><%= item.song.id %></a></td>
+    <tr class="sortable song item_<%= item.id %>" id="<%= "item_#{item.ordinal}" %>" item_id="<%= item.id %>" song_id="<%= item.song.id %>">
+      <td style="width:20px"><%= image_tag 'icons/arrow_up_down.png', :class => 'handle' %></td>
+      <td><a href="javascript:void(0)"><%= item.ordinal %></a></td>
       <td><a href="javascript:void(0)"><%= item.song.name %></a></td>
       <td><a href="javascript:void(0)"><%= item.song.time %></a></td>
       <td><a href="javascript:void(0)"><%= item.song.artist %></a></td>
@@ -20,3 +22,49 @@
     </tr>
   <% end %>
 </table>
+
+<script>
+  $(document).ready(function() {
+    // setup my footer button
+    $("#footer div.col1").append("<a href='/playlists/<%= @playlist.id %>/edit' class='edit_playlist'><img src='/images/icons/cd_edit.png' /> Playlist</a>");
+    $("#footer div.col1").append("<a href='javascript:void(0)' class='remove_playlist'><img src='/images/icons/delete.png' /> Playlist</a>");
+
+
+    // make my songs draggable
+    $(".song").draggable({
+      cursorAt: { left: 100 },
+      helper: 'clone',
+      opacity: 0.3,
+      connectToSortable: 'table#songs'
+    });
+
+    // make my playlist songs sortable
+    $('table#songs').sortable({items: 'tr.sortable', handle:'img', containment:'window', axis:'y', update: function() {
+      var playlist_id = $('table#songs').attr('playlist_id');
+      $.post('/items/sort', 'playlist_id='+playlist_id+'&'+$(this).sortable('serialize'));
+    }});
+    
+    // this is my trashcan that just removes a song from a playlist
+    $("#sidebar .trashcan").droppable({
+      accept: '.song',
+      over: function(){
+        $(this).addClass('selected');
+      },
+      out: function(){
+        $(this).removeClass('selected');
+      },
+      drop: function(event, ui){
+        $(this).removeClass('selected');
+        var item_id = ui.draggable.attr('item_id');
+        $.ajax({
+          url: '/items/'+item_id,
+          type: "POST",
+          data: '_method=delete',
+          success: function(){
+            $('tr.item_'+ui.draggable.attr('item_id')).remove();
+          }
+        });
+      }
+    });
+  });
+</script>

@@ -16,7 +16,7 @@
     <div id="header">
       <h1 class="hide"><%= APP_CONFIG[:site_name] %></h1>
       <ul>
-        <li><a href="/playlists">Playlists</a></li>
+        <li><a href="/"><%= image_tag('icons/music.png') %>Playlists</a></li>
       </ul>
       <div class="flash"><%= flash_messages %></div>
     </div>
@@ -25,6 +25,7 @@
       <h2>LIBRARY</h2>
       <ul class="itu">
         <li><a href="/" class="library_music" highlight="library_music">Music</a></li>
+        <li class="trashcan"><a href="javascript:void(0)" id="trash">Trash</a></li>
       </ul>
       <h2>PLAYLISTS</h2>
       <ul class="itu">
@@ -42,14 +43,18 @@
       <%= yield %>
     </div>
     
+    <div id="trash_dialog">
+      <p>You just clicked on the trash can :-)</p>
+      <p>The trash can is useful for two things. <br />1. When you are in your Music Library you can drag a song to the trash to delete it. <br />2. When you are in a playlist you can drag a song to the trash to remove it from the playlist.</p>
+    </div>
+    
     <div id="footer">
       <div class="col1">
-        <%= link_to "New Playlist", "/playlists/new" %>
       </div>
       <div class="col2">
-        <%= link_to "New Song", "/songs/new" %>
       </div>
-      <div class="col3"></div>
+      <div class="col3">
+      </div>
     </div>
 	</body>
 </html>

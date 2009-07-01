@@ -2,7 +2,7 @@ require 'lib/uuid'
 
 class Song < ActiveRecord::Base
   
-  has_many :items
+  has_many :items, :dependent => :destroy
   has_many :playlists, :through => :items
 
   has_attached_file :song
@@ -53,7 +53,13 @@ class Song < ActiveRecord::Base
       self.artist   = song.tag.artist
       self.duration = song.length
       self.album    = song.tag.album
-      self.genre    = GENRES[song.tag.genre_s.gsub(/\D/,'').to_i]
+      if (1..125) === song.tag.genre.to_i
+        self.genre = GENRES[song.tag.genre.to_i]
+      elsif (1..125) === song.tag.genre_s.gsub(/\D/,'').to_i
+        self.genre = GENRES[song.tag.genre_s.gsub(/\D/,'').to_i]
+      else
+        self.genre = ""
+      end
     end
   end
   

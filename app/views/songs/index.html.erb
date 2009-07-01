@@ -1,7 +1,6 @@
 <table class="itu" id="songs" highlight="library_music">
   <thead>
     <tr>
-      <th></th>
       <th>Name</th>
       <th>Time</th>
       <th>Artist</th>
@@ -11,7 +10,6 @@
   </thead>
   <% @songs.each do |song| %>
     <tr class="song" song_id="<%= song.id %>">
-      <td><a href="javascript:void(0)"><%= song.id %></a></td>
       <td><a href="javascript:void(0)"><%= song.name %></a></td>
       <td><a href="javascript:void(0)"><%= song.time %></a></td>
       <td><a href="javascript:void(0)"><%= song.artist %></a></td>
@@ -20,3 +18,41 @@
     </tr>
   <% end %>
 </table>
+
+<script>
+  $(document).ready(function() {
+    // setup my footer buttons
+    $("#footer div.col1").append("<a href='/playlists/new'><img alt='Add' src='/images/icons/add.png' /> Playlist</a>");
+    $("#footer div.col2").append("<a href='/songs/new'><img src='/images/icons/add.png' /> Song</a>");
+
+    // make my songs draggable
+    $(".song").draggable({
+      cursorAt: { left: 100 },
+      helper: 'clone',
+      opacity: 0.3
+    });
+
+    // this is my trash can that deletes songs completely
+    $("#sidebar .trashcan").droppable({
+      accept: '.song',
+      over: function(){
+        $(this).addClass('selected');
+      },
+      out: function(){
+        $(this).removeClass('selected');
+      },
+      drop: function(event, ui){
+        $(this).removeClass('selected');
+        var song_id = ui.draggable.attr('song_id');
+        $.ajax({
+          url: '/songs/'+song_id,
+          type: "POST",
+          data: '_method=delete',
+          success: function(){
+            $('#song_'+ui.draggable.attr('song_id')).remove();
+          }
+        });
+      }
+    });
+  });
+</script>
