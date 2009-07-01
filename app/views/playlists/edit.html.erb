@@ -1,0 +1,5 @@
+<% form_for @playlist do |f| %>
+  <p>Name: <%= f.text_field :name %></p>
+  <p>Description: <br /><%= f.text_area :description %></p>
+  <%= f.submit "Update" %>
+<% end %>

@@ -1,0 +1,8 @@
+<div>
+  <h2>New Song</h2>
+
+  <% form_for @song, :html => { :multipart => true } do |form| %>
+    <p><%= form.file_field :song %></p>
+    <p><%= form.submit 'Upload' %></p>
+  <% end %>
+</div>

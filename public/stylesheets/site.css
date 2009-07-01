@@ -1,0 +1,16 @@
+body {
+  width:950px;
+  margin:auto;
+  font-size:.9em;
+  color:#555;
+  text-align:left;
+}
+
+h1 {margin:10px 0;padding:6px 6px;text-align:left;font-size:1.2em;font-weight:bold;background-color:#004358;color:#fff;}
+
+table {width:100%;}
+table thead th {background-color:#FD7400;color:#000;}
+table tr th {padding:2px 6px;}
+table tr td {padding:0;}
+table tr td a {display:block;padding:2px 6px;text-decoration:none;color:#000;}
+table tr:hover {background-color:#eee;}

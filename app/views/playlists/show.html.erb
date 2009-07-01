@@ -1,0 +1,22 @@
+<table class="itu">
+  <thead>
+    <tr>
+      <th></th>
+      <th>Name</th>
+      <th>Time</th>
+      <th>Artist</th>
+      <th>Album</th>
+      <th>Genre</th>
+    </tr>
+  </thead>
+  <% @songs.each do |song| %>
+    <tr>
+      <td><a href="javascript:void(0)"><%= song.id %></a></td>
+      <td><a href="javascript:void(0)"><%= song.name %></a></td>
+      <td><a href="javascript:void(0)"><%= song.time %></a></td>
+      <td><a href="javascript:void(0)"><%= song.artist %></a></td>
+      <td><a href="javascript:void(0)"><%= song.album %></a></td>
+      <td><a href="javascript:void(0)"><%= song.genre %></a></td>
+    </tr>
+  <% end %>
+</table>

@@ -9,13 +9,12 @@
 		<meta name="robots" content="all" />	
 		<meta name="resource-type" content="document" />
 		<meta name="MSSmartTagsPreventParsing" content="true" />
-		<%= stylesheet_link_tag "blueprint/screen", "common", "jquery-theme" %>
+		<%= stylesheet_link_tag "blueprint/screen", "site" %>
 	</head>
-	<body id="login">
-    <h1><%= APP_CONFIG[:site_name] %></h1>
-		<div id="content">
-		  <%= flash_messages %>
-			<%= yield :layout %>
+	<body>
+	  <div id="container" class="span-24">
+      <h1><%= APP_CONFIG[:site_name] %></h1>
+  		<%= yield :layout %>
 		</div>
 	</body>
 </html>
