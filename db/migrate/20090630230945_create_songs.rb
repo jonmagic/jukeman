@@ -1,6 +1,7 @@
 class CreateSongs < ActiveRecord::Migration
   def self.up
     create_table :songs do |t|
+      t.string :uuid
       t.string :name
       t.float :duration
       t.string :artist

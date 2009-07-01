@@ -1,6 +1,9 @@
+require 'lib/uuid'
+
 class Song < ActiveRecord::Base
   
   has_many :items
+  has_many :playlists, :through => :items
 
   has_attached_file :song
   
@@ -8,6 +11,8 @@ class Song < ActiveRecord::Base
   validates_attachment_size :song, :less_than => 200.megabytes, :message => "File is too large."
   
   attr_protected :name, :artist, :album, :genre, :duration
+  
+  before_create :add_uuid
   
   GENRES = ['Blues', 'Classic Rock',
       'Country', 'Dance', 'Disco', 'Funk', 'Grunge', 'Hip-Hop',
@@ -34,8 +39,15 @@ class Song < ActiveRecord::Base
       'Ballad', 'Power Ballad', 'Rhythmic Soul', 'Freestyle', 'Duet',
       'Punk Rock', 'Drum Solo', 'Acapella', 'Euro-House', 'Dance Hall']
   
+  def url
+    'http://' + APP_CONFIG[:domain] + relative_url
+  end
+  def relative_url
+    "/system/songs/"+self.id.to_s+"/original/"+self.song_file_name
+  end
+
   def read_id3_tags
-    path = RAILS_ROOT+"/public/system/songs/"+self.id.to_s+"/original/"+self.song_file_name
+    path = RAILS_ROOT + '/public' + relative_url
     Mp3Info.open(path) do |song|
       self.name     = song.tag.title
       self.artist   = song.tag.artist
@@ -43,6 +55,11 @@ class Song < ActiveRecord::Base
       self.album    = song.tag.album
       self.genre    = GENRES[song.tag.genre_s.gsub(/\D/,'').to_i]
     end
+  end
+  
+  def add_uuid
+    uuid = UUID.new
+    self.uuid = uuid.generate
   end
   
   def time
@@ -55,4 +72,15 @@ class Song < ActiveRecord::Base
     end
   end
   
+  class << self
+    def download(url)
+      # Create Song record
+      # Download to: [RAILS_ROOT]/public/system/songs/[id]/original/[filename]
+      # Save file info:
+      #   song.song_file_name (leaf-name)
+      #   song_content_type
+      #   song_file_size
+      #   song_updated_at
+    end
+  end
 end

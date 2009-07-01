@@ -2,7 +2,11 @@ class SongsController < ApplicationController
   layout 'playlists'
   
   def index
-    @songs = Song.find(:all)
+    if params[:q]
+      @songs = Song.find(:all, :order => "name ASC")
+    else
+      @songs = Song.find(:all, :order => "name ASC")
+    end
   end
   
   def show
@@ -29,7 +33,9 @@ class SongsController < ApplicationController
     respond_to do |format|
       if @song.save
         @song.read_id3_tags
+        @song.add_uuid
         @song.save
+        Journal.add_song(@song.url, @song.uuid)
         flash[:notice] = 'Song was successfully created.'
         format.html { redirect_to "/" }
         format.xml  { render :xml => @song, :status => :created, :location => @song }

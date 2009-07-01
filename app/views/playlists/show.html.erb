@@ -1,4 +1,4 @@
-<table class="itu">
+<table class="itu" id="songs" highlight="playlist_<%= @playlist.id %>">
   <thead>
     <tr>
       <th></th>
@@ -9,14 +9,14 @@
       <th>Genre</th>
     </tr>
   </thead>
-  <% @songs.each do |song| %>
-    <tr>
-      <td><a href="javascript:void(0)"><%= song.id %></a></td>
-      <td><a href="javascript:void(0)"><%= song.name %></a></td>
-      <td><a href="javascript:void(0)"><%= song.time %></a></td>
-      <td><a href="javascript:void(0)"><%= song.artist %></a></td>
-      <td><a href="javascript:void(0)"><%= song.album %></a></td>
-      <td><a href="javascript:void(0)"><%= song.genre %></a></td>
+  <% @items.each do |item| %>
+    <tr class="sortable" id="item_<%= item.id %>">
+      <td><a href="javascript:void(0)"><%= item.song.id %></a></td>
+      <td><a href="javascript:void(0)"><%= item.song.name %></a></td>
+      <td><a href="javascript:void(0)"><%= item.song.time %></a></td>
+      <td><a href="javascript:void(0)"><%= item.song.artist %></a></td>
+      <td><a href="javascript:void(0)"><%= item.song.album %></a></td>
+      <td><a href="javascript:void(0)"><%= item.song.genre %></a></td>
     </tr>
   <% end %>
 </table>

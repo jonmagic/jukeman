@@ -10,7 +10,7 @@
 		<meta name="resource-type" content="document" />
 		<meta name="MSSmartTagsPreventParsing" content="true" />
 		<%= stylesheet_link_tag "blueprint/screen", "common", "jquery-theme", "playlists" %>
-		<%= javascript_include_tag "jquery", "jquery-ui", "common" %>
+		<%= javascript_include_tag "jquery", "jquery-ui", "common", "playlists" %>
 	</head>
 	<body>
     <div id="header">
@@ -24,12 +24,16 @@
     <div id="sidebar">
       <h2>LIBRARY</h2>
       <ul class="itu">
-        <li><a href="/" class="library_music">Music</a></li>
+        <li><a href="/" class="library_music" highlight="library_music">Music</a></li>
       </ul>
       <h2>PLAYLISTS</h2>
       <ul class="itu">
         <% @playlists.each do |playlist| %>
-          <li><a href="/playlists/<%= playlist.id %>" class="playlist_<%= playlist.id %> playlist"><%= playlist.name %></a></li>
+          <li class="droppable_playlist" playlist_id="<%= playlist.id %>">
+            <a href="/playlists/<%= playlist.id %>" class="playlist" highlight="playlist_<%= playlist.id %>">
+              <%= playlist.name %>
+            </a>
+          </li>
         <% end %>
       </ul>
     </div>
@@ -45,7 +49,7 @@
       <div class="col2">
         <%= link_to "New Song", "/songs/new" %>
       </div>
-      <div class="col3"><a href="/user/logout">Logout</a></div>
+      <div class="col3"></div>
     </div>
 	</body>
 </html>

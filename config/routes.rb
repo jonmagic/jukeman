@@ -1,8 +1,12 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :journals
+
   map.resources :songs
   map.resources :playlists do |playlist|
     map.resources :items
   end
+  
+  map.resources :items, :collection => { :sort => :put }
 
   map.root :controller => 'songs', :action => 'index'
   
