@@ -2,7 +2,6 @@
   <thead>
     <tr>
       <th></th>
-      <th></th>
       <th>Name</th>
       <th>Time</th>
       <th>Artist</th>
@@ -13,12 +12,11 @@
   <% @items.each do |item| %>
     <tr class="sortable song item_<%= item.id %>" id="<%= "item_#{item.ordinal}" %>" item_id="<%= item.id %>" song_id="<%= item.song.id %>">
       <td style="width:20px"><%= image_tag 'icons/arrow_up_down.png', :class => 'handle' %></td>
-      <td><a href="javascript:void(0)"><%= item.ordinal %></a></td>
-      <td><a href="javascript:void(0)"><%= item.song.name %></a></td>
-      <td><a href="javascript:void(0)"><%= item.song.time %></a></td>
-      <td><a href="javascript:void(0)"><%= item.song.artist %></a></td>
-      <td><a href="javascript:void(0)"><%= item.song.album %></a></td>
-      <td><a href="javascript:void(0)"><%= item.song.genre %></a></td>
+      <td class="grabbable"><a href="javascript:void(0)"><%= item.song.name %></a></td>
+      <td class="grabbable"><a href="javascript:void(0)"><%= item.song.time %></a></td>
+      <td class="grabbable"><a href="javascript:void(0)"><%= item.song.artist %></a></td>
+      <td class="grabbable"><a href="javascript:void(0)"><%= item.song.album %></a></td>
+      <td class="grabbable"><a href="javascript:void(0)"><%= item.song.genre %></a></td>
     </tr>
   <% end %>
 </table>
@@ -32,10 +30,10 @@
 
     // make my songs draggable
     $(".song").draggable({
+      handle: 'td.grabbable',
       cursorAt: { left: 100 },
       helper: 'clone',
       opacity: 0.3,
-      connectToSortable: 'table#songs'
     });
 
     // make my playlist songs sortable
