@@ -10,13 +10,16 @@ class Journal < ActiveRecord::Base
       Journal.create(:command => command)
     end
 
-    def from_server
+    def import_from_server
       location = Location.find(:first, :conditions => {:name => APP_CONFIG[:location]})
       url = 'http://' + APP_CONFIG[:jukeman_server] + '/journals.json'
-      if location.nil? || location.polled_at.nil?
+      journals = if location.nil? || location.polled_at.nil?
         Journal::Downloader.get(url)
       else
         Journal::Downloader.get(url, :query => {:since => location.polled_at})
+      end
+      journals.each do |journal|
+        location.update_attributes(:polled_at => journal['journal']['created_at']) if Journal.run(journal['journal']['command'])
       end
     end
 
@@ -73,7 +76,7 @@ class Journal < ActiveRecord::Base
     
     def run(command)
       # Run the command, then Journal it ourselves! If we want to daisy-chain these, it should work well this way...
-      eval(command) && Journal.record(command)
+      eval(command) && (Journal.record(command) unless command =~ /^Song.download/)
     end
   end
 

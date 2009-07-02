@@ -111,6 +111,7 @@ class Song < ActiveRecord::Base
         song.read_id3_tags
         song.uuid = uuid # uuid is auto-generated on creation, but we replace it here with the uuid we want
         song.save_without_validation
+        Journal.add_song(song.url, uuid)
       rescue
         # Song could not be downloaded...
         song.destroy

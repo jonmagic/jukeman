@@ -6,11 +6,7 @@ require File.dirname(__FILE__) + '/../lib/dcop'
 DCOP.build!('amarok', 'user' => 'jukeman', 'session' => '.DCOPserver_jukeman-elkhart__0')
 
 # Begin the process!
-# 1) Download the updates
-  journals = Journal.from_server
-# 2) Apply them to the database
-  journals.each do |journal|
-    Journal.run(journal['journal']['command'])
-  end
-# 3) Apply database to Amarok
+# 1) Import the updates
+  Journal.import_from_server
+# 2) Apply database to Amarok
   Playlist.active.apply_to_amarok
