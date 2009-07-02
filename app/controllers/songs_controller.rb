@@ -48,7 +48,7 @@ class SongsController < ApplicationController
 
   def destroy
     @song = Song.find(params[:id])
-    @song.destroy
+    Journal.remove_song(@song.uuid)
 
     respond_to do |format|
       format.html { redirect_to "/" }

@@ -8,6 +8,15 @@ class Journal < ActiveRecord::Base
     def add_song(url, uuid)
       Journal.record("Song.download(\"#{url}\", \"#{uuid}\")")
     end
+    
+    def remove_song(uuid)
+      if Song.remove(uuid)
+        Journal.record("Song.remove(\"#{uuid}\")")
+      else
+        nil
+      end
+    end
+    
 
     # PLAYLISTS
     def new_playlist(name)

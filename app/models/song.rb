@@ -88,5 +88,9 @@ class Song < ActiveRecord::Base
       #   song_file_size
       #   song_updated_at
     end
+    
+    def remove(uuid)
+      Song.find_by_uuid(uuid).destroy
+    end   
   end
 end
