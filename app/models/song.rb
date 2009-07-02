@@ -1,4 +1,6 @@
 require 'lib/uuid'
+require 'httparty'
+require 'ftools'
 
 class Song < ActiveRecord::Base
 
@@ -45,12 +47,14 @@ class Song < ActiveRecord::Base
     'http://' + APP_CONFIG[:domain] + relative_url
   end
   def relative_url
-    "/system/songs/"+self.id.to_s+"/original/"+self.song_file_name
+    "/system/songs/"+self.id.to_s+"/original/"+self.song_file_name.to_s
   end
 
+  def full_filename
+    RAILS_ROOT + '/public' + relative_url
+  end
   def read_id3_tags
-    path = RAILS_ROOT + '/public' + relative_url
-    Mp3Info.open(path) do |song|
+    Mp3Info.open(full_filename) do |song|
       self.name     = song.tag.title
       self.artist   = song.tag.artist
       self.duration = song.length
@@ -80,15 +84,38 @@ class Song < ActiveRecord::Base
     end
   end
   
+  class Downloader
+    include HTTParty
+  end
   class << self
-    def download(url)
+
+    def download(url, uuid)
       # Create Song record
+      song = Song.new
+      song.save_without_validation
       # Download to: [RAILS_ROOT]/public/system/songs/[id]/original/[filename]
-      # Save file info:
-      #   song.song_file_name (leaf-name)
-      #   song_content_type
-      #   song_file_size
-      #   song_updated_at
+      filename = url.match(/([^\/]+)$/)[1]
+      song.song_file_name = filename
+      path = song.full_filename[0..-1-filename.length]
+      puts "Path: #{path}"
+
+      begin
+        mp3 = Song::Downloader.get(url)
+        raise if mp3.to_s == ''
+        File.makedirs(path)
+        File.open(song.full_filename, 'w') do |file|
+          file << mp3
+          song.song_file_size = mp3.length
+        end
+        # Save file info
+        song.read_id3_tags
+        song.uuid = uuid # uuid is auto-generated on creation, but we replace it here with the uuid we want
+        song.save_without_validation
+      rescue
+        # Song could not be downloaded...
+        song.destroy
+        return false
+      end
     end
     
     def remove(uuid)

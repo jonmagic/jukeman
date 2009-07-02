@@ -68,6 +68,9 @@ class Journal < ActiveRecord::Base
   end
 
   def apply
-    eval(command)
+    # Run the command
+    eval(command) &&
+      # Then Journal it ourselves! If we want to daisy-chain these, it should work...
+      Journal.record(command)
   end
 end
