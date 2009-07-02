@@ -3,7 +3,7 @@ module LocationsHelper
     if location.polled_at != nil
       location.polled_at.strftime("%h:%m:%s, %m-%d-%Y")
     else
-      ""
+      "never"
     end
   end
   
