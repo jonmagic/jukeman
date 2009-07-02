@@ -15,18 +15,21 @@ class Playlist < ActiveRecord::Base
     end
 
     def add_song(playlist_name, song_uuid)
-      Item.create(:playlist_id => Playlist.find_by_name(playlist_name).id, :song_id => Song.find_by_uuid(song_uuid).id)
+      Item.create(:playlist_id => Playlist.find_by_name(playlist_name).id, :song_id => Song.find_by_uuid(song_uuid).id, :ordinal => Item.count(:conditions => {:playlist_id => playlist.id})+1)
     end
-    
-    def reorder_items(playlist)
-      playlist = Playlist.find_by_name(playlist)
-      items = Item.find(:all, :conditions => {:playlist_id => playlist.id}, :order => 'ordinal ASC')
-      counter = 1
-      items.each do |item|
-        item.update_attributes(:ordinal => counter)
-        counter += 1
+
+    def remove_item_by_ordinal(playlist_name, ordinal)
+      playlist_id = Playlist.find_by_name(playlist_name).id
+      Item.find(:first, :conditions => {:playlist_id => playlist_id, :ordinal => ordinal})
+      Item.find(:all, :conditions => ["playlist_id = ? AND ordinal > ?", playlist_id, ordinal]}).each do |item|
+        item.update_attributes(:ordinal => item.ordinal - 1)
       end
     end
+    
+    def reorder(playlist_name, ordinals)
+      Item.ordinal_shift(playlist_name, ordinals)
+    end
+
   end
 
 end

@@ -30,9 +30,8 @@ class Item < ActiveRecord::Base
           move_to[ordinal] = counter
         end
       end
-      items = Item.find(:all, :conditions => {:playlist_id => playlist.id}, :order => 'ordinal ASC')
-      move_to.each do |from,to|
-        items[from.to_i-1].update_attributes(:ordinal => to)
+      Item.find(:all, :conditions => {:playlist_id => playlist.id}, :order => 'ordinal ASC').each do |item|
+        item.update_attributes(:ordinal => move_to[item.ordinal]) if move_to.has_key?(item.ordinal)
       end
     end
 
