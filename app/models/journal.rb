@@ -25,7 +25,7 @@ class Journal < ActiveRecord::Base
 
     # SONGS
     def add_song(url, uuid)
-      # NOT .run - already have the song!
+      # NOT Journal.run - we already have the song!
       Journal.record("Song.download(#{url.inspect}, #{uuid.inspect})")
     end
     
@@ -76,7 +76,7 @@ class Journal < ActiveRecord::Base
     
     def run(command)
       # Run the command, then Journal it ourselves! If we want to daisy-chain these, it should work well this way...
-      eval(command) && Journal.run(command)
+      eval(command) && Journal.record(command)
     end
   end
 
