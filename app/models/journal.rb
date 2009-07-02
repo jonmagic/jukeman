@@ -10,42 +10,42 @@ class Journal < ActiveRecord::Base
     end
     
     def remove_song(uuid)
-      Song.remove(uuid)
-        && Journal.record("Song.remove(#{uuid.inspect})")
+      Song.remove(uuid) &&
+        Journal.record("Song.remove(#{uuid.inspect})")
     end
     
 
     # PLAYLISTS
     def new_playlist(name)
-      Playlist.create(:name => name)
-        && Journal.record("Playlist.create(:name => #{name.inspect})")
+      Playlist.create(:name => name) &&
+        Journal.record("Playlist.create(:name => #{name.inspect})")
     end
 
     def rename_playlist(old_name, new_name)
-      Playlist.rename(old_name, new_name)
-        && Journal.record("Playlist.rename(#{old_name.inspect}, #{new_name.inspect})")
+      Playlist.rename(old_name, new_name) &&
+        Journal.record("Playlist.rename(#{old_name.inspect}, #{new_name.inspect})")
     end
 
     def remove_playlist(playlist_name)
-      Playlist.remove(playlist_name)
-        && Journal.record("Playlist.remove(#{playlist_name.inspect})")
+      Playlist.remove(playlist_name) &&
+        Journal.record("Playlist.remove(#{playlist_name.inspect})")
     end
 
     def reorder_playlist(playlist_name, ordinals)
-      Playlist.reorder(playlist_name, ordinals)
-        && Journal.record("Playlist.reorder(#{playlist_name.inspect}, #{ordinals.inspect})")
+      Playlist.reorder(playlist_name, ordinals) &&
+        Journal.record("Playlist.reorder(#{playlist_name.inspect}, #{ordinals.inspect})")
     end
     
     
     # ITEMS
     def add_playlist_item(playlist_name, song_uuid)
-      Playlist.add_song(playlist_name, song_uuid)
-        && Journal.record("Playlist.add_song(#{playlist_name.inspect}, #{song_uuid.inspect})")
+      Playlist.add_song(playlist_name, song_uuid) &&
+        Journal.record("Playlist.add_song(#{playlist_name.inspect}, #{song_uuid.inspect})")
     end
     
     def remove_playlist_item_by_ordinal(playlist_name, item_ordinal)
-      Playlist.remove_item_by_ordinal(playlist_name, item_ordinal)
-        && Journal.record("Playlist.remove_item_by_ordinal(#{playlist_name.inspect}, #{item_ordinal.inspect})")
+      Playlist.remove_item_by_ordinal(playlist_name, item_ordinal) &&
+        Journal.record("Playlist.remove_item_by_ordinal(#{playlist_name.inspect}, #{item_ordinal.inspect})")
     end
     
   end

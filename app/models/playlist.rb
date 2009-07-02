@@ -15,13 +15,14 @@ class Playlist < ActiveRecord::Base
     end
 
     def add_song(playlist_name, song_uuid)
-      Item.create(:playlist_id => Playlist.find_by_name(playlist_name).id, :song_id => Song.find_by_uuid(song_uuid).id, :ordinal => Item.count(:conditions => {:playlist_id => playlist.id})+1)
+      playlist_id = Playlist.find_by_name(playlist_name).id
+      Item.create(:playlist_id => playlist_id, :song_id => Song.find_by_uuid(song_uuid).id, :ordinal => Item.count(:conditions => {:playlist_id => playlist_id})+1)
     end
 
     def remove_item_by_ordinal(playlist_name, ordinal)
       playlist_id = Playlist.find_by_name(playlist_name).id
       Item.find(:first, :conditions => {:playlist_id => playlist_id, :ordinal => ordinal})
-      Item.find(:all, :conditions => ["playlist_id = ? AND ordinal > ?", playlist_id, ordinal]}).each do |item|
+      Item.find(:all, :conditions => ["playlist_id = ? AND ordinal > ?", playlist_id, ordinal]).each do |item|
         item.update_attributes(:ordinal => item.ordinal - 1)
       end
     end
