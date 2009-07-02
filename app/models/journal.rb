@@ -13,13 +13,10 @@ class Journal < ActiveRecord::Base
     def from_server
       location = Location.find(:first, :conditions => {:name => APP_CONFIG[:location]})
       url = 'http://' + APP_CONFIG[:jukeman_server] + '/journals.json'
-      journals = if location.polled_at.nil?
+      if location.nil? || location.polled_at.nil?
         Journal::Downloader.get(url)
       else
         Journal::Downloader.get(url, :query => {:since => location.polled_at})
-      end
-      journals.each do |journal|
-        Journal.run(journal['journal']['command'])
       end
     end
 

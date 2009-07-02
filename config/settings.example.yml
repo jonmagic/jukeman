@@ -2,8 +2,9 @@ development: &non_production_settings
   site_name: JukeMan
   username: admin
   password: password
-  domain: 10.69.69.101
+  domain: 10.69.69.101:3000
   location: Jon's House
+  jukeman_server: 10.69.69.101:3000
   
 test:
   <<: *non_production_settings
