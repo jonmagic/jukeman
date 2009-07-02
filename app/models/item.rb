@@ -20,7 +20,8 @@ class Item < ActiveRecord::Base
     end
     
     
-    def ordinal_shift(playlist_id, ordinals)
+    def ordinal_shift(playlist_name, ordinals)
+      playlist = Playlist.find_by_name(playlist_name)
       counter = 0
       move_to = {}
       ordinals.each do |ordinal|
@@ -29,7 +30,7 @@ class Item < ActiveRecord::Base
           move_to[ordinal] = counter
         end
       end
-      items = Item.find(:all, :conditions => {:playlist_id => playlist_id}, :order => 'ordinal ASC')
+      items = Item.find(:all, :conditions => {:playlist_id => playlist.id}, :order => 'ordinal ASC')
       move_to.each do |from,to|
         items[from.to_i-1].update_attributes(:ordinal => to)
       end

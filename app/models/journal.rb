@@ -53,6 +53,15 @@ class Journal < ActiveRecord::Base
       end
     end
     
+    def reorder_playlist(playlist_name, ordinals)
+      if Item.ordinal_shift(playlist_name, ordinals)
+        Journal.record("Item.ordinal_shift(\"#{playlist_name}\", \"#{ordinals}\")")
+      else
+        nil
+      end
+    end
+    
+    
     # ITEMS
     def remove_item_and_reorder_playlist(playlist_name, item_ordinal)
       if Item.remove(playlist_name, item_ordinal) && Playlist.reorder_items(playlist_name)

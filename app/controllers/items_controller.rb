@@ -14,7 +14,8 @@ class ItemsController < ApplicationController
   
   def sort
     ordinals = params[:item]
-    Item.ordinal_shift(params[:playlist_id], ordinals)
+    playlist = Playlist.find(params[:playlist_id])
+    Journal.reorder_playlist(playlist.name, ordinals)
     render :text => 'Yay'
   end
   
