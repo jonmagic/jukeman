@@ -4,9 +4,8 @@ class ItemsController < ApplicationController
   def create
     @playlist = Playlist.find(params[:item][:playlist_id])
     @song = Song.find(params[:item][:song_id])
-
-    if Journal.add_song_to_playlist(@playlist.name, @song.uuid)
-      Playlist.reorder_items(@playlist.id)
+    
+    if Journal.add_song_to_playlist_and_reorder(@playlist.name, @song.uuid)
       render :nothing => true, :response => 200
     else
       render :nothing => true, :response => 500
@@ -25,10 +24,7 @@ class ItemsController < ApplicationController
   
   def destroy
     @item = Item.find(params[:id])
-
-    if @item.destroy
-      Playlist.reorder_items(@item.playlist_id)
-    end
+    Journal.remove_item_and_reorder_playlist(@item.playlist.name, @item.ordinal)
     
     respond_to do |format|
       format.html { redirect_to "/" }

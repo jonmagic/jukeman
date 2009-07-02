@@ -44,14 +44,24 @@ class Journal < ActiveRecord::Base
       end
     end
 
-    def add_song_to_playlist(playlist_name, song_uuid)
-      if Playlist.add_song(playlist_name, song_uuid)
+    def add_song_to_playlist_and_reorder(playlist_name, song_uuid)
+      if Playlist.add_song(playlist_name, song_uuid) && Playlist.reorder_items(playlist_name)
         Journal.record("Playlist.add_song(\"#{playlist_name}\", \"#{song_uuid}\")")
+        Journal.record("Playlist.reorder_items(\"#{playlist_name}\")")
       else
         nil
       end
     end
-
+    
+    # ITEMS
+    def remove_item_and_reorder_playlist(playlist_name, item_ordinal)
+      if Item.remove(playlist_name, item_ordinal) && Playlist.reorder_items(playlist_name)
+        Journal.record("Item.remove(\"#{playlist_name}\", \"#{item_ordinal}\")")
+        Journal.record("Playlist.reorder_items(\"#{playlist_name}\")")
+      else
+        nil
+      end
+    end
     
   end
 

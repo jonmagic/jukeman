@@ -17,14 +17,15 @@ class Playlist < ActiveRecord::Base
     def add_song(playlist_name, song_uuid)
       Item.create(:playlist_id => Playlist.find_by_name(playlist_name).id, :song_id => Song.find_by_uuid(song_uuid).id)
     end
-  end
-  
-  def self.reorder_items(playlist_id)
-    items = Item.find(:all, :conditions => {:playlist_id => playlist_id}, :order => 'ordinal ASC')
-    counter = 1
-    items.each do |item|
-      item.update_attributes(:ordinal => counter)
-      counter += 1
+    
+    def reorder_items(playlist)
+      playlist = Playlist.find_by_name(playlist)
+      items = Item.find(:all, :conditions => {:playlist_id => playlist.id}, :order => 'ordinal ASC')
+      counter = 1
+      items.each do |item|
+        item.update_attributes(:ordinal => counter)
+        counter += 1
+      end
     end
   end
 

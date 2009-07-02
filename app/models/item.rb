@@ -12,19 +12,28 @@ class Item < ActiveRecord::Base
     end
   end
   
-  def self.ordinal_shift(playlist_id, ordinals)
-    counter = 0
-    move_to = {}
-    ordinals.each do |ordinal|
-      counter += 1
-      if ordinal != counter
-        move_to[ordinal] = counter
+  class << self
+    
+    def remove(playlist_name, item_ordinal)
+      playlist = Playlist.find_by_name(playlist_name)
+      Item.find(:first, :conditions => {:playlist_id => playlist.id, :ordinal => item_ordinal}).destroy
+    end
+    
+    
+    def ordinal_shift(playlist_id, ordinals)
+      counter = 0
+      move_to = {}
+      ordinals.each do |ordinal|
+        counter += 1
+        if ordinal != counter
+          move_to[ordinal] = counter
+        end
+      end
+      items = Item.find(:all, :conditions => {:playlist_id => playlist_id}, :order => 'ordinal ASC')
+      move_to.each do |from,to|
+        items[from.to_i-1].update_attributes(:ordinal => to)
       end
     end
-    items = Item.find(:all, :conditions => {:playlist_id => playlist_id}, :order => 'ordinal ASC')
-    move_to.each do |from,to|
-      items[from.to_i-1].update_attributes(:ordinal => to)
-    end
+
   end
-  
 end
