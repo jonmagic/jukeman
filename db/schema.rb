@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090701145050) do
+ActiveRecord::Schema.define(:version => 20090702141615) do
 
   create_table "items", :force => true do |t|
     t.integer "playlist_id"
@@ -19,6 +19,14 @@ ActiveRecord::Schema.define(:version => 20090701145050) do
 
   create_table "journals", :force => true do |t|
     t.text     "command"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "locations", :force => true do |t|
+    t.string   "name"
+    t.datetime "polled_at"
+    t.string   "active_playlist"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

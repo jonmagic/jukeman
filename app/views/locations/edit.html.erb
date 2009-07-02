@@ -1,0 +1,8 @@
+<div id="location">
+  <h2>Editing Location</h2>
+
+  <% form_for(@location) do |form| %>
+    <%= render :partial => 'form', :locals => {:form => form} %>
+    <p><%= form.submit 'Update' %></p>
+  <% end %>
+</div>

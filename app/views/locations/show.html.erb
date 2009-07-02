@@ -1,0 +1,27 @@
+<div id="location" location_id="<%= @location.id %>" highlight="location_<%= @location.id %>">
+  <h2><%= @location.name %></h2>
+  <p>Active Playlist: <%= @location.active_playlist %></p>
+  <p>Last Polled At: <%= last_polled_at_helper(@location) %></p>
+</div>
+
+<script>
+  $(document).ready(function() {
+    // setup my footer button
+    $("#footer div.col1").append("<a href='/locations/<%= @location.id %>/edit' class='edit_location' style='margin-right:5px'><img src='/images/icons/building_edit.png' /> Edit</a>");
+    $("#footer div.col1").append("<a href='javascript:void(0)' class='remove_location' style='margin-right:5px'><img src='/images/icons/building_delete.png' /> Delete</a>");
+    
+    // bind my delete playlist button
+    $('a.remove_location').bind('click', function(){
+      var location_id = $("#location").attr('location_id');
+      $.ajax({
+        url: '/locations/'+location_id,
+        type: "POST",
+        data: '_method=delete',
+        success: function(){
+          window.location.href="/locations"
+        }
+      });
+    });
+    
+  });
+</script>
