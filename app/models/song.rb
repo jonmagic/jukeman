@@ -97,8 +97,6 @@ class Song < ActiveRecord::Base
       filename = url.match(/([^\/]+)$/)[1]
       song.song_file_name = filename
       path = song.full_filename[0..-1-filename.length]
-      puts "Path: #{path}"
-
       begin
         mp3 = Song::Downloader.get(url)
         raise if mp3.to_s == ''

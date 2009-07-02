@@ -19,7 +19,9 @@ class Journal < ActiveRecord::Base
         Journal::Downloader.get(url, :query => {:since => location.polled_at})
       end
       journals.each do |journal|
-        location.update_attributes(:polled_at => journal['journal']['created_at']) if Journal.run(journal['journal']['command'])
+        if Journal.run(journal['journal']['command']) && location = Location.find(:first, :conditions => {:name => APP_CONFIG[:location]})
+          location.update_attributes(:polled_at => journal['journal']['created_at'])
+        end
       end
     end
 
@@ -76,6 +78,7 @@ class Journal < ActiveRecord::Base
     
     def run(command)
       # Run the command, then Journal it ourselves! If we want to daisy-chain these, it should work well this way...
+      puts "Journal Apply: #{command}"
       eval(command) && (Journal.record(command) unless command =~ /^Song.download/)
     end
   end
