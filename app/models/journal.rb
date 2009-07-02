@@ -1,4 +1,3 @@
-require 'httparty'
 require 'uri'
 class Journal < ActiveRecord::Base
   class Downloader
