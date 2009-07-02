@@ -21,7 +21,7 @@ class Playlist < ActiveRecord::Base
 
     def remove_item_by_ordinal(playlist_name, ordinal)
       playlist_id = Playlist.find_by_name(playlist_name).id
-      Item.find(:first, :conditions => {:playlist_id => playlist_id, :ordinal => ordinal})
+      Item.find(:first, :conditions => {:playlist_id => playlist_id, :ordinal => ordinal}).destroy
       Item.find(:all, :conditions => ["playlist_id = ? AND ordinal > ?", playlist_id, ordinal]).each do |item|
         item.update_attributes(:ordinal => item.ordinal - 1)
       end
