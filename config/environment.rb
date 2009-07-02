@@ -25,10 +25,6 @@ Rails::Initializer.run do |config|
               :lib => 'will_paginate', 
               :source => 'http://gems.github.com', 
               :version => '~> 2.3.7'
-  config.gem 'rubyist-aasm', 
-              :lib => 'aasm',
-              :source => 'http://gems.github.com',
-              :version => '2.0.5'
   config.gem 'mocha', 
               :lib => 'mocha',
               :source => 'http://gems.github.com'
