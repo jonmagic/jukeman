@@ -44,6 +44,8 @@ ActiveRecord::Schema.define(:version => 20090702141615) do
     t.string   "artist"
     t.string   "album"
     t.string   "genre"
+    t.boolean  "deleted",           :default => false
+    t.datetime "deleted_at"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "song_file_name"

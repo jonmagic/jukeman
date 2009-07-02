@@ -2,11 +2,7 @@ class SongsController < ApplicationController
   layout 'playlists'
   
   def index
-    if params[:q]
-      @songs = Song.find(:all, :order => "name ASC")
-    else
-      @songs = Song.find(:all, :order => "name ASC")
-    end
+    @songs = Song.without_deleted(:order => "name ASC")
   end
   
   def show

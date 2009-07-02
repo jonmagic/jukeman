@@ -7,6 +7,8 @@ class CreateSongs < ActiveRecord::Migration
       t.string :artist
       t.string :album
       t.string :genre
+      
+      t.deletestamps(false)
 
       t.timestamps
     end

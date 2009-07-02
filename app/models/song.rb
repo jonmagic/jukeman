@@ -1,6 +1,8 @@
 require 'lib/uuid'
 
 class Song < ActiveRecord::Base
+
+  acts_as_deleted
   
   has_many :items, :dependent => :destroy
   has_many :playlists, :through => :items
@@ -90,7 +92,11 @@ class Song < ActiveRecord::Base
     end
     
     def remove(uuid)
-      Song.find_by_uuid(uuid).destroy
+      song = Song.find_by_uuid(uuid)
+      song.items.each do |item|
+        item.destroy
+      end
+      song.delete
     end   
   end
 end
