@@ -48,6 +48,23 @@ class Journal < ActiveRecord::Base
         Journal.record("Playlist.remove_item_by_ordinal(#{playlist_name.inspect}, #{item_ordinal.inspect})")
     end
     
+    # LOCATIONS
+    def new_location(location_name, active_playlist)
+      Location.create(:name => location_name, :active_playlist => active_playlist) &&
+        Journal.record("Location.create(:name => #{location_name.inspect}, :active_playlist => #{active_playlist.inspect})")
+    end
+    
+    def edit_location(previous_name, new_name, active_playlist)
+      Location.edit_location(previous_name, new_name, active_playlist) &&
+        Journal.record("Location.edit_location(#{previous_name.inspect}, #{new_name.inspect}, #{active_playlist.inspect})")
+    end
+    
+    def remove_location(location_name)
+      Location.remove(location_name) &&
+        Journal.record("Location.remove(#{location_name.inspect})")
+    end
+    
+    
   end
 
   def apply

@@ -3,6 +3,7 @@ development: &non_production_settings
   username: admin
   password: password
   domain: 10.69.69.101
+  location: Jon's House
   
 test:
   <<: *non_production_settings
@@ -12,3 +13,4 @@ production:
   username: admin
   password: password
   domain: somewhere.net
+  location: nikita
