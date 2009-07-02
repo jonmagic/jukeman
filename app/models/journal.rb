@@ -10,10 +10,11 @@ class Journal < ActiveRecord::Base
       Journal.create(:command => command)
     end
 
-    def import_from_server
+    def import_from_server(datetime=nil)
       location = Location.find(:first, :conditions => {:name => APP_CONFIG[:location]})
       url = 'http://' + APP_CONFIG[:jukeman_server] + '/journals.json'
-      journals = if location.nil? || location.polled_at.nil?
+      datetime = location.polled_at if location.nil? || location.polled_at.nil?
+      journals = if datetime
         Journal::Downloader.get(url)
       else
         Journal::Downloader.get(url, :query => {:since => location.polled_at})
