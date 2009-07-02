@@ -4,8 +4,19 @@ class Playlist < ActiveRecord::Base
   
   has_many :items, :dependent => :destroy
   has_many :songs, :through => :items
+  
+  def apply_to_amarok
+    # run amarok apply method here
+  end
+  
 
   class << self
+    
+    def active
+      location = Location.find_by_name(APP_CONFIG[:location])
+      return Playlist.find_by_name(location.active_playlist)
+    end
+    
     def rename(old_name, new_name)
       Playlist.find_by_name(old_name).update_attributes(:name => new_name)
     end
