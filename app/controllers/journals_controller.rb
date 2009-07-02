@@ -3,7 +3,7 @@ class JournalsController < ApplicationController
   # Journals API: Simply ask for all journals since a certain date/time.
   def index
     @journals = if params[:since]
-      Journal.find(:all, :conditions => ["created_at > ?", Date.parse(params[:since]).strftime("%Y-%m-%d")])
+      Journal.find(:all, :conditions => ["created_at > ?", Time.parse(params[:since]).strftime("%Y-%m-%d %H:%M:%S")])
     else
       Journal.find(:all)
     end
