@@ -1,4 +1,5 @@
 public/system/songs
+config/settings.yml
 db/*.sqlite3
 log/*.log
 tmp/*
