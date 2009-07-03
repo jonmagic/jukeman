@@ -2,8 +2,11 @@
 
 require File.dirname(__FILE__) + '/../lib/dcop'
 
+username = Dir.pwd.split('/')[2]
+hostname = `cat /etc/hostname`.gsub(/\n|\r/, '')
+
 # Automatically builds the Amarok library based on everything available in amarok through dcop!
-DCOP.build!('amarok', 'user' => 'jukeman', 'session' => '.DCOPserver_jukeman-elkhart__0')
+DCOP.build!('amarok', 'user' => username, 'session' => '.DCOPserver_'+hostname+'__0')
 
 # Begin the process!
 # 1) Import the updates
