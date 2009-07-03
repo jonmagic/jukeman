@@ -44,8 +44,9 @@ class Song < ActiveRecord::Base
       'Punk Rock', 'Drum Solo', 'Acapella', 'Euro-House', 'Dance Hall']
   
   def url
-    'http://' + APP_CONFIG[:domain] + relative_url
+    'http://' + APP_CONFIG[:jukeman_server] + relative_url
   end
+  
   def relative_url
     "/system/songs/"+self.id.to_s+"/original/"+self.song_file_name.to_s
   end
@@ -87,6 +88,7 @@ class Song < ActiveRecord::Base
   class Downloader
     include HTTParty
   end
+  
   class << self
 
     def download(url, uuid)
