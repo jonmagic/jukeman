@@ -14,7 +14,7 @@ class Journal < ActiveRecord::Base
       url = 'http://' + APP_CONFIG[:jukeman_server] + '/journals.json'
       datetime ||= location.polled_at unless !location || !location.polled_at
       journals = if datetime
-        Journal::Downloader.get(url, :query => {:since => Time.parse(datetime).strftime("%Y-%m-%d %H:%M:%S")})
+        Journal::Downloader.get(url, :query => {:since => Time.parse(datetime.strftime("%Y-%m-%d %H:%M:%S"))})
       else
         Journal::Downloader.get(url)
       end
