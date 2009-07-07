@@ -12,6 +12,7 @@ class Playlist < ActiveRecord::Base
     self.items.reverse.each do |item|
       Amarok::Playlist.addMedia("/home/"+username+"/apps/jukeman/public/system/songs/"+item.song.id.to_s+"/original/"+item.song.song_file_name)
     end
+    Amarok::Player.enableRepeatPlaylist(true)
     Amarok::Player.play
   end
   

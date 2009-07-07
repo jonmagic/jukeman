@@ -53,7 +53,7 @@ class Song < ActiveRecord::Base
   
   def read_id3_tags
     Mp3Info.open(full_filename) do |song|
-      self.name.blank? ? self.name = song_file_name : self.name = song.tag.title
+      song.tag.title.blank? ? self.name = song_file_name : self.name = song.tag.title
       self.artist   = song.tag.artist
       self.duration = song.length
       self.album    = song.tag.album

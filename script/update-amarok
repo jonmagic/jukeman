@@ -10,4 +10,4 @@ DCOP.build!('amarok', 'user' => username, 'session' => '.DCOPserver_'+hostname+'
 # Begin the process!
 # 1) Import the updates
 # 2) Apply database to Amarok
-if Journal.import_from_server then Playlist.active.apply_to_amarok end
+if Journal.import_from_server || Amarok::Player.isPlaying == "false\n" then Playlist.active.apply_to_amarok end
