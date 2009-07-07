@@ -1,7 +1,5 @@
 #!/usr/bin/env ruby
-
-require File.dirname(__FILE__) + '/../config/boot'
-require File.dirname(__FILE__) + '/../lib/dcop'
+require 'lib/dcop'
 
 username = Dir.pwd.split('/')[2]
 hostname = `cat /etc/hostname`.gsub(/\n|\r/, '')
