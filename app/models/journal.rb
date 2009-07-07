@@ -23,6 +23,7 @@ class Journal < ActiveRecord::Base
           location.update_attributes(:polled_at => journal['journal']['created_at'])
         end
       end
+      journals.length > 0
     end
 
     # SONGS
