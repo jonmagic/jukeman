@@ -43,10 +43,6 @@ class Song < ActiveRecord::Base
       'Ballad', 'Power Ballad', 'Rhythmic Soul', 'Freestyle', 'Duet',
       'Punk Rock', 'Drum Solo', 'Acapella', 'Euro-House', 'Dance Hall']
   
-  def url
-    'http://' + APP_CONFIG[:jukeman_server] + relative_url
-  end
-  
   def relative_url
     "/system/songs/"+self.id.to_s+"/original/"+self.song_file_name.to_s
   end
@@ -91,16 +87,16 @@ class Song < ActiveRecord::Base
   
   class << self
 
-    def download(url, uuid)
+    def download(relative_url, uuid)
       # Create Song record
       song = Song.new
       song.save_without_validation
       # Download to: [RAILS_ROOT]/public/system/songs/[id]/original/[filename]
-      filename = url.match(/([^\/]+)$/)[1]
+      filename = relative_url.match(/([^\/]+)$/)[1]
       song.song_file_name = filename
       path = song.full_filename[0..-1-filename.length]
       begin
-        mp3 = Song::Downloader.get(url)
+        mp3 = Song::Downloader.get("http://"+APP_CONFIG[:jukeman_server]+relative_url)
         raise if mp3.to_s == ''
         File.makedirs(path)
         File.open(song.full_filename, 'w') do |file|
@@ -111,7 +107,7 @@ class Song < ActiveRecord::Base
         song.read_id3_tags
         song.uuid = uuid # uuid is auto-generated on creation, but we replace it here with the uuid we want
         song.save_without_validation
-        Journal.add_song(song.url, uuid)
+        Journal.add_song(song.relative_url, uuid)
       rescue
         # Song could not be downloaded...
         song.destroy

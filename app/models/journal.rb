@@ -26,8 +26,8 @@ class Journal < ActiveRecord::Base
     end
 
     # SONGS
-    def add_song(url, uuid)
-      Journal.record("Song.download(#{url.inspect}, #{uuid.inspect})")
+    def add_song(relative_url, uuid)
+      Journal.record("Song.download(#{relative_url.inspect}, #{uuid.inspect})")
     end
     
     def remove_song(uuid)

@@ -31,7 +31,7 @@ class SongsController < ApplicationController
         @song.read_id3_tags
         @song.add_uuid
         if @song.save
-          Journal.add_song(@song.url, @song.uuid)
+          Journal.add_song(@song.relative_url, @song.uuid)
         end
         flash[:notice] = 'Song was successfully created.'
         format.html { redirect_to "/songs/new" }
