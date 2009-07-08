@@ -1,4 +1,4 @@
-require 'lib/uuid'
+require 'uuid'
 require 'httparty'
 require 'ftools'
 
