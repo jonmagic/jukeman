@@ -1,5 +1,5 @@
 require 'uri'
-require 'lib/dcop'
+require 'dcop'
 
 class Journal < ActiveRecord::Base
   class Downloader
