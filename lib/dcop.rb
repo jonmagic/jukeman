@@ -1,4 +1,4 @@
-require 'lib/string'
+require 'string'
 class DCOPClass
   class << self
     attr_accessor :dcop
