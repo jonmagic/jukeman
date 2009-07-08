@@ -1,4 +1,6 @@
 require 'uri'
+require 'lib/dcop'
+
 class Journal < ActiveRecord::Base
   class Downloader
     include HTTParty
@@ -82,6 +84,13 @@ class Journal < ActiveRecord::Base
       if eval(command)
         Journal.record(command) unless command =~ /^Song.download/
       end
+    end
+    
+    def update_amarok
+      username = Dir.pwd.split('/')[2]
+      hostname = `cat /etc/hostname`.gsub(/\n|\r/, '')
+      DCOP.build!('amarok', 'user' => username, 'session' => '.DCOPserver_'+hostname+'__0')
+      if Journal.import_from_server || Amarok::Player.isPlaying == "false\n" then Playlist.active.apply_to_amarok end
     end
   end
 
