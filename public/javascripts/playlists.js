@@ -42,11 +42,36 @@ $(document).ready(function(){
   $("div#importing_from_folder_dialog").dialog({
     title: "Importing songs from folder...",
     autoOpen: false,
-    width: 400,
+    width: 250,
+    resizable: false,
+    draggable: false,
+    height: 100,
+    modal: true
+  });
+  $("div#imported_from_folder").dialog({
+    title: "Imported from folder...",
+    autoOpen: false,
+    width: 300,
+    resizable: false,
+    draggable: false,
+    height: 200,
     modal: true,
+    buttons: { "Ok": function() { 
+      $(this).dialog("close"); 
+      window.location.href="/"; 
+    } }
   });
   $("a#import_from_folder").bind('click', function(){
     $("div#importing_from_folder_dialog").dialog('open');
+    $.ajax({
+      url: '/songs/import_from_folder',
+      type: "GET",
+      success: function(msg){
+        $("div#importing_from_folder_dialog").dialog('close');
+        $("div#imported_from_folder").append("<p>Imported "+msg+" song(s).")
+        $("div#imported_from_folder").dialog('open');
+      }
+    });
   });
   
 });

@@ -84,14 +84,17 @@
     // bind my delete playlist button
     $('a.remove_playlist').bind('click', function(){
       var playlist_id = $("#songs").attr('playlist_id');
-      $.ajax({
-        url: '/playlists/'+playlist_id,
-        type: "POST",
-        data: '_method=delete',
-        success: function(){
-          window.location.href="/"
-        }
-      });
+      var answer = confirm("Are you sure you want to delete this playlist?");
+      if (answer){
+        $.ajax({
+          url: '/playlists/'+playlist_id,
+          type: "POST",
+          data: '_method=delete',
+          success: function(){
+            window.location.href="/"
+          }
+        });
+      };
     });
   });
 </script>

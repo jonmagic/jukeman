@@ -1,5 +1,11 @@
 #sidebar .library_music {background:url("../images/icons/music.png") no-repeat 0px 2px;}
 #sidebar a#trash {background:url("../images/icons/bin.png") no-repeat 0px 2px;}
 #sidebar .playlist {background:url("../images/icons/cd.png") no-repeat 0px 2px;}
+#sidebar a#import_from_folder {background:url("../images/icons/basket_put.png") no-repeat 0px 2px;}
+
 .ui-dialog-overlay {background-color:#000;opacity:0.6;}
+
 img.handle {display:block;padding:0 10px;margin-right:0;}
+
+#importing_from_folder_dialog {text-align:center;}
+#importing_from_folder_dialog img {margin-left:-63px;}

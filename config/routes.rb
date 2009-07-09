@@ -3,6 +3,7 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :journals
 
+  map.import_from_folder '/songs/import_from_folder', :controller => 'songs', :action => 'import_from_folder'
   map.resources :songs
   map.resources :playlists do |playlist|
     map.resources :items
