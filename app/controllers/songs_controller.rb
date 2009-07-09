@@ -5,6 +5,12 @@ class SongsController < ApplicationController
     @songs = Song.without_deleted(:order => "name ASC")
   end
   
+  def import_from_dropbox
+    @songs_imported = Song.import_from_dropbox
+    
+    render :json => @songs_imported
+  end
+  
   def show
     @song = Song.find(params[:id])
 

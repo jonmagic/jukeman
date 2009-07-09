@@ -52,18 +52,22 @@ class Song < ActiveRecord::Base
   end
   
   def read_id3_tags
-    Mp3Info.open(full_filename) do |song|
-      song.tag.title.blank? ? self.name = song_file_name : self.name = song.tag.title
-      self.artist   = song.tag.artist
-      self.duration = song.length
-      self.album    = song.tag.album
-      if song.tag.genre && (1..125) === song.tag.genre.to_i
-        self.genre = GENRES[song.tag.genre.to_i]
-      elsif song.tag.genre_s && (1..125) === song.tag.genre_s.gsub(/\D/,'').to_i
-        self.genre = GENRES[song.tag.genre_s.gsub(/\D/,'').to_i]
-      else
-        self.genre = ""
+    begin
+      Mp3Info.open(full_filename) do |song|
+        song.tag.title.blank? ? self.name = song_file_name : self.name = song.tag.title
+        self.artist   = song.tag.artist
+        self.duration = song.length
+        self.album    = song.tag.album
+        if song.tag.genre && (1..125) === song.tag.genre.to_i
+          self.genre = GENRES[song.tag.genre.to_i]
+        elsif song.tag.genre_s && (1..125) === song.tag.genre_s.gsub(/\D/,'').to_i
+          self.genre = GENRES[song.tag.genre_s.gsub(/\D/,'').to_i]
+        else
+          self.genre = ""
+        end
       end
+    rescue
+      self.name = song_file_name
     end
   end
   
@@ -114,6 +118,39 @@ class Song < ActiveRecord::Base
         song.destroy
         return false
       end
+    end
+    
+    def import_from_dropbox
+      files = Dir[APP_CONFIG[:dropbox_path]+"/*.mp3"]
+      songs = []
+      songs_imported = 0
+      Song.all.each do |song|
+        songs << song.song_file_name
+      end
+      files.each do |file|
+        filename = file.split('/')[-1]
+        if !songs.include?(filename)
+          song = Song.new
+          song.save_without_validation
+          begin
+            song.song_file_name = filename
+            path = song.full_filename[0..-1-filename.length]
+            File.makedirs(path)
+            File.copy(file, path+song.song_file_name)
+            mp3 = File.open(path+song.song_file_name, "r")
+            song.song_file_size = mp3.size
+            mp3.close
+            # Save file info
+            song.read_id3_tags
+            song.save_without_validation
+            Journal.add_song(song.relative_url, song.uuid)
+            songs_imported += 1
+          rescue
+            song.destroy
+          end
+        end 
+      end
+      return songs_imported
     end
     
     def remove(uuid)

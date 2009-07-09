@@ -38,4 +38,15 @@ $(document).ready(function(){
     $("div#trash_dialog").dialog('open');
   });
   
+  // add import_from_dropbox support
+  $("div#importing_from_dropbox_dialog").dialog({
+    title: "Importing songs from DropBox",
+    autoOpen: false,
+    width: 400,
+    modal: true,
+  });
+  $("a#import_from_dropbox").bind('click', function(){
+    $("div#importing_from_dropbox_dialog").dialog('open');
+  });
+  
 });
