@@ -5,6 +5,11 @@ class PlaylistsController < ApplicationController
     @playlist = Playlist.find(params[:id])
     @items = Item.scoped_by_playlist_id(params[:id], :sort => 'ordinal ASC')
     @items = @items.sort_by{|item| [item.ordinal, item.id]}
+    @songs = []
+    @items.each do |item|
+      @songs << item.song
+    end
+    @totals = load_totals(@songs)
   end
   
   def new

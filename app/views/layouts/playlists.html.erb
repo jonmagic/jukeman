@@ -61,6 +61,9 @@
       </div>
       <div class="col2">
         <a href='/songs/new'><img src='/images/icons/add.png' /> Song</a>
+        <% if @totals %>
+          <span id="totals"><%= @totals["quantity"] %> items, <%= @totals["duration"] %></span>
+        <% end %>
       </div>
       <div class="col3">
       </div>

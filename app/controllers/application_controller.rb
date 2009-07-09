@@ -19,4 +19,22 @@ class ApplicationController < ActionController::Base
     @playlists = Playlist.find(:all)
   end
   
+  def load_totals(songs)
+    totals = {}
+    totals["quantity"] = 0
+    totals["minutes"] = 0
+    totals["seconds"] = 0
+    duration = 0
+    songs.each do |song|
+      totals["quantity"] += 1
+      if song.duration
+        duration += song.duration
+      end
+    end
+    minutes = (duration/60).to_i
+    seconds = (((duration/60 - minutes)/100)*60*100).round
+    totals["duration"] = minutes.to_s+" minutes, "+('%.02d' % seconds)+" seconds." 
+    return totals
+  end
+  
 end

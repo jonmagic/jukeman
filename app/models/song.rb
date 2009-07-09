@@ -6,6 +6,8 @@ class Song < ActiveRecord::Base
 
   acts_as_deleted
   
+  default_scope :order => 'name'
+  
   has_many :items, :dependent => :destroy
   has_many :playlists, :through => :items
 

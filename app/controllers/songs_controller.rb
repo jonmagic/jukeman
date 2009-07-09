@@ -2,7 +2,8 @@ class SongsController < ApplicationController
   layout 'playlists'
   
   def index
-    @songs = Song.without_deleted(:order => "name ASC")
+    @songs = Song.without_deleted()
+    @totals = load_totals(@songs)
   end
   
   def import_from_folder
