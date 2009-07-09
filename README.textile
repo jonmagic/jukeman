@@ -1,3 +1,3 @@
 h1. JukeMan
 
-h2. JukeMan is a simple rails app with an iTunes like interface for uploading music into its library, and then organizing that music into playlists. This is NOT A MUSIC PLAYER, just a server that manages songs and playlists. Daniel is making a program that runs on Ubuntu and interacts with Amarok, that will "poll" this server for songs and playlists, and then make amarok play one of those playlists.
+JukeMan is a simple rails app with an iTunes like interface for uploading (or importing from a folder) music into its library, and then organizing that music into playlists. This is NOT A MUSIC PLAYER, just a server that manages songs and playlists. Also included is all that is needed for the client, basically a linux box running Amarok. The client "watches" the server, using a simple cron job, and updates the amarok playlist accordingly. You can have one machine be the client and the server :-)
