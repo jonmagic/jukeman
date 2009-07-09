@@ -3,10 +3,16 @@ development: &non_production_settings
   username: admin
   password: password
   location: Jon's House
-  jukeman_server: 10.69.69.101:3000
+  jukeman_server: 10.10.10.1:3000
+  import_folder_path: /path/to/music
   
 test:
   <<: *non_production_settings
   
 production:
-  development
+  site_name: JukeMan
+  username: admin
+  password: password
+  location: Jon's House
+  jukeman_server: 10.10.10.1:3000
+  import_folder_path: /path/to/music

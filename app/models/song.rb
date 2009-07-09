@@ -120,8 +120,8 @@ class Song < ActiveRecord::Base
       end
     end
     
-    def import_from_dropbox
-      files = Dir[APP_CONFIG[:dropbox_path]+"/*.mp3"]
+    def import_from_folder
+      files = Dir[APP_CONFIG[:import_folder_path]+"/*.mp3"]
       songs = []
       songs_imported = 0
       Song.all.each do |song|

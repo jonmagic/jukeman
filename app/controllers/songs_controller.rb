@@ -5,8 +5,8 @@ class SongsController < ApplicationController
     @songs = Song.without_deleted(:order => "name ASC")
   end
   
-  def import_from_dropbox
-    @songs_imported = Song.import_from_dropbox
+  def import_from_folder
+    @songs_imported = Song.import_from_folder
     
     render :json => @songs_imported
   end
