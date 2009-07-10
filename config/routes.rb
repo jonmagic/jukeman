@@ -1,6 +1,7 @@
 ActionController::Routing::Routes.draw do |map|
   map.resources :locations
 
+  map.clone_db '/journals/clone', :controller => 'journals', :action => 'clone'
   map.resources :journals
 
   map.import_from_folder '/songs/import_from_folder', :controller => 'songs', :action => 'import_from_folder'

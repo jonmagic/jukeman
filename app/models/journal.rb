@@ -14,11 +14,12 @@ class Journal < ActiveRecord::Base
     def import_from_server(datetime=nil)
       location = Location.find(:first, :conditions => {:name => APP_CONFIG[:location]})
       url = 'http://' + APP_CONFIG[:jukeman_server] + '/journals.json'
+      clone_url = 'http://' + APP_CONFIG[:jukeman_server] + '/journals/clone.json'
       datetime ||= location.polled_at unless !location || !location.polled_at
       journals = if datetime
         Journal::Downloader.get(url, :query => {:since => Time.parse(datetime.strftime("%Y-%m-%d %H:%M:%S"))})
       else
-        Journal::Downloader.get(url)
+        Journal::Downloader.get(clone_url)
       end
       journals.each do |journal|
         if Journal.run(journal['journal']['command']) && location = Location.find(:first, :conditions => {:name => APP_CONFIG[:location]})
