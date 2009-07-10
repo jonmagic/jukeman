@@ -75,7 +75,7 @@ body#login fieldset {border:1px solid #444;padding:1em 1.5em;width:300px;}
 #center h4 {font-weight:bold;font-size:1.2em;color:#606060;margin:.5em 1em 0;padding:0px;}
 #center p {margin:.5em 1.5em;padding:0px;}
 #center ol.align, #center ul.align {margin:.5em 3em;padding:0px;}
-div#content_search {padding:5px;background-color:#ccc;border-bottom:1px solid #505050;position:relative;}
+form#content_search {padding:5px;background-color:#ccc;border-bottom:1px solid #505050;position:relative;}
 
 /* Tables */
 table.itu {border-bottom:1px solid #505050;width:100%;}

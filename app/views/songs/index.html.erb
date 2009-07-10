@@ -8,6 +8,7 @@
       <th>Genre</th>
     </tr>
   </thead>
+  <tbody>
   <% @songs.each do |song| %>
     <tr class="song song_<%= song.id %>" song_id="<%= song.id %>">
       <td><a href="javascript:void(0)"><%= song.name %></a></td>
@@ -17,10 +18,20 @@
       <td><a href="javascript:void(0)"><%= song.genre %></a></td>
     </tr>
   <% end %>
+  </tbody>
 </table>
 
 <script>
   $(document).ready(function() {
+    // add search to table
+    $('table#songs tbody tr').quicksearch({
+      position: 'before',
+      attached: 'table#songs',
+      formId: 'content_search',
+      stripeRowClass: ['odd', 'even'],
+      labelText: 'Search Songs',
+      focusOnLoad: true
+    });
 
     // make my songs draggable
     $(".song").draggable({
