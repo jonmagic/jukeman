@@ -26,12 +26,9 @@ class JournalsController < ApplicationController
       @journals << Journal.new(:command => "Song.download(#{song.relative_url.inspect}, #{song.uuid.inspect})")
     end
     Item.all(:order => "ordinal ASC").each do |item|
-      @journals << Journal.new(:command => "Playlist.add_song(#{playlist_name.inspect}, #{song_uuid.inspect})")
+      @journals << Journal.new(:command => "Playlist.add_song(#{item.playlist.name.inspect}, #{item.song.uuid.inspect})")
     end
     
-    respond_to do |format|
-      format.xml  { render :xml => @journals }
-      format.json { render :json => @journals }
-    end
+    render :json => @journals
   end
 end
