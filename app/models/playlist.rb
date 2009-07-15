@@ -4,19 +4,18 @@ class Playlist < ActiveRecord::Base
   
   has_many :items, :dependent => :destroy
   has_many :songs, :through => :items
-  
+
   def apply_to_amarok
     Amarok::Player.stop
     username = Dir.pwd.split('/')[2]
     Amarok::Playlist.clearPlaylist
     items = Item.all(:conditions => {:playlist_id => self.id}, :order => "ordinal ASC")
     items.each do |item|
-      Amarok::Playlist.addMedia("/home/"+username+"/apps/jukeman/public/system/songs/"+item.song.id.to_s+"/original/"+item.song.song_file_name)
+      Amarok::Playlist.addMedia("\"/home/"+username+"/apps/jukeman/public/system/songs/"+item.song.id.to_s+"/original/"+item.song.song_file_name+"\"")
     end
     Amarok::Player.enableRepeatPlaylist(true)
     Amarok::Player.play
   end
-  
 
   class << self
     
