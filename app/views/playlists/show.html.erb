@@ -48,8 +48,9 @@
     $('table#songs').sortable({
       items: 'tr.sortable',
       handle:'img',
-      containment:'window',
+      containment: $('table#songs').parent(),
       axis:'y',
+      scroll: false,
       update: function() {
         var playlist_id = $('table#songs').attr('playlist_id');
         $.post('/items/sort', 'playlist_id='+playlist_id+'&'+$(this).sortable('serialize'));
