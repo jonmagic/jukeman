@@ -105,23 +105,23 @@ class Song < ActiveRecord::Base
       relative_url = URI.escape(relative_url)
       song.song_file_name = filename
       path = song.full_filename[0..-1-filename.length]
-      # begin
+      begin
         mp3 = Song::Downloader.get("http://"+APP_CONFIG[:jukeman_server]+relative_url)
         raise if mp3.to_s == ''
         File.makedirs(path)
         File.open(song.full_filename, 'w') do |file|
           file << mp3
           song.song_file_size = mp3.length
-        # end
+        end
         # Save file info
         song.read_id3_tags
         song.uuid = uuid # uuid is auto-generated on creation, but we replace it here with the uuid we want
         song.save_without_validation
         Journal.add_song(song.relative_url, uuid)
-      # rescue
+      rescue
         # Song could not be downloaded...
-        # song.destroy
-        # return false
+        song.destroy
+        return false
       end
     end
     
