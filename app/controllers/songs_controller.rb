@@ -1,5 +1,6 @@
 class SongsController < ApplicationController
   layout 'playlists'
+  before_filter :http_basic_authenticate
   
   def index
     @songs = Song.without_deleted()

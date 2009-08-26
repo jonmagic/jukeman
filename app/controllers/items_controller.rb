@@ -1,5 +1,6 @@
 class ItemsController < ApplicationController
   layout false
+  before_filter :http_basic_authenticate
 
   def create
     @playlist = Playlist.find(params[:item][:playlist_id])

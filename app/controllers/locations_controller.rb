@@ -1,5 +1,6 @@
 class LocationsController < ApplicationController
   before_filter :load_locations, :except => [:create, :update, :destroy]
+  before_filter :http_basic_authenticate
   
   def index
 

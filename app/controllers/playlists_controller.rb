@@ -1,5 +1,6 @@
 class PlaylistsController < ApplicationController
   layout 'playlists'
+  before_filter :http_basic_authenticate
 
   def show
     @playlist = Playlist.find(params[:id])
