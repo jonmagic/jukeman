@@ -6,7 +6,7 @@ class Playlist < ActiveRecord::Base
   has_many :songs, :through => :items
 
   def apply_to_amarok
-    Amarok::Player.stop
+    Playlist.stop
     username = Dir.pwd.split('/')[2]
     Amarok::Playlist.clearPlaylist
     items = Item.all(:conditions => {:playlist_id => self.id}, :order => "ordinal ASC")
@@ -14,10 +14,21 @@ class Playlist < ActiveRecord::Base
       Amarok::Playlist.addMedia("\"/home/"+username+"/apps/jukeman/public/system/songs/"+item.song.id.to_s+"/original/"+item.song.song_file_name+"\"")
     end
     Amarok::Player.enableRepeatPlaylist(true)
-    Amarok::Player.play
   end
 
   class << self
+    
+    def pause
+      Amarok::Player.pause
+    end
+
+    def play
+      Amarok::Player.play
+    end
+    
+    def stop
+      Amarok::Player.stop
+    end
     
     def active
       location = Location.find_by_name(APP_CONFIG[:location])
