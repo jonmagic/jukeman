@@ -64,3 +64,4 @@ end
 username = Dir.pwd.split('/')[2]
 hostname = `cat /etc/hostname`.gsub(/\n|\r/, '')
 DCOP.build!('amarok', 'user' => username, 'session' => '.DCOPserver_'+hostname+'__0')
+raise "Could not build Amarok DCOP classes!" unless ::Object.const_defined?(:Amarok)
