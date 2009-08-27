@@ -53,4 +53,11 @@ class PlaylistsController < ApplicationController
     end
   end
   
+  def activate
+    playlist = Playlist.find(params[:id])
+    location = Location.find(:first, :conditions => {:name => APP_CONFIG[:location]})
+    location.update_attributes(:active_playlist => playlist.name)
+    `#{RAILS_ROOT}/script/runner -e development "Journal.update_amarok"`
+  end
+  
 end
