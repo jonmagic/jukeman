@@ -57,7 +57,8 @@ class PlaylistsController < ApplicationController
     playlist = Playlist.find(params[:id])
     location = Location.find(:first, :conditions => {:name => APP_CONFIG[:location]})
     location.update_attributes(:active_playlist => playlist.name)
-    `#{RAILS_ROOT}/script/runner -e development "Journal.update_amarok"`
+    `/usr/bin/env #{RAILS_ROOT}/script/runner -e development "Journal.update_amarok"`
+    redirect_to url_for(playlist)
   end
   
 end
