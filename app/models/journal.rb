@@ -24,7 +24,7 @@ class Journal < ActiveRecord::Base
         end
         journals.each do |journal|
           if Journal.run(journal['journal']['command']) && location = Location.find(:first, :conditions => {:name => APP_CONFIG[:location]})
-            location.update_attributes(:polled_at => journal['journal']['created_at'])
+            location.update_attributes(:polled_at => Journal.last.created_at)
           end
         end
         journals.length > 0
