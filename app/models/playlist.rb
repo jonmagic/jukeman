@@ -7,7 +7,7 @@ class Playlist < ActiveRecord::Base
 
   def apply_to_amarok
     Amarok::Player.stop
-    username = Dir.pwd.split('/')[2]
+    username = RAILS_ROOT.split('/')[2]
     Amarok::Playlist.clearPlaylist
     items = Item.all(:conditions => {:playlist_id => self.id}, :order => "ordinal ASC")
     items.each do |item|
