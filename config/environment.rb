@@ -60,7 +60,3 @@ Rails::Initializer.run do |config|
   # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}')]
   # config.i18n.default_locale = :de
 end
-
-username = Dir.pwd.split('/')[2]
-hostname = `cat /etc/hostname`.gsub(/\n|\r/, '')
-DCOP.build!('amarok', 'user' => username, 'session' => '.DCOPserver_'+hostname+'__0')

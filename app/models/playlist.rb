@@ -6,6 +6,9 @@ class Playlist < ActiveRecord::Base
   has_many :songs, :through => :items
 
   def apply_to_amarok
+    username = Dir.pwd.split('/')[2]
+    hostname = `cat /etc/hostname`.gsub(/\n|\r/, '')
+    DCOP.build!('amarok', 'user' => username, 'session' => '.DCOPserver_'+hostname+'__0')
     Amarok::Player.stop
     username = Dir.pwd.split('/')[2]
     Amarok::Playlist.clearPlaylist
