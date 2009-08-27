@@ -92,9 +92,6 @@ class Journal < ActiveRecord::Base
     end
     
     def update_amarok
-      username = Dir.pwd.split('/')[2]
-      hostname = `cat /etc/hostname`.gsub(/\n|\r/, '')
-      DCOP.build!('amarok', 'user' => username, 'session' => '.DCOPserver_'+hostname+'__0')
       if Journal.import_from_server || Amarok::Player.isPlaying == "false\n" then Playlist.active.apply_to_amarok end
     end
   end

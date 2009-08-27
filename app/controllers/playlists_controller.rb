@@ -57,9 +57,6 @@ class PlaylistsController < ApplicationController
     playlist = Playlist.find(params[:id])
     location = Location.find(:first, :conditions => {:name => APP_CONFIG[:location]})
     location.update_attributes(:active_playlist => playlist.name)
-    username = Dir.pwd.split('/')[2]
-    hostname = `cat /etc/hostname`.gsub(/\n|\r/, '')
-    DCOP.build!('amarok', 'user' => username, 'session' => '.DCOPserver_'+hostname+'__0')
     Playlist.active.apply_to_amarok
     redirect_to url_for(playlist)
   end
