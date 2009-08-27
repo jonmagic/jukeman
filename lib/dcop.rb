@@ -42,6 +42,7 @@ class DCOP
       eval("::#{klass_name} = Class.new")
       klass = ::Object.const_get(klass_name)
       dcop_base = "dcop " + (options ? options.map {|k,v| "--#{k} #{v}"}.join(' ') : '') + " #{application}"
+      $stderr.puts "DCOP Base: #{dcop_base}"
 
       categories = read_list(`#{dcop_base}`)
       puts "Categories: #{categories.join(', ')}"
