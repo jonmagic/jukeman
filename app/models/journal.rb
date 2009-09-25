@@ -86,8 +86,11 @@ class Journal < ActiveRecord::Base
     def run(command)
       # Run the command, then Journal it ourselves! If we want to daisy-chain these, it should work well this way...
       puts "Journal Apply: #{command}"
-      if eval(command)
-        Journal.record(command) unless command =~ /^Song.download/
+      begin
+        if eval(command)
+          Journal.record(command) unless command =~ /^Song.download/
+        end
+      rescue
       end
     end
     
