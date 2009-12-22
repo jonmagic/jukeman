@@ -4,24 +4,18 @@ require 'cgi'
 require 'httparty'
 require 'ftools'
 
-class Song < ActiveRecord::Base
+class Song
+  include MongoMapper::Document
+  include Grip
+  
+  has_grid_attachment :mp3
 
-  acts_as_deleted
-  
-  default_scope :order => 'name'
-  
-  has_many :items, :dependent => :destroy
-  has_many :playlists, :through => :items
+  key :name, String, :require => true
+  key :album, String
+  key :artist, String
+  key :genre, 
 
-  has_attached_file :song
-  
-  validates_attachment_presence :song
-  validates_attachment_size :song, :less_than => 200.megabytes, :message => "File is too large."
-  
-  attr_protected :name, :artist, :album, :genre, :duration
-  
-  before_create :add_uuid
-  
+
   GENRES = ['Blues', 'Classic Rock',
       'Country', 'Dance', 'Disco', 'Funk', 'Grunge', 'Hip-Hop',
       'Jazz', 'Metal', 'New Age', 'Oldies', 'Other', 'Pop', 'R&B',
@@ -47,14 +41,6 @@ class Song < ActiveRecord::Base
       'Ballad', 'Power Ballad', 'Rhythmic Soul', 'Freestyle', 'Duet',
       'Punk Rock', 'Drum Solo', 'Acapella', 'Euro-House', 'Dance Hall']
   
-  def relative_url
-    "/system/songs/"+self.id.to_s+"/original/"+self.song_file_name.to_s
-  end
-
-  def full_filename
-    RAILS_ROOT + '/public' + relative_url
-  end
-  
   def read_id3_tags
     begin
       Mp3Info.open(full_filename) do |song|
@@ -74,12 +60,7 @@ class Song < ActiveRecord::Base
       self.name = song_file_name
     end
   end
-  
-  def add_uuid
-    uuid = UUID.new
-    self.uuid = uuid.generate
-  end
-  
+
   def time
     if self.duration
       minutes = (self.duration/60).to_i
@@ -90,40 +71,7 @@ class Song < ActiveRecord::Base
     end
   end
   
-  class Downloader
-    include HTTParty
-  end
-  
   class << self
-
-    def download(relative_url, uuid)
-      # Create Song record
-      song = Song.new
-      song.save_without_validation
-      # Download to: [RAILS_ROOT]/public/system/songs/[id]/original/[filename]
-      filename = relative_url.match(/([^\/]+)$/)[1]
-      relative_url = URI.escape(relative_url)
-      song.song_file_name = filename
-      path = song.full_filename[0..-1-filename.length]
-      begin
-        mp3 = Song::Downloader.get("http://"+APP_CONFIG[:jukeman_server]+relative_url)
-        raise if mp3.to_s == ''
-        File.makedirs(path)
-        File.open(song.full_filename, 'w') do |file|
-          file << mp3
-          song.song_file_size = mp3.length
-        end
-        # Save file info
-        song.read_id3_tags
-        song.uuid = uuid # uuid is auto-generated on creation, but we replace it here with the uuid we want
-        song.save_without_validation
-        Journal.add_song(song.relative_url, uuid)
-      rescue
-        # Song could not be downloaded...
-        song.destroy
-        return false
-      end
-    end
     
     def import_from_folder
       files = Dir[APP_CONFIG[:import_folder_path]+"/*.mp3"]
@@ -157,13 +105,6 @@ class Song < ActiveRecord::Base
       end
       return songs_imported
     end
-    
-    def remove(uuid)
-      song = Song.find_by_uuid(uuid)
-      song.items.each do |item|
-        item.destroy
-      end
-      song.delete
-    end   
+      
   end
 end

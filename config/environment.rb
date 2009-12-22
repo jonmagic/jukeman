@@ -1,12 +1,10 @@
 # Be sure to restart your server when you modify this file
 
 # Specifies gem version of Rails to use when vendor/rails is not present
-RAILS_GEM_VERSION = '2.3.2' unless defined? RAILS_GEM_VERSION
+RAILS_GEM_VERSION = '2.3.5' unless defined? RAILS_GEM_VERSION
 
 # Bootstrap the Rails environment, frameworks, and default configuration
 require File.join(File.dirname(__FILE__), 'boot')
-
-Rails::VendorGemSourceIndex.silence_spec_warnings = true
 
 Rails::Initializer.run do |config|
   # Settings in config/environments/* take precedence over those specified here.
@@ -15,31 +13,17 @@ Rails::Initializer.run do |config|
 
   # Add additional load paths for your own custom dirs
   # config.load_paths += %W( #{RAILS_ROOT}/extras )
+  %w(mailers).each do |dir|
+    config.load_paths << "#{RAILS_ROOT}/app/#{dir}"
+  end
 
   # Specify gems that this application depends on and have them installed with rake gems:install
   # config.gem "bj"
   # config.gem "hpricot", :version => '0.6', :source => "http://code.whytheluckystiff.net"
-  config.gem "sqlite3-ruby", :lib => "sqlite3"
+  # config.gem "sqlite3-ruby", :lib => "sqlite3"
   # config.gem "aws-s3", :lib => "aws/s3"
-  config.gem 'mislav-will_paginate', 
-              :lib => 'will_paginate', 
-              :source => 'http://gems.github.com', 
-              :version => '~> 2.3.7'
-  config.gem 'mocha', 
-              :lib => 'mocha',
-              :source => 'http://gems.github.com'
-
-  # Thoughtbot gems
-  config.gem "thoughtbot-factory_girl",
-              :lib    => "factory_girl",
-              :source => "http://gems.github.com"
-  config.gem "thoughtbot-shoulda",
-              :lib => "shoulda",
-              :source => "http://gems.github.com"
-  config.gem "ruby-mp3info",
-              :lib => "mp3info"
-  config.gem "jnunemaker-httparty",
-              :lib => "httparty"
+  config.gem 'mongo_mapper', :version => '>= 0.6.1'
+  config.gem 'formtastic'
 
   # Only load the plugins named here, in the order given (default is alphabetical).
   # :all can be used as a placeholder for all plugins not explicitly named
@@ -61,7 +45,7 @@ Rails::Initializer.run do |config|
   # config.i18n.default_locale = :de
 end
 
-username = RAILS_ROOT.split('/')[2]
-hostname = `cat /etc/hostname`.gsub(/\n|\r/, '')
-DCOP.build!('amarok', 'user' => username, 'session' => '.DCOPserver_'+hostname+'__0')
-raise "Could not build Amarok DCOP classes!" unless ::Object.const_defined?(:Amarok)
+# mongomapper connection
+MongoMapper.connection = Mongo::Connection.new('127.0.0.1', 27017, :auto_reconnect => true, :logger => Rails.logger)
+MongoMapper.database = "jukeman-#{Rails.env}"
+MongoMapper.ensure_indexes!
