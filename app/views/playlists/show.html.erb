@@ -1,35 +1,28 @@
-<table class="itu" id="songs" playlist_id="<%= @playlist.id %>" highlight="playlist_<%= @playlist.id %>">
+<table class="itu" id="songs" data-playlist-id="<%= @playlist.id %>" data-highlight="playlist_<%= @playlist.id %>">
   <thead>
     <tr>
       <th></th>
-      <th>Name</th>
-      <th>Time</th>
+      <th>Title</th>
+      <th>Duration</th>
       <th>Artist</th>
       <th>Album</th>
       <th>Genre</th>
     </tr>
   </thead>
   <% @items.each do |item| %>
-    <tr class="sortable song item_<%= item.id %>" id="<%= "item_#{item.ordinal}" %>" item_id="<%= item.id %>" song_id="<%= item.song.id %>">
+    <tr class="sortable song item" data-item-id="<%= item.id %>">
       <td style="width:20px"><%= image_tag 'icons/arrow_up_down.png', :class => 'handle' %></td>
-      <td class="grabbable"><a href="javascript:void(0)"><%= item.song.name %></a></td>
-      <td class="grabbable"><a href="javascript:void(0)"><%= item.song.time %></a></td>
-      <td class="grabbable"><a href="javascript:void(0)"><%= item.song.artist %></a></td>
-      <td class="grabbable"><a href="javascript:void(0)"><%= item.song.album %></a></td>
-      <td class="grabbable"><a href="javascript:void(0)"><%= item.song.genre %></a></td>
+      <td class="grabbable"><a href="javascript:void(0)"><%= item.title %></a></td>
+      <td class="grabbable"><a href="javascript:void(0)"><%= item.duration_converted %></a></td>
+      <td class="grabbable"><a href="javascript:void(0)"><%= item.artist %></a></td>
+      <td class="grabbable"><a href="javascript:void(0)"><%= item.album %></a></td>
+      <td class="grabbable"><a href="javascript:void(0)"><%= item.genre %></a></td>
     </tr>
   <% end %>
 </table>
 
 <script>
   $(document).ready(function() {
-    
-    function resort_playlist_items(){
-      $('tr.sortable').each(function(i){
-        counter = i + 1
-        $(this).attr('id', 'item_'+counter);
-      });
-    };
     
     // setup my footer button
     $("#footer div.col1").append("<a href='/playlists/<%= @playlist.id %>/edit' class='edit_playlist' style='margin-right:5px'><img src='/images/icons/cd_edit.png' /> Playlist</a>");
@@ -52,9 +45,7 @@
       axis:'y',
       scroll: false,
       update: function() {
-        var playlist_id = $('table#songs').attr('playlist_id');
-        $.post('/items/sort', 'playlist_id='+playlist_id+'&'+$(this).sortable('serialize'));
-        resort_playlist_items();
+
       }
     });
     

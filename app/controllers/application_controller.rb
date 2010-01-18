@@ -3,18 +3,14 @@
 
 class ApplicationController < ActionController::Base
   helper :all # include all helpers, all the time
-  # protect_from_forgery # See ActionController::RequestForgeryProtection for details
-  before_filter :load_playlists
   
-  # comment this out and put it into the controllers you want protected
-  # before_filter :http_basic_authenticate
-    
   def http_basic_authenticate
     authenticate_or_request_with_http_basic do |username, password|
       username == APP_CONFIG[:username] && password == APP_CONFIG[:password]
     end
   end
   
+  before_filter :load_playlists
   def load_playlists
     @playlists = Playlist.find(:all)
   end
@@ -36,5 +32,4 @@ class ApplicationController < ActionController::Base
     totals["duration"] = minutes.to_s+" minutes, "+('%.02d' % seconds)+" seconds." 
     return totals
   end
-  
 end

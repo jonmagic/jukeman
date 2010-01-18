@@ -11,7 +11,7 @@ class Song
   key :duration, Float
   key :destroyed_at, Time
   
-  alias :destroy_old :destroy
+  alias :destroy_song :destroy
   
   def destroy
     update_attributes(:destroyed_at => Time.zone.now) unless destroyed_at?
@@ -82,5 +82,11 @@ class Song
     'Satire', 'Slow Jam', 'Club', 'Tango', 'Samba', 'Folklore',
     'Ballad', 'Power Ballad', 'Rhythmic Soul', 'Freestyle', 'Duet',
     'Punk Rock', 'Drum Solo', 'Acapella', 'Euro-House', 'Dance Hall']
+    
+  def duration_converted
+    minutes = (duration/60).to_i
+    seconds = (duration - minutes*60).to_i
+    return "#{minutes}:#{seconds}"
+  end
   
 end

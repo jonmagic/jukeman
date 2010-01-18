@@ -1,8 +1,8 @@
-<table class="itu" id="songs" highlight="library_music">
+<table class="itu" id="songs" data-highlight="library_music">
   <thead>
     <tr>
-      <th>Name</th>
-      <th>Time</th>
+      <th>Title</th>
+      <th>Duration</th>
       <th>Artist</th>
       <th>Album</th>
       <th>Genre</th>
@@ -11,8 +11,8 @@
   <tbody>
   <% @songs.each do |song| %>
     <tr class="song song_<%= song.id %>" song_id="<%= song.id %>">
-      <td><a href="javascript:void(0)"><%= song.name %></a></td>
-      <td><a href="javascript:void(0)"><%= song.time %></a></td>
+      <td><a href="javascript:void(0)"><%= song.title %></a></td>
+      <td><a href="javascript:void(0)"><%= song.duration_converted %></a></td>
       <td><a href="javascript:void(0)"><%= song.artist %></a></td>
       <td><a href="javascript:void(0)"><%= song.album %></a></td>
       <td><a href="javascript:void(0)"><%= song.genre %></a></td>

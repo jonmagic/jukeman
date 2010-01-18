@@ -1,7 +1,7 @@
 $(document).ready(function(){
   
   // Highlight the correct sidebar item
-  var highlight = $("#songs").attr('highlight');
+  var highlight = $("#songs").attr('data-highlight');
   $("#sidebar ul li a").each(function(){
     if ($(this).attr("highlight") == highlight) {
       $(this).parent("li").addClass("selected");
