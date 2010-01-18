@@ -3,14 +3,8 @@ class SongsController < ApplicationController
   before_filter :http_basic_authenticate
   
   def index
-    @songs = Song.without_deleted()
+    @songs = Song.all(:destroyed_at => nil)
     @totals = load_totals(@songs)
-  end
-  
-  def import_from_folder
-    @songs_imported = Song.import_from_folder
-    
-    render :json => @songs_imported
   end
   
   def show
@@ -53,7 +47,7 @@ class SongsController < ApplicationController
 
   def destroy
     @song = Song.find(params[:id])
-    Journal.remove_song(@song.uuid)
+    @song.destroy
 
     respond_to do |format|
       format.html { redirect_to "/" }
