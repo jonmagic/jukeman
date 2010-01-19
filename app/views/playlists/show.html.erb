@@ -24,10 +24,12 @@
 <script>
   $(document).ready(function() {
     
-    // setup my footer button
-    $("#footer div.col1").append("<a href='/playlists/<%= @playlist.id %>/edit' class='edit_playlist' style='margin-right:5px'><img src='/images/icons/cd_edit.png' /> Playlist</a>");
-    $("#footer div.col1").append("<a href='javascript:void(0)' class='remove_playlist' style='margin-right:5px'><img src='/images/icons/delete.png' /> Playlist</a>");
-    $("#footer div.col3").append("<a href='/playlists/<%= @playlist.id %>/activate' class='activate_playlist' style='margin-right:5px'>Activate Playlist</a>");
+    <% if APP_CONFIG[:jukeman_server] == nil %>
+      // setup my footer button
+      $("#footer div.col1").append("<a href='/playlists/<%= @playlist.id %>/edit' class='edit_playlist' style='margin-right:5px'><img src='/images/icons/cd_edit.png' /> Playlist</a>");
+      $("#footer div.col1").append("<a href='javascript:void(0)' class='remove_playlist' style='margin-right:5px'><img src='/images/icons/delete.png' /> Playlist</a>");
+      $("#footer div.col3").append("<a href='/playlists/<%= @playlist.id %>/activate' class='activate_playlist' style='margin-right:5px'>Activate Playlist</a>");
+    <% end %>
 
     // make my songs draggable
     $(".song").draggable({

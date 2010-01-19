@@ -17,7 +17,9 @@
       <h1 class="hide"><%= APP_CONFIG[:site_name] %></h1>
       <ul>
         <li><a href="/"><%= image_tag('icons/music.png') %>Playlists</a></li>
-        <li><a href="/locations"><%= image_tag('icons/building.png') %>Locations</a></li>
+        <% if APP_CONFIG[:jukeman_server] == nil %>
+          <li><a href="/locations"><%= image_tag('icons/building.png') %>Locations</a></li>
+        <% end %>
       </ul>
       <div class="flash"><%= flash_messages %></div>
     </div>
@@ -26,8 +28,10 @@
       <h2>LIBRARY</h2>
       <ul class="itu">
         <li><a href="/" class="library_music" highlight="library_music">Music</a></li>
-        <li class="trashcan"><a href="javascript:void(0)" id="trash">Trash</a></li>
-        <li class="import_from_folder"><a href="javascript:void(0)" id="import_from_folder">Import from Folder</a></li>
+        <% if APP_CONFIG[:jukeman_server] == nil %>
+          <li class="trashcan"><a href="javascript:void(0)" id="trash">Trash</a></li>
+          <li class="import_from_folder"><a href="javascript:void(0)" id="import_from_folder">Import from Folder</a></li>
+        <% end %>
       </ul>
       <h2>PLAYLISTS</h2>
       <ul class="itu">
@@ -57,10 +61,14 @@
     
     <div id="footer">
       <div class="col1">
-        <a href='/playlists/new'><img alt='Add' src='/images/icons/add.png' /> Playlist</a>
+        <% if APP_CONFIG[:jukeman_server] == nil %>
+          <a href='/playlists/new'><img alt='Add' src='/images/icons/add.png' /> Playlist</a>
+        <% end %>
       </div>
       <div class="col2">
-        <a href='/songs/new'><img src='/images/icons/add.png' /> Song</a>
+        <% if APP_CONFIG[:jukeman_server] == nil %>
+          <a href='/songs/new'><img src='/images/icons/add.png' /> Song</a>
+        <% end %>
         <% if @totals %>
           <span id="totals"><%= @totals["quantity"] %> items, <%= @totals["duration"] %></span>
         <% end %>
