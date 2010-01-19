@@ -21,6 +21,7 @@ Rails::Initializer.run do |config|
   # config.gem "aws-s3", :lib => "aws/s3"
   config.gem 'mongo_mapper', :version => '>= 0.6.1'
   config.gem 'ruby-mp3info', :lib => 'mp3info'
+  config.gem 'librmpd', :lib => 'librmpd'
 
   # Only load the plugins named here, in the order given (default is alphabetical).
   # :all can be used as a placeholder for all plugins not explicitly named
@@ -41,9 +42,3 @@ Rails::Initializer.run do |config|
   # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}')]
   # config.i18n.default_locale = :de
 end
-
-# mongomapper connection
-require 'mongo/gridfs'
-MongoMapper.connection = Mongo::Connection.new('127.0.0.1', 27017, :logger => Rails.logger, :slave_ok => true)
-MongoMapper.database = "jukeman-#{RAILS_ENV}"
-MongoMapper.ensure_indexes!

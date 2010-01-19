@@ -40,16 +40,16 @@ class Song
     tags = {}
     begin
       Mp3Info.open(file_path) do |song|
-        tags["title"]     = song.tag.title.blank? ? song_file_name : song.tag.title
-        tags["artist"]    = song.tag.artist
-        tags["duration"]  = song.length
-        tags["album"]     = song.tag.album
+        tags["title"]     = song.tag.title.blank?   ? file_path.split('/')[-1] : song.tag.title
+        tags["artist"]    = song.tag.artist.blank?  ? nil                      : song.tag.artist
+        tags["duration"]  = song.length.blank?      ? nil                      : song.length
+        tags["album"]     = song.tag.album.blank?   ? nil                      : song.tag.album
         if song.tag.genre && (1..125).include?(song.tag.genre.to_i)
           tags["genre"] = GENRES[song.tag.genre.to_i]
         elsif song.tag.genre_s && (1..125).include?(song.tag.genre_s.gsub(/\D/,'').to_i)
           tags["genre"] = GENRES[song.tag.genre_s.gsub(/\D/,'').to_i]
         else
-          self.genre = ""
+          tags["genre"] = nil
         end
       end
     rescue
@@ -84,9 +84,9 @@ class Song
     'Punk Rock', 'Drum Solo', 'Acapella', 'Euro-House', 'Dance Hall']
     
   def duration_converted
-    minutes = (duration/60).to_i
-    seconds = (duration - minutes*60).to_i
-    return "#{minutes}:#{seconds}"
+    total_minutes           = duration / 1.minutes
+    seconds_in_last_minute  = duration - total_minutes.minutes.seconds
+    return "#{total_minutes}:#{seconds_in_last_minute}"
   end
   
 end
