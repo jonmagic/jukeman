@@ -72,7 +72,7 @@ $(document).ready(function(){
   $("a#import_from_folder").bind('click', function(){
     $("div#importing_from_folder_dialog").dialog('open');
     $.ajax({
-      url: '/songs/import_from_folder',
+      url: '/songs/import',
       type: "GET",
       success: function(msg){
         $("div#importing_from_folder_dialog").dialog('close');
@@ -118,7 +118,13 @@ $(document).ready(function(){
     $('#dialog').load('/songs/new');
     $('#dialog').dialog('open');
   });
-  
+  // edit playlist
+  $('a.edit_playlist').live('click', function(){
+    var playlist_id = $("#songs").attr('data-playlist-id');
+    $("#dialog").dialog('option', 'title', 'Edit Playlist');
+    $('#dialog').load('/playlists/'+playlist_id+'/edit');
+    $('#dialog').dialog('open');
+  });
   // bind my delete playlist button
   $('a.remove_playlist').live('click', function(){
     var playlist_id = $("#songs").attr('data-playlist-id');

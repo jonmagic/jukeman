@@ -4,15 +4,32 @@ class Song
   
   has_grid_attachment :mp3
 
-  key :title, String, :require => true
+  key :title, String
   key :artist, String
   key :album, String
   key :genre, String
   key :duration, Float
   key :destroyed_at, Time
+
+  def tag_and_check_for_existing
+    f = File.new("#{RAILS_ROOT}/tmp/temporary_song.mp3",  "w+")
+    f << mp3
+    f.close
+    tags  = Song.read_id3_tags("#{RAILS_ROOT}/tmp/temporary_song.mp3")
+    File.delete("#{RAILS_ROOT}/tmp/temporary_song.mp3")
+    if existing = Song.first(:title => tags["title"], :duration => tags["duration"])
+      existing.destroyed_at = nil
+      existing.save
+      destroy_song
+      Rails.logger.info "found existing"
+    else
+      self.title, self.artist, self.album, self.genre, self.duration = tags["title"], tags["artist"], tags["album"], tags["genre"], tags["duration"]
+      self.save
+      Rails.logger.info "put tags on new"
+    end
+  end
   
   alias :destroy_song :destroy
-  
   def destroy
     update_attributes(:destroyed_at => Time.zone.now) unless destroyed_at?
     Playlist.all.each do |playlist|
@@ -24,7 +41,7 @@ class Song
   def self.import_song(file_path)
     mp3   = File.open(file_path, 'r')
     tags  = Song.read_id3_tags(file_path)
-    song  = Song.create(:mp3 => mp3, :title => tags["title"], :artist => tags["artist"], :album => tags["album"], :genre => tags["genre"], :duration => tags["duration"])
+    Song.create(:mp3 => mp3, :title => tags["title"], :artist => tags["artist"], :album => tags["album"], :genre => tags["genre"], :duration => tags["duration"]) unless Song.first(:title => tags["title"], :duration => tags["duration"])
   end
   
   def self.import_from_folder
@@ -62,7 +79,8 @@ class Song
     return tags
   end
 
-  GENRES = ['Blues', 'Classic Rock',
+  GENRES = [
+    'Blues', 'Classic Rock',
     'Country', 'Dance', 'Disco', 'Funk', 'Grunge', 'Hip-Hop',
     'Jazz', 'Metal', 'New Age', 'Oldies', 'Other', 'Pop', 'R&B',
     'Rap', 'Reggae', 'Rock', 'Techno', 'Industrial', 'Alternative',

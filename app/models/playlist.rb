@@ -6,7 +6,6 @@ class Playlist
   key :songs, Array
   
   attr_accessor :items
-  
   before_save :items_to_array
   def items_to_array
     return if items.blank?

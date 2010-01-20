@@ -1,13 +1,13 @@
 require 'mongo/gridfs'
 require 'mime/types'
 require 'tempfile'
- 
+
 # if thumbnailable?
 #   tmp = Tempfile.new("thumb_#{filename}")
 #   MojoMagick::resize(uploaded_file.path, tmp.path, {:width => 50, :height => 40, :scale => '>'})
 #   self.thumbnail = tmp.read      
 # end
- 
+
 # open    : db, name, mode, options (:root, :metadata, :content_type)
 # read    : db, name, length, offset
 # unlink  : db, names
@@ -16,7 +16,7 @@ require 'tempfile'
 # GridStore.open(database, 'filename', 'w') { |f|
 #   f.puts "Hello, world!"
 # }
- 
+
 module Grip
   def self.included(base)
     base.extend Grip::ClassMethods
