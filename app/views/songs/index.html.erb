@@ -9,30 +9,21 @@
     </tr>
   </thead>
   <tbody>
-  <% @songs.each do |song| %>
-    <tr class="song song_<%= song.id %>" song_id="<%= song.id %>">
-      <td><a href="javascript:void(0)"><%= song.title %></a></td>
-      <td><a href="javascript:void(0)"><%= song.duration_converted %></a></td>
-      <td><a href="javascript:void(0)"><%= song.artist %></a></td>
-      <td><a href="javascript:void(0)"><%= song.album %></a></td>
-      <td><a href="javascript:void(0)"><%= song.genre %></a></td>
-    </tr>
-  <% end %>
+    <% @songs.each do |song| %>
+      <tr class="song song_<%= song.id %>" data-song-id="<%= song.id %>">
+        <td><a href="javascript:void(0)"><%= song.title %></a></td>
+        <td><a href="javascript:void(0)"><%= song.duration_converted %></a></td>
+        <td><a href="javascript:void(0)"><%= song.artist %></a></td>
+        <td><a href="javascript:void(0)"><%= song.album %></a></td>
+        <td><a href="javascript:void(0)"><%= song.genre %></a></td>
+      </tr>
+    <% end %>
   </tbody>
 </table>
+<div id="dialog"></div>
 
 <script>
-  $(document).ready(function() {
-    // add search to table
-    $('table#songs tbody tr').quicksearch({
-      position: 'before',
-      attached: 'table#songs',
-      formId: 'content_search',
-      stripeRowClass: ['odd', 'even'],
-      labelText: 'Search Songs',
-      focusOnLoad: true
-    });
-
+  $(function(){
     // make my songs draggable
     $(".song").draggable({
       cursorAt: { left: 100 },
@@ -51,19 +42,14 @@
       },
       drop: function(event, ui){
         $(this).removeClass('selected');
-        var song_id = ui.draggable.attr('song_id');
+        var item = ui.draggable;
+        item.remove();
         $.ajax({
-          url: '/songs/'+song_id,
+          url: '/songs/'+item.attr('data-song-id'),
           type: "POST",
-          data: '_method=delete',
-          success: function(){
-            $('tr.song_'+ui.draggable.attr('song_id')).remove();
-          }
+          data: '_method=delete'
         });
       }
     });
-
-    // add tablesorting
-    $("table#songs").tablesorter();
   });
 </script>

@@ -9,8 +9,8 @@
 		<meta name="robots" content="all" />	
 		<meta name="resource-type" content="document" />
 		<meta name="MSSmartTagsPreventParsing" content="true" />
-		<%= stylesheet_link_tag "blueprint/screen", "common", "jquery-theme", "playlists" %>
-		<%= javascript_include_tag "jquery", "jquery-ui", "common", "playlists", "jquery.quicksearch", "jquery.tablesorter" %>
+		<%= stylesheet_link_tag "blueprint/screen", "flick/jquery-ui-1.7.2.custom.css", "common", "playlists" %>
+		<%= javascript_include_tag "jquery-1.4.min.js", "jquery-ui", "jquery.quicksearch", "jquery.tablesorter", "common", "playlists" %>
 	</head>
 	<body>
     <div id="header">
@@ -27,7 +27,7 @@
     <div id="sidebar">
       <h2>LIBRARY</h2>
       <ul class="itu">
-        <li><a href="/" class="library_music" highlight="library_music">Music</a></li>
+        <li><a href="/" class="library_music" data-highlight="library_music">Music</a></li>
         <% if APP_CONFIG[:jukeman_server] == nil %>
           <li class="trashcan"><a href="javascript:void(0)" id="trash">Trash</a></li>
           <li class="import_from_folder"><a href="javascript:void(0)" id="import_from_folder">Import from Folder</a></li>
@@ -36,8 +36,8 @@
       <h2>PLAYLISTS</h2>
       <ul class="itu">
         <% @playlists.each do |playlist| %>
-          <li class="droppable_playlist" id="playlist_<%= playlist.id %>" playlist_id="<%= playlist.id %>">
-            <a href="/playlists/<%= playlist.id %>" class="playlist" highlight="playlist_<%= playlist.id %>">
+          <li class="droppable_playlist" id="playlist_<%= playlist.id %>" data-playlist-id="<%= playlist.id %>">
+            <a href="/playlists/<%= playlist.id %>" class="playlist" data-highlight="playlist_<%= playlist.id %>">
               <%= playlist.name %>
             </a>
           </li>
@@ -62,12 +62,12 @@
     <div id="footer">
       <div class="col1">
         <% if APP_CONFIG[:jukeman_server] == nil %>
-          <a href='/playlists/new'><img alt='Add' src='/images/icons/add.png' /> Playlist</a>
+          <a href='javascript:void(0);' id="new_playlist"><img alt='Add' src='/images/icons/add.png' /> Playlist</a>
         <% end %>
       </div>
       <div class="col2">
         <% if APP_CONFIG[:jukeman_server] == nil %>
-          <a href='/songs/new'><img src='/images/icons/add.png' /> Song</a>
+          <a href='javascript:void(0);' id="new_song"><img src='/images/icons/add.png' /> Song</a>
         <% end %>
         <% if @totals %>
           <span id="totals"><%= @totals["quantity"] %> items, <%= @totals["duration"] %></span>

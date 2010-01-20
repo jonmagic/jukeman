@@ -4,6 +4,11 @@ class SongsController < ApplicationController
     @songs = Song.all(:destroyed_at => nil)
     @totals = load_totals(@songs)
   end
+  
+  def new
+    @song = Song.new
+    render :layout => false
+  end
 
   def create
     @song = Song.new(params[:song])
@@ -14,6 +19,11 @@ class SongsController < ApplicationController
       flash[:notice] = "Failed to upload song."
       redirect_to root_url
     end
+  end
+  
+  def import
+    @imported = Song.import_from_folder
+    render :json => @imported
   end
 
   def destroy

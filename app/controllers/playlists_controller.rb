@@ -4,6 +4,7 @@ class PlaylistsController < ApplicationController
     @playlist = Playlist.find(params[:id])
     @items = []
     @items = @playlist.songs.collect { |song| Song.find(song) }
+    @totals = load_totals(@items)
     respond_to do |format|
       format.html
       format.yaml { render :yaml => @items }
@@ -12,6 +13,7 @@ class PlaylistsController < ApplicationController
 
   def new
     @playlist = Playlist.new
+    render :layout => false
   end
   
   def create
@@ -27,16 +29,34 @@ class PlaylistsController < ApplicationController
   
   def edit
     @playlist = Playlist.find(params[:id])
+    render :layout => false
   end
 
   def update
     @playlist = Playlist.find(params[:id])
     if @playlist.update_attributes(params[:playlist])
       flash[:notice] = "Successfully updated playlist."
-      redirect_to playlist_url(@playlist)
+      respond_to do |format|
+        format.html { redirect_to playlist_url(@playlist) }
+        format.json { render :nothing => true, :response => 200 }
+      end
     else
       flash[:warning] = "Failed to update playlist."
-      redirect_to :back
+      respond_to do |format|
+        format.html { redirect_to :back }
+        format.json { render :nothing => true, :response => 500 }
+      end
+    end
+  end
+  
+  def add # add song to playlist
+    @playlist = Playlist.find(params[:playlist_id])
+    if @song = Song.find(params[:song_id])
+      @playlist.songs << @song.id
+      @playlist.save
+      render :nothing => true, :response => 200
+    else
+      render :nothing => true, :response => 500
     end
   end
   

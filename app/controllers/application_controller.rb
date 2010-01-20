@@ -29,7 +29,7 @@ class ApplicationController < ActionController::Base
     end
     minutes = (duration/60).to_i
     seconds = (((duration/60 - minutes)/100)*60*100).round
-    totals["duration"] = minutes.to_s+" minutes, "+('%.02d' % seconds)+" seconds." 
+    totals["duration"] = minutes.to_s+" minutes, "+('%.02d' % seconds)+" seconds."
     return totals
   end
 end

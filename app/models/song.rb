@@ -15,6 +15,10 @@ class Song
   
   def destroy
     update_attributes(:destroyed_at => Time.zone.now) unless destroyed_at?
+    Playlist.all.each do |playlist|
+      playlist.songs.delete(id.to_s)
+      playlist.save
+    end
   end
   
   def self.import_song(file_path)
@@ -84,9 +88,9 @@ class Song
     'Punk Rock', 'Drum Solo', 'Acapella', 'Euro-House', 'Dance Hall']
     
   def duration_converted
-    total_minutes           = duration / 1.minutes
-    seconds_in_last_minute  = duration - total_minutes.minutes.seconds
-    return "#{total_minutes}:#{seconds_in_last_minute}"
+    minutes = (duration/60).to_i
+    seconds = (((duration/60 - minutes)/100)*60*100).round
+    return "#{minutes}:#{seconds}"
   end
   
 end

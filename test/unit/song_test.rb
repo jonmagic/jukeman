@@ -27,12 +27,9 @@ class SongTest < ActiveSupport::TestCase
   end
   
   context "when importing from a folder" do
-    setup do
-      Song.import_from_folder
-    end
 
-    should "import all songs in the folder" do
-      assert_equal Song.count, 2
+    should "return the number of songs imported" do
+      assert_equal 2, Song.import_from_folder
     end
   end
   
