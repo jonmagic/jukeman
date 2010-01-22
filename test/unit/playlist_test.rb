@@ -4,7 +4,7 @@ require File.dirname(__FILE__) + '/../test_helper'
 class PlaylistTest < ActiveSupport::TestCase
   context "playlists" do
     setup do
-      Song.import_from_folder
+      Song.import_from_folder("#{RAILS_ROOT}/music/")
     end
 
     should "store song ids" do
@@ -17,7 +17,7 @@ class PlaylistTest < ActiveSupport::TestCase
   
   # context "when loading a playlist it" do
   #   def setup
-  #     Song.import_from_folder
+  #     Song.import_from_folder("#{RAILS_ROOT}/music/")
   #     @playlist = Playlist.new(:name => "Test Playlist")
   #     @playlist.songs = Song.all.collect { |s| s.id }
   #     @playlist.save

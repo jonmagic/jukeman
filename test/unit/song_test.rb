@@ -26,13 +26,13 @@ class SongTest < ActiveSupport::TestCase
 
   context "when importing from a folder" do
     should "return the number of songs imported" do
-      assert_equal 2, Song.import_from_folder
+      assert_equal 2, Song.import_from_folder("#{RAILS_ROOT}/music")
     end
   end
   
   context "deleting a song" do
     setup do
-      Song.import_from_folder
+      Song.import_from_folder("#{RAILS_ROOT}/music")
       songs = Song.all.collect { |s| s.id }
       Playlist.create(:name => "Sample Playlist", :songs => songs)
     end

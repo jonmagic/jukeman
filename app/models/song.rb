@@ -44,14 +44,17 @@ class Song
     Song.create(:mp3 => mp3, :title => tags["title"], :artist => tags["artist"], :album => tags["album"], :genre => tags["genre"], :duration => tags["duration"]) unless Song.first(:title => tags["title"], :duration => tags["duration"])
   end
   
-  def self.import_from_folder
-    file_paths = Dir[APP_CONFIG[:import_folder_path]+"/*.mp3"]
+  def self.import_from_folder(folder=APP_CONFIG[:import_folder_path])
+    file_paths = Dir[folder+"/*.mp3"]
     songs, songs_imported = [], 0
     Song.all.each { |song| songs << song.mp3_name }
     file_paths.each do |file_path|
       filename = file_path.split('/')[-1]
       if !songs.include?(filename)
-        songs_imported += 1 if Song.import_song(file_path)
+        if Song.import_song(file_path)
+          songs_imported += 1 
+          Rails.logger.info "Imported song #{filename}"
+        end
       end 
     end
     return songs_imported

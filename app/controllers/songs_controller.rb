@@ -23,8 +23,8 @@ class SongsController < ApplicationController
   end
   
   def import
-    @imported = Song.import_from_folder
-    render :json => @imported
+    Navvy::Job.enqueue(Song, :import_from_folder)
+    render :nothing => true, :response => 200
   end
 
   def destroy

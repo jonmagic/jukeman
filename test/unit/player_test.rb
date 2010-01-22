@@ -11,6 +11,7 @@ class PlayerTest < ActiveSupport::TestCase
   end
   
   def teardown
+    sleep 1
     @server.stop
   end
   

@@ -4,11 +4,11 @@
 class ApplicationController < ActionController::Base
   helper :all # include all helpers, all the time
   
-  def http_basic_authenticate
-    authenticate_or_request_with_http_basic do |username, password|
-      username == APP_CONFIG[:username] && password == APP_CONFIG[:password]
-    end
-  end
+  # def http_basic_authenticate
+  #   authenticate_or_request_with_http_basic do |username, password|
+  #     username == APP_CONFIG[:username] && password == APP_CONFIG[:password]
+  #   end
+  # end
   
   before_filter :load_playlists
   def load_playlists

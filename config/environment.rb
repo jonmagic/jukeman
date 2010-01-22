@@ -22,6 +22,7 @@ Rails::Initializer.run do |config|
   config.gem 'mongo_mapper', :version => '>= 0.6.1'
   config.gem 'ruby-mp3info', :lib => 'mp3info'
   config.gem 'librmpd', :lib => 'librmpd'
+  config.gem 'navvy'
 
   # Only load the plugins named here, in the order given (default is alphabetical).
   # :all can be used as a placeholder for all plugins not explicitly named
