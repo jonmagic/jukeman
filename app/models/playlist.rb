@@ -12,9 +12,8 @@ class Playlist
     self.songs = items.split(',')
   end
   
-  def load_active_playlist
-    location = Location.find_by_name(APP_CONFIG[:location])
-    playlist = Playlist.find(location.playlist_id)
+  def self.load_playlist(playlist)
+    playlist = Playlist.find(playlist)
     playlist.load
   end
   
