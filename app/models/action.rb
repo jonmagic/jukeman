@@ -4,6 +4,7 @@ class Action
   key :object,        String
   key :method_name,   Symbol
   key :arguments,     Array
+  key :completed,     Time
   
   alias_method :args, :arguments
   
@@ -25,14 +26,16 @@ class Action
   # Fetch actions and run them.
 
   def self.fetch_and_run_actions
-    Location.find_by_name(APP_CONFIG[:location]).actions.each do |action|
+    location = Location.find_by_name(APP_CONFIG[:location])
+    location.actions.each do |action|
       result = action.run
       Rails.logger.info(
         "* #{action.object.to_s}.#{action.method_name}" <<
         "(#{action.args.join(', ')}) => #{(action.errors || result).to_s}"
       )
-      # action.destroy
+      action.completed = Time.now
     end
+    location.save
   end
   
   def destroy
