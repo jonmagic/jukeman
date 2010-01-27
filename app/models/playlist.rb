@@ -12,11 +12,6 @@ class Playlist
     self.songs = items.split(',')
   end
   
-  def self.load_playlist(playlist)
-    playlist = Playlist.find(playlist)
-    playlist.load
-  end
-  
   def load
     with_mpd do |mpd|
       songs.each { |id| mpd.add "http://localhost:3333/gridfs/#{Song.find(id).mp3_path}" }
