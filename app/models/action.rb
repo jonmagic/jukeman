@@ -28,12 +28,14 @@ class Action
   def self.fetch_and_run_actions
     location = Location.find_by_name(APP_CONFIG[:location])
     location.actions.each do |action|
-      result = action.run
-      Rails.logger.info(
-        "* #{action.object.to_s}.#{action.method_name}" <<
-        "(#{action.args.join(', ')}) => #{(action.errors || result).to_s}"
-      )
-      action.completed = Time.now
+      if action.completed.blank?
+        result = action.run
+        Rails.logger.info(
+          "* #{action.object.to_s}.#{action.method_name}" <<
+          "(#{action.args.join(', ')}) => #{(action.errors || result).to_s}"
+        )
+        action.completed = Time.now
+      end
     end
     location.save
   end
