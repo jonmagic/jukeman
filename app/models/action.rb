@@ -52,3 +52,13 @@ class Action
   end
   
 end
+
+# l = Location.first
+# l.actions << Action.new(:object => "Player", :method_name => :clear)
+# l.save
+# 
+# l.actions << Action.new(:object => "Location", :method_name => :load_playlist)
+# l.save
+# 
+# l.actions << Action.new(:object => "Player", :method_name => :play)
+# l.save

@@ -1,10 +1,12 @@
 $(document).ready(function(){
-  var highlight = $("#location").attr('highlight');
+  var highlight = $("#location").attr('data-highlight');
   $("#sidebar ul li a").each(function(){
-    if ($(this).attr("highlight") == highlight) {
+    if ($(this).attr("data-highlight") == highlight) {
       $(this).parent("li").addClass("selected");
       $(this).parent("li").removeClass("droppable_playlist");
     };
   });
+  
+  // 
 
 });
