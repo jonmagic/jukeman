@@ -1,1 +1,0 @@
-require 'navvy/job/mongo_mapper'

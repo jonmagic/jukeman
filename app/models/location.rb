@@ -5,7 +5,7 @@ class Location
   key :playlist_id, ObjectId
   
   has_one :playlist
-  has_many :actions
+  # has_many :actions
   
   def self.load_playlist(playlist_id=nil)
     if playlist_id.blank?

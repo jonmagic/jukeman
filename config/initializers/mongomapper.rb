@@ -5,4 +5,3 @@ MongoMapper.database = "jukeman-#{RAILS_ENV}"
 Dir[Rails.root + 'app/models/**/*.rb'].each do |model_path|
   File.basename(model_path, '.rb').classify.constantize
 end
-MongoMapper.ensure_indexes!
