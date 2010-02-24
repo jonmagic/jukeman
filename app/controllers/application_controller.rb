@@ -12,7 +12,7 @@ class ApplicationController < ActionController::Base
   
   before_filter :load_playlists
   def load_playlists
-    @playlists = Playlist.find(:all)
+    @playlists = Playlist.all
   end
   
   def load_totals(songs)
