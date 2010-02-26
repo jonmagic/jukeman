@@ -7,6 +7,8 @@ ActionController::Routing::Routes.draw do |map|
   map.resources             :playlists
   # locations
   map.resources :locations
+  # player
+  map.resources :player
   # defaults
   map.root :controller => 'songs', :action => 'index'
   map.connect ':controller/:action/:id'

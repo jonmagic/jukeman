@@ -12,7 +12,7 @@ class ApplicationController < ActionController::Base
   
   before_filter :load_playlists
   def load_playlists
-    @playlists = Playlist.all
+    @playlists = Playlist.all(:destroyed_at => nil)
   end
   
   def load_totals(songs)
@@ -31,5 +31,22 @@ class ApplicationController < ActionController::Base
     seconds = (((duration/60 - minutes)/100)*60*100).round
     totals["duration"] = minutes.to_s+" minutes, "+('%.02d' % seconds)+" seconds."
     return totals
+  end
+  
+  protected 
+  def render_json(json, options={}) 
+    callback, variable = params[:callback], params[:variable] 
+    response = begin 
+    if callback && variable 
+      "var #{variable} = #{json};\n#{callback}(#{variable});" 
+    elsif variable 
+      "var #{variable} = #{json};" 
+      elsif callback 
+        "#{callback}(#{json});" 
+      else 
+        json 
+      end 
+    end 
+    render({:content_type => :js, :text => response}.merge(options)) 
   end
 end

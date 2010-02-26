@@ -10,6 +10,7 @@ class LocationsController < ApplicationController
   
   def new
     @location = Location.new
+    render :layout => false
   end
   
   def create
@@ -24,13 +25,14 @@ class LocationsController < ApplicationController
   
   def edit
     @location = Location.find(params[:id])
+    render :layout => false
   end
   
   def update
     @location = Location.find(params[:id])
     if @location.update_attributes(params[:location])
       flash[:notice] = "Location was updated successfully"
-      redirect_to locations_path
+      redirect_to location_path(@location)
     else
       render :nothing => true, :response => 500
     end

@@ -11,3 +11,9 @@ img.handle {display:block;padding:0 10px;margin-right:0;}
 #importing_from_folder_dialog img {margin-left:-63px;}
 
 span#totals {}
+
+#sidebar .location {background:url("../images/icons/building.png") no-repeat 0px 2px;}
+
+div#playlists ul {list-style:none;margin:0;padding:0;}
+div#playlists ul li {margin:5px;}
+div#playlists ul li a {display:block;padding:.5em .7em;background-color:#eee;}

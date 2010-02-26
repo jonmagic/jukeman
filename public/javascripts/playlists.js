@@ -34,41 +34,6 @@ $(document).ready(function(){
     }
   });
   
-  // make the trash button clickable
-  $("div#trash_dialog").dialog({
-    title: "Trash Can",
-    autoOpen: false,
-    width: 700,
-    modal: true,
-    buttons: { "Ok": function() { $(this).dialog("close"); } }
-  });
-  $("a#trash").bind('click', function(){
-    $("div#trash_dialog").dialog('open');
-  });
-  $("div#imported_from_folder").dialog({
-    title: "Importing from folder...",
-    autoOpen: false,
-    width: 300,
-    resizable: false,
-    draggable: false,
-    height: 200,
-    modal: true,
-    buttons: { "Ok": function() { 
-      $(this).dialog("close"); 
-      window.location.href="/"; 
-    } }
-  });
-  $("a#import_from_folder").live('click', function(){
-    $("div#imported_from_folder").dialog('open');
-    $.ajax({
-      url: '/songs/import',
-      type: "GET",
-      success: function(msg){
-        $("div#imported_from_folder").dialog('open');
-      }
-    });
-  });
-  
   // add search to table
   $('table#songs tbody tr').quicksearch({
     position: 'before',
@@ -82,23 +47,6 @@ $(document).ready(function(){
   // add tablesorting
   $("table#songs").tablesorter();
   
-  // new song dialog
-  $('#dialog').dialog({
-    autoOpen: false,
-    resizable: false,
-    modal: true,
-    width: 300,
-    height: 200,
-    buttons: {"Save": function(){
-      $('#dialog form').submit();
-    }}
-  });
-  $('#new_playlist').bind('click', function(){
-    $('#dialog').empty();
-    $('#dialog').dialog('option', 'title', 'New Playlist');
-    $('#dialog').load('/playlists/new');
-    $('#dialog').dialog('open');
-  });
   $('#new_song').bind('click', function(){
     $('#dialog').empty();
     $('#dialog').dialog('option', 'title', 'New Song');

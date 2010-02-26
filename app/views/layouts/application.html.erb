@@ -1,26 +1,30 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
-	<head>
-		<title><%= APP_CONFIG[:site_name] %></title>
-		<meta http-equiv="content-type" content="text/xhtml; charset=utf-8" />
-		<meta http-equiv="imagetoolbar" content="no" />
-		<meta name="distribution" content="all" />
-		<meta name="robots" content="all" />	
-		<meta name="resource-type" content="document" />
-		<meta name="MSSmartTagsPreventParsing" content="true" />
-		<%= stylesheet_link_tag "blueprint/screen", "flick/jquery-ui-1.7.2.custom.css", "common", "playlists" %>
-		<%= javascript_include_tag "jquery-1.4.min.js", "jquery-ui", "jquery.quicksearch", "jquery.tablesorter", "common", "playlists" %>
-	</head>
-	<body>
+  <head>
+    <title><%= APP_CONFIG[:site_name] %></title>
+    <meta http-equiv="content-type" content="text/xhtml; charset=utf-8" />
+    <meta http-equiv="imagetoolbar" content="no" />
+    <meta name="distribution" content="all" />
+    <meta name="robots" content="all" />	
+    <meta name="resource-type" content="document" />
+    <meta name="MSSmartTagsPreventParsing" content="true" />
+    <%= stylesheet_link_tag "blueprint/screen", "flick/jquery-ui-1.7.2.custom.css", "common", "playlists" %>
+    <%= javascript_include_tag "jquery-1.4.min.js", "jquery-ui", "jquery.tablesorter", "common" %>
+    <% if controller.controller_name == "locations" %>
+      <%= javascript_include_tag "locations" %>
+    <% else %>
+      <%= javascript_include_tag "jquery.quicksearch", "playlists" %>
+    <% end %>
+  </head>
+  <body>
     <div id="header">
       <h1 class="hide"><%= APP_CONFIG[:site_name] %></h1>
-      <ul>
-        <li><a href="/"><%= image_tag('icons/music.png') %>Playlists</a></li>
-        <% if APP_CONFIG[:jukeman_server] == nil %>
-          <li><a href="/locations"><%= image_tag('icons/building.png') %>Locations</a></li>
-        <% end %>
-      </ul>
+      <a href="javascript:void(0)" id="previous" class="hide" data-action="previous_song"></a>
+      <a href="javascript:void(0)" id="stop" class="hide" data-action="stop"></a>
+      <a href="javascript:void(0)" id="play" class="hide" data-action="play"></a>
+      <a href="javascript:void(0)" id="next" class="hide" data-action="next_song"></a>
+      <div id="screen" class="hide"></div>
       <div class="flash"><%= flash_messages %></div>
     </div>
     
@@ -28,8 +32,8 @@
       <h2>LIBRARY</h2>
       <ul class="itu">
         <li><a href="/" class="library_music" data-highlight="library_music">Music</a></li>
-        <% if APP_CONFIG[:jukeman_server] == nil %>
-          <li class="trashcan"><a href="javascript:void(0)" id="trash">Trash</a></li>
+        <li class="trashcan"><a href="javascript:void(0)" id="trash">Trash</a></li>
+        <% unless APP_CONFIG[:import_folder_path].blank? %>
           <li class="import_from_folder"><a href="javascript:void(0)" id="import_from_folder">Import from Folder</a></li>
         <% end %>
       </ul>
@@ -43,26 +47,24 @@
           </li>
         <% end %>
       </ul>
+      <h2>LOCATIONS</h2>
+      <ul class="itu">
+        <% Location.all.each do |location| %>
+          <li><a href="/locations/<%= location.id %>" class="location" data-highlight="<%= location.id %>"><%= location.name %></a></li>
+        <% end %>
+      </ul>
     </div>
     
     <div id="center" class="container">
       <%= yield %>
     </div>
-    
-    <div id="trash_dialog">
-      <p>You just clicked on the trash can :-)</p>
-      <p>The trash can is useful for two things. <br />1. When you are in your Music Library you can drag a song to the trash to delete it. <br />2. When you are in a playlist you can drag a song to the trash to remove it from the playlist.</p>
-    </div>
-    
-    <div id="imported_from_folder"><p>Song import has been queued, please give it 20 seconds per song.</p></div>
     <div id="footer">
       <div class="col1">
-        <% if APP_CONFIG[:jukeman_server] == nil %>
-          <a href='javascript:void(0);' id="new_playlist"><img alt='Add' src='/images/icons/add.png' /> Playlist</a>
-        <% end %>
+        <a href='javascript:void(0);' id="new_playlist"><img alt='Add' src='/images/icons/add.png' /> Playlist</a>
+        <a href='javascript:void(0);' id="new_location"><img alt='Add' src='/images/icons/add.png' /> Location</a>
       </div>
       <div class="col2">
-        <% if APP_CONFIG[:jukeman_server] == nil %>
+        <% if controller.controller_name == "songs" %>
           <a href='javascript:void(0);' id="new_song"><img src='/images/icons/add.png' /> Song</a>
         <% end %>
         <% if @totals %>
@@ -73,5 +75,10 @@
       </div>
     </div>
     <div id="dialog"></div>
+    <div id="trash_dialog">
+      <p>You just clicked on the trash can :-)</p>
+      <p>The trash can is useful for two things. <br />1. When you are in your Music Library you can drag a song to the trash to delete it. <br />2. When you are in a playlist you can drag a song to the trash to remove it from the playlist.</p>
+    </div>
+    <div id="imported_from_folder"><p>Song import has been queued, please give it 20 seconds per song.</p></div>
 	</body>
 </html>

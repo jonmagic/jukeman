@@ -29,12 +29,6 @@ body#login fieldset {border:1px solid #444;padding:1em 1.5em;width:300px;}
 #header h1 {display:none;}
 #header ul {position:absolute;top:16px;}
 #header ul li {display:inline;}
-#header .header-button-itu {font-weight:bold;color:#252525;padding:5px 10px 5px 5px;background:url("../images/header-button-itu-inactive.png") repeat-x -5px;border:1px solid #494949;-moz-border-radius:5px;-webkit-border-radius:5px}
-#header .header-button-itu img {margin-bottom:-4px;margin-right:4px;}
-#header .header-button-itu:hover {background:url("../images/header-button-itu-active.png") repeat-x -5px;}
-#header .header-button-m {font-weight:bold;color:#444;padding:5px 10px;background:url("../images/header-button-m-inactive.png") repeat-x -5px;border:1px solid #53585c;-moz-border-radius:12px;-webkit-border-radius:12px}
-#header .header-button-m:hover {background:url("../images/header-button-m-active.png") repeat-x -5px;}
-
 
 /* Footer stlyes */
 #footer {background:#b5b5b5 url("../images/footer_bg.png") repeat-x fixed center;border-top:1px solid #404040;}
@@ -112,12 +106,10 @@ input[title=State] {width:2em;}
 input[title=Zip] {width:4em;}
 
 /* Toolbars */
-ul.toolbar {border:1px solid #505050;background:url("../images/footer-button-m-inactive.png") repeat-x;height:16px;display:block;margin:1em 1.2em 0;padding:2px 1em;-moz-border-radius:5px;-webkit-border-radius:5px}
-ul.toolbar li {display:inline;}
-ul.toolbar li a {position:relative;padding:4px 1em;}
-ul.toolbar li a:hover {background:url("../images/footer-button-m-active.png") repeat-x;}
-div.ui-tabs-panel ul.toolbar li a {position:relative;top:2px;}
-div.toolbox {padding:10px 10px 1px;margin:1em;border:1px solid #ddd;-moz-border-radius:5px;-webkit-border-radius:5px;}
+.fg-button { outline: 0; margin:0 4px 0 0; padding: .4em 1em; text-decoration:none !important; cursor:pointer; position: relative; text-align: center; zoom: 1; }
+ul.toolbar {margin:1em 1em;padding:0;}
+ul.toolbar li {list-style:none;display:inline;}
+div.toolbox {padding:0px 10px 10px;margin:1em 0;border:1px solid #ddd;-moz-border-radius:5px;-webkit-border-radius:5px;}
 
 /* autocomplete */
 .auto_select_results {padding: 0px;border: 1px solid WindowFrame;background-color: Window;overflow: hidden;}
@@ -126,3 +118,54 @@ div.toolbox {padding:10px 10px 1px;margin:1em;border:1px solid #ddd;-moz-border-
 .auto_select_results li {margin: 0px;padding: 2px 5px;cursor: pointer;display: block;width: 100%;font: menu;font-size: 12px;overflow: hidden;}
 .auto_select_loading {background : Window url('./indicator.gif') right center no-repeat;}
 .auto_select_selected {background-color: Highlight;color: HighlightText;}
+
+/* itunes buttons */
+div#screen {
+  position:absolute;
+  top:6px;
+  left:50%;
+  margin-left:-20%;
+  width:40%;
+  height:35px;
+  background: url("../images/screen_bg.jpg") repeat-x -1px;
+  border:1px solid #666;
+  -moz-border-radius:4px;-webkit-border-radius:4px;
+}
+div#screen p {
+  margin-top:9px;
+  text-align:center;
+  font-weight:bold;
+  font-size:12px;
+}
+a#play {
+  position:absolute;
+  top:6px;
+  left:95px;
+  height:37px;
+  width:37px;
+  background: url("../images/play.png");
+}
+a#stop {
+  position:absolute;
+  top:6px;
+  left:95px;
+  height:37px;
+  width:37px;
+  background: url("../images/stop.png");  
+}
+a#previous {
+  position:absolute;
+  top:6px;
+  left:55px;
+  height:37px;
+  width:37px;
+  background: url("../images/previous.png");  
+}
+a#next {
+  position:absolute;
+  top:6px;
+  left:135px;
+  height:37px;
+  width:37px;
+  background: url("../images/next.png");  
+}

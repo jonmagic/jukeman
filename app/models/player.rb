@@ -2,8 +2,22 @@ require 'librmpd'
 
 class Player
   
+  def self.state
+    with_mpd do |mpd|
+      state = mpd.status["state"]
+    end
+  end
+  
+  def self.current_song
+    with_mpd do |mpd|
+      mpd.current_song.blank? ? '' : Song.find(mpd.current_song["file"].split("/")[-1]).title
+    end
+  end
+  
   def self.play
     with_mpd do |mpd|
+      mpd.repeat = 1
+      mpd.crossfade = 2
       mpd.play
     end
   end
@@ -25,13 +39,13 @@ class Player
       mpd.stop
     end
   end
-  
+
   def self.clear
     with_mpd do |mpd|
       mpd.clear
     end
   end
-  
+
   def self.with_mpd(&block)
     mpd = MPD.new 'localhost', APP_CONFIG[:mpd_port]
     mpd.connect

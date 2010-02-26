@@ -10,13 +10,89 @@ $(document).ready(function() {
   $(window).bind('resize', function(){
     resize();
   });
-});
-
-// add borders and backgrounds to buttons
-$(document).ready(function() {
   $("#header a").addClass("header-button-itu");
   $("#footer a").addClass("footer-button-itu");
+  buildTables()
+  setupToolbarsAndButtons();
+  
+  // make the trash button clickable
+  $("div#trash_dialog").dialog({
+    title: "Trash Can",
+    autoOpen: false,
+    width: 700,
+    modal: true,
+    buttons: { "Ok": function() { $(this).dialog("close"); } }
+  });
+  $("a#trash").bind('click', function(){
+    $("div#trash_dialog").dialog('open');
+  });
+  $("div#imported_from_folder").dialog({
+    title: "Importing from folder...",
+    autoOpen: false,
+    width: 300,
+    resizable: false,
+    draggable: false,
+    height: 200,
+    modal: true,
+    buttons: { "Ok": function() { 
+      $(this).dialog("close"); 
+      window.location.href="/"; 
+    } }
+  });
+  $("a#import_from_folder").live('click', function(){
+    $("div#imported_from_folder").dialog('open');
+    $.ajax({
+      url: '/songs/import',
+      type: "GET",
+      success: function(msg){
+        $("div#imported_from_folder").dialog('open');
+      }
+    });
+  });
+  // dialog
+  $('#dialog').dialog({
+    autoOpen: false,
+    resizable: false,
+    modal: true,
+    width: 350,
+    height: 200,
+    buttons: {"Save": function(){
+      $('#dialog form').submit();
+    }}
+  });
+  $('#new_playlist').bind('click', function(){
+    $('#dialog').empty();
+    $('#dialog').dialog('option', 'title', 'New Playlist');
+    $('#dialog').load('/playlists/new');
+    $('#dialog').dialog('open');
+  });
+  $('#new_location').bind('click', function(){
+    $('#dialog').empty();
+    $('#dialog').dialog('option', 'title', 'New Location');
+    $('#dialog').load('/locations/new');
+    $('#dialog').dialog('open');
+  });
 });
+
+function setupToolbarsAndButtons(){
+  var toolbar_links = $('.toolbar a');
+  addButtonStyles(toolbar_links);
+  var buttons = $('input[type=submit]');
+  addButtonStyles(buttons);
+};
+function addButtonStyles(thing){
+  thing.addClass('ui-state-default');
+  thing.addClass('ui-corner-all');
+  thing.addClass('fg-button');
+  thing.hover(
+  	function(){ 
+  		$(this).addClass("ui-state-hover"); 
+  	},
+  	function(){ 
+  		$(this).removeClass("ui-state-hover"); 
+  	}
+  );
+}
 
 function buildTables(){
   // table style 1, inspired by itunes
@@ -53,12 +129,6 @@ function buildTables(){
   // add padding where necessary
   $("#center div.ui-tabs-panel table.itu").wrap("<div></div>").parent().addClass("ui-tabs-panel-padding");
 }
-
-// build my tables
-$(document).ready(function() {
-  buildTables()
-});
-
     
 // Cool time function for parsing UTC 8601 time formats
 Date.from_iso8601 = function(string){

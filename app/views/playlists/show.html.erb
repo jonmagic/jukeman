@@ -25,19 +25,16 @@
 
 <script>
   $(function(){
-    <% if APP_CONFIG[:jukeman_server] == nil %>
-      // setup my footer button
-      $("#footer div.col1").append("<a href='javascript:void(0)' class='edit_playlist' style='margin-right:5px'><img src='/images/icons/cd_edit.png' /> Playlist</a>");
-      $("#footer div.col1").append("<a href='javascript:void(0)' class='remove_playlist' style='margin-right:5px'><img src='/images/icons/delete.png' /> Playlist</a>");
-      $("#footer div.col3").append("<a href='/playlists/<%= @playlist.id %>/activate' class='activate_playlist' style='margin-right:5px'>Activate Playlist</a>");
-    <% end %>
+    // setup my footer button
+    $("#footer div.col2").prepend("<a href='javascript:void(0)' class='remove_playlist' style='margin-right:5px'><img src='/images/icons/delete.png' /> Playlist</a>");
+    $("#footer div.col2").prepend("<a href='javascript:void(0)' class='edit_playlist' style='margin-right:5px'><img src='/images/icons/cd_edit.png' /> Playlist</a>");
     // make my songs draggable
-    $(".song").draggable({
-      handle: 'td.grabbable',
-      cursorAt: { left: 100 },
-      helper: 'clone',
-      opacity: 0.3,
-    });
+    // $(".song").draggable({
+    //   handle: 'td.grabbable',
+    //   cursorAt: { left: 100 },
+    //   helper: 'clone',
+    //   opacity: 0.3,
+    // });
     // make my playlist songs sortable
     $('table#songs').sortable({
       items: 'tr.sortable',
@@ -45,6 +42,8 @@
       containment: $('table#songs').parent(),
       axis:'y',
       scroll: false,
+      // scrollSensitivity: 0,
+      // scrollSpeed: 5,
       update: function() {
         $.ajax({
           url: '/playlists/<%= @playlist.id %>',

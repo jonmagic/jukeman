@@ -1,0 +1,26 @@
+<h2 data-location-id="<%= @location.id %>" data-location-ip="<%= @location.ip %>"><%= @location.name %></h2>
+<div id="player">
+  <h3>The active playlist is <span id="active_playlist"></span>.</h3>
+  <ul class="toolbar">
+    <li><a href="javascript:void(0);" class="change_active_playlist">Change the active playlist</a></li>
+  </ul>
+</div>
+
+<div id="playlists">
+  <ul>
+    
+  </ul>
+</div>
+
+<form action="http://<%= @location.ip %>:3333/player" id="location_<%= @location.id %>" class="hide location_form" method="post">
+  <input id="location_submit" name="commit" type="submit" value="Save changes">
+</form>
+
+<script>
+  $(function(){
+    // setup my footer button
+    $("#footer div.col2").prepend("<a href='javascript:void(0)' class='remove_location' style='margin-right:5px'><img src='/images/icons/delete.png' /> Location</a>");
+    $("#footer div.col2").prepend("<a href='javascript:void(0)' class='edit_location' style='margin-right:5px'><img src='/images/icons/cd_edit.png' /> Location</a>");
+    
+  });
+</script>
