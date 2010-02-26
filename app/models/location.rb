@@ -6,24 +6,19 @@ class Location
   key :playlist_id, ObjectId
   
   has_one :playlist
-  # has_many :actions
-  
-  def self.load_playlist(playlist_id=nil)
-    if playlist_id.blank?
-      if l = Location.find_by_name(APP_CONFIG[:location])
-        playlist = Playlist.find(l.playlist_id)
-        playlist.load
-      end
-    else
-      playlist = Playlist.find(playlist_id)
-      playlist.load
-    end
-  end
   
   def activate_playlist(playlist_id)
     if self.update_attributes(:playlist_id => playlist_id)
       Player.clear
       Playlist.find(self.playlist_id).load
+      Player.play
+    end
+  end
+  
+  def self.startup
+    if @location = Location.first(:name => APP_CONFIG[:location])
+      Player.clear
+      Playlist.find(@location.playlist_id).load
       Player.play
     end
   end
