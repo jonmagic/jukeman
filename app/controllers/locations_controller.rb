@@ -17,7 +17,7 @@ class LocationsController < ApplicationController
     @location = Location.new(params[:location])
     if @location.save
       flash[:notice] = "Location was created successfully"
-      redirect_to locations_path
+      redirect_to location_path(@location)
     else
       render :nothing => true, :response => 500
     end
