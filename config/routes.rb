@@ -6,8 +6,9 @@ ActionController::Routing::Routes.draw do |map|
   map.add_song_to_playlist  '/playlists/:playlist_id/add/:song_id', :controller => 'playlists', :action => 'add'
   map.resources             :playlists
   # locations
-  map.resources :locations
-  # player
+  map.resources :locations do |location|
+    location.resources :player
+  end
   map.resources :player
   # defaults
   map.root :controller => 'songs', :action => 'index'

@@ -1,4 +1,4 @@
-<h2 data-location-id="<%= @location.id %>" data-location-ip="<%= @location.ip %>"><%= @location.name %></h2>
+<h2 data-location-id="<%= @location.id %>" data-location-ip="<%= Location.first(:name => APP_CONFIG[:location]).ip %>"><%= @location.name %></h2>
 <div id="player">
   <h3>The active playlist is <span id="active_playlist"></span>.</h3>
   <ul class="toolbar">
@@ -11,10 +11,6 @@
     
   </ul>
 </div>
-
-<form action="http://<%= @location.ip %>:3333/player" id="location_<%= @location.id %>" class="hide location_form" method="post">
-  <input id="location_submit" name="commit" type="submit" value="Save changes">
-</form>
 
 <script>
   $(function(){

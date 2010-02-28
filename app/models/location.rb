@@ -1,4 +1,7 @@
+require 'httparty'
+
 class Location
+  include HTTParty  
   include MongoMapper::Document
   
   key :name, String, :unique => true, :required => true
@@ -21,6 +24,17 @@ class Location
       Playlist.find(@location.playlist_id).load
       Player.play
     end
+  end
+  
+  def get_status
+    Crack::JSON.parse(self.class.get("http://#{self.ip}:3333/player"))
+  end
+  
+  def update_player(params)
+    query = {}
+    query[:activate_playlist] unless params[:activate_playlist].blank?
+    query[:player_action] unless params[:player_action].blank?
+    self.class.post("http://#{self.ip}:3333/player", :query => query)
   end
 
 end

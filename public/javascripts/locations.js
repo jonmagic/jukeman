@@ -1,7 +1,8 @@
 $(document).ready(function(){
   // find the ip of the jukebox
   var ip = $('div#center h2').attr('data-location-ip');
-  var url = 'http://'+ip+':3333/player/';
+  var location = $('div#center h2').attr('data-location-id');
+  var url = 'http://'+ip+':3333/locations/'+location+'/player';
   // highlight my sidebar item
   var highlight = $("div#center h2").attr('data-location-id');
   $("#sidebar ul li a").each(function(){
@@ -52,7 +53,7 @@ $(document).ready(function(){
              $('div#playlists ul').append("<li><a href='javascript:void(0);' data-playlist-id='"+playlist['id']+"'>"+playlist['name']+"</a></li>");
            });
          };
-         setTimeout(function(){update_location(url);}, 3000);
+         // setTimeout(function(){update_location(url);}, 3000);
        },
        error: function(XMLHttpRequest, textStatus, errorThrown){
          $('div#player').empty();
