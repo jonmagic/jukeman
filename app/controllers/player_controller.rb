@@ -20,10 +20,9 @@ class PlayerController < ApplicationController
   def create
     if params[:location_id] && params[:location_id] != Location.first(:name => APP_CONFIG[:location]).id.to_s
       parameters = ""
-      parameters += "activate_playlist=#{params[:activate_playlist]}" unless params[:activate_playlist].blank?
-      parameters += "player_action=#{params[:player_action]}" unless params[:player_action].blank?
-      self.class.post("http://#{Location.find(params[:location_id]).ip}:3333/player?"+parameters)
-      # Location.find(params[:location_id]).update_player(hash)
+      parameters += "activate_playlist=#{params[:activate_playlist]}&" unless params[:activate_playlist].blank?
+      parameters += "player_action=#{params[:player_action]}&" unless params[:player_action].blank?
+      Location.find(params[:location_id]).update_player(parameters)
     else
       @location = Location.first(:name => APP_CONFIG[:location])
       @location.activate_playlist(params[:activate_playlist]) unless params[:activate_playlist].blank?

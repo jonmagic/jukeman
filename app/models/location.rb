@@ -30,8 +30,8 @@ class Location
     Crack::JSON.parse(self.class.get("http://#{self.ip}:3333/player"))
   end
   
-  def update_player(hash)
-    self.class.post("http://#{self.ip}:3333/player", :query => hash)
+  def update_player(parameters)
+    self.class.post("http://#{self.ip}:3333/player?"+parameters)
   end
 
 end
