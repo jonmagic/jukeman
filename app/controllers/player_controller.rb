@@ -19,7 +19,10 @@ class PlayerController < ApplicationController
 
   def create
     if params[:location_id] && params[:location_id] != Location.first(:name => APP_CONFIG[:location]).id.to_s
-      Location.find(params[:location_id]).update_player(params)
+      hash = {}
+      hash[:activate_playlist] unless params[:activate_playlist].blank?
+      hash[:player_action] unless params[:player_action].blank?
+      Location.find(params[:location_id]).update_player(hash)
     else
       @location = Location.first(:name => APP_CONFIG[:location])
       @location.activate_playlist(params[:activate_playlist]) unless params[:activate_playlist].blank?
