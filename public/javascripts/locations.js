@@ -13,55 +13,55 @@ $(document).ready(function(){
   });
   
   // update location information function
-   function control_jukebox(url, data){
-     $.ajax({
-       url: url,
-       type: 'POST',
-       data: data,
-       success: function(){
-         $('div#playlists').dialog('close');
-         update_location(url);
-       }
-     })
-   }
-   function update_location(url){
-     $.ajax({
-       url: url,
-       timeout: 5000,
-       dataType: 'jsonp',
-       success: function(json){
-         if(json['state'] != null){
-           $('a#previous').show();
-           $('a#next').show();
-           if(json['state'] == 'play'){
-             $('a#play').hide();
-             $('a#stop').show();
-           }else if(json['state'] == 'stop'){
-             $('a#stop').hide();
-             $('a#play').show();             
-           };
-         };
-         if(json['current_song'] != null){
-           $('div#screen').html("<p>"+json['current_song']+"</p>");
-         };
-         if(json['active_playlist'] != null){
-           $('span#active_playlist').text(json['active_playlist']['name']);
-         };
-         if(json['playlists'] != null){
-           $.each(json['playlists'], function(i, playlist){
-             $('div#playlists ul').empty();
-             $('div#playlists ul').append("<li><a href='javascript:void(0);' data-playlist-id='"+playlist['id']+"'>"+playlist['name']+"</a></li>");
-           });
-         };
-         // setTimeout(function(){update_location(url);}, 3000);
-       },
-       error: function(XMLHttpRequest, textStatus, errorThrown){
-         $('div#player').empty();
-         $('div#player').append('<p>Failed to connect to jukebox...</p>');
-       }
-     });
-   };
-   update_location(url);
+  function control_jukebox(url, data){
+    $.ajax({
+      url: url,
+      type: 'POST',
+      data: data,
+      success: function(){
+        $('div#playlists').dialog('close');
+        update_location(url);
+      }
+    })
+  }
+  function update_location(url){
+    $.ajax({
+      url: url,
+      timeout: 5000,
+      dataType: 'jsonp',
+      success: function(json){
+        if(json['state'] != null){
+          $('a#previous').show();
+          $('a#next').show();
+          if(json['state'] == 'play'){
+            $('a#play').hide();
+            $('a#stop').show();
+          }else if(json['state'] == 'stop'){
+            $('a#stop').hide();
+            $('a#play').show();             
+          };
+        };
+        if(json['current_song'] != null){
+          $('div#screen').html("<p>"+json['current_song']+"</p>");
+        };
+        if(json['active_playlist'] != null){
+          $('span#active_playlist').text(json['active_playlist']['name']);
+        };
+        if(json['playlists'] != null){
+          $('div#playlists ul').empty();
+          $.each(json['playlists'], function(i, playlist){
+            $('div#playlists ul').append("<li><a href='javascript:void(0);' data-playlist-id='"+playlist['id']+"'>"+playlist['name']+"</a></li>");
+          });
+        };
+        // setTimeout(function(){update_location(url);}, 3000);
+      },
+      error: function(XMLHttpRequest, textStatus, errorThrown){
+        $('div#player').empty();
+        $('div#player').append('<p>Failed to connect to jukebox...</p>');
+      }
+    });
+  };
+  update_location(url);
   
   // select a playlist
   $('div#playlists').dialog({
@@ -82,7 +82,6 @@ $(document).ready(function(){
   $('div#header a').live('click', function(){
     control_jukebox(url, "player_action="+$(this).attr('data-action'));
   });
-  
   // edit playlist
   $('a.edit_location').live('click', function(){
     var location_id = $("div#center h2").attr('data-location-id');
@@ -105,5 +104,4 @@ $(document).ready(function(){
       });
     };
   });
-  
 });
