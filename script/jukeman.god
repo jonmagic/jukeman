@@ -3,13 +3,13 @@ RAILS_ROOT = "/home/jukeman/apps/jukeman"
 God.watch do |w|
   w.name = "jukeman"
   w.interval = 30.seconds # default      
-  w.start = "mongrel_rails start -c #{RAILS_ROOT} -p #{port} \
-    -P #{RAILS_ROOT}/log/mongrel.#{port}.pid  -d"
-  w.stop = "mongrel_rails stop -P #{RAILS_ROOT}/log/mongrel.#{port}.pid"
-  w.restart = "mongrel_rails restart -P #{RAILS_ROOT}/log/mongrel.#{port}.pid"
+  w.start = "mongrel_rails start -c #{RAILS_ROOT} -p 3333 \
+    -P #{RAILS_ROOT}/log/mongrel.3333.pid  -d"
+  w.stop = "mongrel_rails stop -P #{RAILS_ROOT}/log/mongrel.3333.pid"
+  w.restart = "mongrel_rails restart -P #{RAILS_ROOT}/log/mongrel.3333.pid"
   w.start_grace = 10.seconds
   w.restart_grace = 10.seconds
-  w.pid_file = File.join(RAILS_ROOT, "log/mongrel.#{port}.pid")
+  w.pid_file = File.join(RAILS_ROOT, "log/mongrel.3333.pid")
 
   w.uid = 'jukeman'
   w.gid = 'jukeman'

@@ -1,7 +1,7 @@
 RAILS_ROOT = "/home/jukeman/apps/jukeman"
 
 God.watch do |w|
-  w.name     = "navvy-1"
+  w.name     = "navvy"
   w.group    = 'navvy'
   w.interval = 30.seconds
   w.start    = "rake navvy:work"
