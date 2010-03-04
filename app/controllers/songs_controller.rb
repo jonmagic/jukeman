@@ -11,9 +11,7 @@ class SongsController < ApplicationController
   end
 
   def create
-    @song = Song.new(params[:song])
-    if @song.save
-      @song.tag_and_check_for_existing
+    if Song.save(params[:song])
       flash[:notice] = "Successfully uploaded song."
       redirect_to root_url
     else

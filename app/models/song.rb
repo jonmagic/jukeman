@@ -11,21 +11,19 @@ class Song
   key :duration, Float
   key :destroyed_at, Time
 
-  def tag_and_check_for_existing
-    f = File.new("#{RAILS_ROOT}/tmp/temporary_song.mp3",  "w+")
-    f << mp3
-    f.close
-    tags  = Song.read_id3_tags("#{RAILS_ROOT}/tmp/temporary_song.mp3")
-    File.delete("#{RAILS_ROOT}/tmp/temporary_song.mp3")
+  def self.save(upload)
+    song = Song.new(upload)
+    song.mp3_name = upload[:mp3].original_filename
+    tags  = Song.read_id3_tags(upload[:mp3].path)
     if existing = Song.first(:title => tags["title"], :duration => tags["duration"])
       existing.destroyed_at = nil
       existing.save
-      destroy_song
-      Rails.logger.info "found existing"
+      Rails.logger.info "### found existing ###"
     else
-      self.title, self.artist, self.album, self.genre, self.duration = tags["title"], tags["artist"], tags["album"], tags["genre"], tags["duration"]
-      self.save
-      Rails.logger.info "put tags on new"
+      song.title, song.artist, song.album, song.genre, song.duration = tags["title"], tags["artist"], tags["album"], tags["genre"], tags["duration"]
+      song.title = song.mp3_name if song.title.include?("RackMultipart")
+      song.save
+      Rails.logger.info "### put tags on new ###"
     end
   end
   
