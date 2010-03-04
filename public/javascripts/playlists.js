@@ -46,13 +46,6 @@ $(document).ready(function(){
 
   // add tablesorting
   $("table#songs").tablesorter();
-  
-  $('#new_song').bind('click', function(){
-    $('#dialog').empty();
-    $('#dialog').dialog('option', 'title', 'New Song');
-    $('#dialog').load('/songs/new');
-    $('#dialog').dialog('open');
-  });
   // edit playlist
   $('a.edit_playlist').live('click', function(){
     var playlist_id = $("#songs").attr('data-playlist-id');

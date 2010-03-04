@@ -55,7 +55,6 @@ $(document).ready(function() {
     resizable: false,
     modal: true,
     width: 350,
-    height: 200,
     buttons: {"Save": function(){
       $('#dialog form').submit();
     }}

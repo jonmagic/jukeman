@@ -13,7 +13,7 @@ class Playlist
     self.songs = items.split(',')
   end
   
-  alias :destroy_song :destroy
+  alias :destroy_playlist :destroy
   def destroy
     update_attributes(:destroyed_at => Time.zone.now) unless destroyed_at?
   end

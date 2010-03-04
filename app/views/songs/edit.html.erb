@@ -1,0 +1,17 @@
+<% form_for @song do |f| %>
+  <p>
+    <label>Title</label> <%= f.text_field :title %>
+  </p>
+  <p>
+    <label>Artist</label> <%= f.text_field :artist %>
+  </p>
+  <p>
+    <label>Album</label> <%= f.text_field :album %>
+  </p>
+  <p>
+    <label>Genre</label> <%= f.select :genre, options_for_select(@genres.to_enum(:each_with_index).collect {|genre, i| [genre, i+1]}, @song.genre.to_i), :include_blank => true %>
+  </p>
+  <p class="hide">
+    <%= f.submit %>
+  </p>
+<% end %>

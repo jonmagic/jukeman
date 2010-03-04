@@ -106,6 +106,19 @@ class Song
     'Ballad', 'Power Ballad', 'Rhythmic Soul', 'Freestyle', 'Duet',
     'Punk Rock', 'Drum Solo', 'Acapella', 'Euro-House', 'Dance Hall']
     
+  def self.genres
+    GENRES
+  end
+  
+  def genre_name
+    unless self.genre.blank?
+      index = self.genre.to_i - 1
+      GENRES[index]
+    else
+      ""
+    end
+  end
+    
   def duration_converted
     minutes = (duration/60).to_i
     seconds = (((duration/60 - minutes)/100)*60*100).round

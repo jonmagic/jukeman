@@ -15,7 +15,7 @@
         <td><a href="javascript:void(0)"><%= song.duration_converted %></a></td>
         <td><a href="javascript:void(0)"><%= song.artist %></a></td>
         <td><a href="javascript:void(0)"><%= song.album %></a></td>
-        <td><a href="javascript:void(0)"><%= song.genre %></a></td>
+        <td><a href="javascript:void(0)"><%= song.genre_name %></a></td>
       </tr>
     <% end %>
   </tbody>
@@ -49,6 +49,21 @@
           data: '_method=delete'
         });
       }
+    });
+    // new song
+    $('#new_song').bind('click', function(){
+      $('#dialog').empty();
+      $('#dialog').dialog('option', 'title', 'New Song');
+      $('#dialog').load('/songs/new');
+      $('#dialog').dialog('open');
+    });
+    // new song
+    $('tr.song').bind('click', function(){
+      var song_id = $(this).attr('data-song-id');
+      $('#dialog').empty();
+      $('#dialog').dialog('option', 'title', 'Edit Song');
+      $('#dialog').load('/songs/'+song_id+'/edit');
+      $('#dialog').dialog('open');
     });
   });
 </script>

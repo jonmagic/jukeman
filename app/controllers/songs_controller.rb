@@ -20,6 +20,23 @@ class SongsController < ApplicationController
     end
   end
   
+  def edit
+    @song = Song.find(params[:id])
+    @genres = Song.genres
+    render :layout => false
+  end
+  
+  def update
+    @song = Song.find(params[:id])
+    if @song.update_attributes(params[:song])
+      flash[:notice] = "Successfully updated song tags."
+      redirect_to root_url
+    else
+      flash[:notice] = "Unable to update song tags."
+      redirect_to root_url
+    end
+  end
+  
   def import
     Navvy::Job.enqueue(Song, :import_from_folder)
     render :nothing => true, :response => 200
