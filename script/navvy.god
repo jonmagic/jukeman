@@ -4,7 +4,7 @@ God.watch do |w|
   w.name     = "javvy"
   w.group    = 'navvy'
   w.interval = 30.seconds
-  w.start    = "rake navvy:work"
+  w.start    = "cd #{RAILS_ROOT} && sleep 5 && rake navvy:work"
   w.dir      = RAILS_ROOT
   w.log	     = "#{RAILS_ROOT}/log/navvy.log"
  
