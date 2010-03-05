@@ -1,10 +1,12 @@
+RAILS_ROOT="/home/jukeman/apps/jukeman"
+
 Bluepill.application("jukeman", :log_file => "/var/log/bluepill.logg") do |app|
   app.uid = "jukeman"
   app.gid = "jukeman"
   app.working_dir = "/home/jukeman/apps/jukeman"
   app.process("rackup") do |process|
-    process.start_command = "rackup -p 3333 -P log/rackup.3333.pid -D"
-    process.pid_file = "log/rackup.3333.pid"
+    process.start_command = "rackup -p 3333 -P #{RAILS_ROOT}/log/rackup.3333.pid -D"
+    process.pid_file = "#{RAILS_ROOT}/log/rackup.3333.pid"
     process.checks :cpu_usage, :every => 10.seconds, :below => 50, :times => 3
     process.checks :mem_usage, :every => 10.seconds, :below => 200.megabytes, :times => [3,5]
     process.start_grace_time = 5.seconds
