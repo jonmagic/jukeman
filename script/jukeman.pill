@@ -1,4 +1,4 @@
-Bluepill.application("jukeman", :log_file => "/var/log/bluepill.log") do |app|
+Bluepill.application("jukeman", :log_file => "/var/log/bluepill.logg") do |app|
   app.uid = "jukeman"
   app.gid = "jukeman"
   app.working_dir = "/home/jukeman/apps/jukeman"
@@ -15,7 +15,6 @@ Bluepill.application("jukeman", :log_file => "/var/log/bluepill.log") do |app|
   
   app.process("navvy") do |process|
     process.start_command = "rake navvy:work"
-    process.pid_file = "log/navvy.pid"
     process.daemonize = true
     process.checks :cpu_usage, :every => 10.seconds, :below => 50, :times => 3
     process.checks :mem_usage, :every => 10.seconds, :below => 200.megabytes, :times => [3,5]
