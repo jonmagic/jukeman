@@ -1,4 +1,4 @@
-Bluepill.application("jukeman") do |app|
+Bluepill.application("jukeman", :log_file => "/var/log/bluepill.log") do |app|
   app.uid = "jukeman"
   app.gid = "jukeman"
   app.working_dir = "/home/jukeman/apps/jukeman"
