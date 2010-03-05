@@ -1,3 +1,5 @@
 h1. JukeMan
 
-JukeMan is a simple rails app with an iTunes like interface for uploading (or importing from a folder) music into its library, and then organizing that music into playlists. This is NOT A MUSIC PLAYER, just a server that manages songs and playlists. Also included is all that is needed for the client, basically a linux box running Amarok. The client "watches" the server, using a simple cron job, and updates the amarok playlist accordingly. You can have one machine be the client and the server :-)
+JukeMan is a simple rails app with an iTunes like interface for uploading (or importing from a folder) music into its library, and then organizing that music into playlists. The music and playlists are then distributed (in the background) to all your other JukeMan locations.
+
+JukeMan will run on almost any system that can run MPD (the Music Player Daemon). I've written an installer that deploys JukeMan and all its dependencies to a bare metal Debian install: "JukeMan Installer":http://github.com/jonmagic/jukeman_installer
