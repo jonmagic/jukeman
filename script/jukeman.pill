@@ -5,7 +5,7 @@ Bluepill.application("jukeman", :log_file => "/var/log/bluepill.logg") do |app|
   app.gid = "jukeman"
   app.working_dir = "/home/jukeman/apps/jukeman"
   app.process("rackup") do |process|
-    process.start_command = "rackup -p 3333 -P #{RAILS_ROOT}/log/rackup.3333.pid -D"
+    process.start_command = "/usr/local/bin/rackup -p 3333 -P #{RAILS_ROOT}/log/rackup.3333.pid -D"
     process.pid_file = "#{RAILS_ROOT}/log/rackup.3333.pid"
     process.checks :cpu_usage, :every => 10.seconds, :below => 50, :times => 3
     process.checks :mem_usage, :every => 10.seconds, :below => 200.megabytes, :times => [3,5]
@@ -16,7 +16,7 @@ Bluepill.application("jukeman", :log_file => "/var/log/bluepill.logg") do |app|
   end
   
   app.process("navvy") do |process|
-    process.start_command = "rake navvy:work"
+    process.start_command = "/usr/local/bin/rake navvy:work"
     process.daemonize = true
     process.checks :cpu_usage, :every => 10.seconds, :below => 50, :times => 3
     process.checks :mem_usage, :every => 10.seconds, :below => 200.megabytes, :times => [3,5]
