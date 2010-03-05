@@ -3,9 +3,9 @@ RAILS_ROOT = "/home/jukeman/apps/jukeman"
 God.watch do |w|
   w.name          = "jukeman"
   w.interval      = 30.seconds # default      
-  w.start         = "cd #{RAILS_ROOT} && rackup -p 3333 -D-P #{RAILS_ROOT}/log/rackup.3333.pid"
+  w.start         = "cd #{RAILS_ROOT} && rackup -p 3333 -P #{RAILS_ROOT}/log/rackup.3333.pid -D"
   w.stop          = "kill `cat #{RAILS_ROOT}/log/rackup.3333.pid`"
-  w.restart       = "kill `cat #{RAILS_ROOT}/log/rackup.3333.pid` && cd #{RAILS_ROOT} && rackup -p 3333 -D-P #{RAILS_ROOT}/log/rackup.3333.pid"
+  w.restart       = "kill `cat #{RAILS_ROOT}/log/rackup.3333.pid` && cd #{RAILS_ROOT} && rackup -p 3333 -P #{RAILS_ROOT}/log/rackup.3333.pid -D"
   w.start_grace   = 10.seconds
   w.restart_grace = 10.seconds
   w.pid_file      = File.join(RAILS_ROOT, "log/rackup.3333.pid")
