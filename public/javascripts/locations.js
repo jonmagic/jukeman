@@ -1,8 +1,7 @@
 $(document).ready(function(){
   // find the ip of the jukebox
-  var ip = $('div#center h2').attr('data-location-ip');
   var location = $('div#center h2').attr('data-location-id');
-  var url = 'http://'+ip+':3333/locations/'+location+'/player';
+  var url = '/locations/'+location+'/player';
   // highlight my sidebar item
   var highlight = $("div#center h2").attr('data-location-id');
   $("#sidebar ul li a").each(function(){
