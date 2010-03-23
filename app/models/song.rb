@@ -1,8 +1,8 @@
 class Song
   include MongoMapper::Document
-  include Grip
+  plugin Grip
   
-  has_grid_attachment :mp3
+  attachment :mp3
 
   key :title, String
   key :artist, String
@@ -10,20 +10,19 @@ class Song
   key :genre, String
   key :duration, Float
   key :destroyed_at, Time
-
-  def self.save(upload)
-    song = Song.new(upload)
-    song.mp3_name = upload[:mp3].original_filename
-    tags  = Song.read_id3_tags(upload[:mp3].path)
-    if existing = Song.first(:title => tags["title"], :duration => tags["duration"])
+  
+  before_validation_on_create :set_id3_tags
+  def set_id3_tags
+    tags  = Song.read_id3_tags(self.class.attachment_definitions[:mp3].path)
+    self.title, self.artist, self.album, self.genre, self.duration = tags["title"], tags["artist"], tags["album"], tags["genre"], tags["duration"]
+    self.title = self.mp3_name if self.title.include?("RackMultiPart")
+  end
+  validate_on_create :unique_song
+  def unique_song
+    if existing = Song.first(:title => self.title, :duration => self.duration)
       existing.destroyed_at = nil
       existing.save
-      Rails.logger.info "### found existing ###"
-    else
-      song.title, song.artist, song.album, song.genre, song.duration = tags["title"], tags["artist"], tags["album"], tags["genre"], tags["duration"]
-      song.title = song.mp3_name if song.title.include?("RackMultipart")
-      song.save
-      Rails.logger.info "### put tags on new ###"
+      self.errors.add :mp3, "song already exists!"
     end
   end
   

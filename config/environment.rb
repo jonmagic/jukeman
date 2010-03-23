@@ -15,20 +15,14 @@ Rails::Initializer.run do |config|
   # config.load_paths += %W( #{RAILS_ROOT}/extras )
 
   # Specify gems that this application depends on and have them installed with rake gems:install
-  # config.gem "bj"
-  # config.gem "hpricot", :version => '0.6', :source => "http://code.whytheluckystiff.net"
-  # config.gem "sqlite3-ruby", :lib => "sqlite3"
-  # config.gem "aws-s3", :lib => "aws/s3"
-  # config.gem 'mongrel', :version => '1.1.5'
-  # config.gem 'mongo', :version => '0.18.3'
-  # config.gem 'mongo_ext', :version => '0.18.3'
-  config.gem 'mongo_mapper', :version => '0.7.0'
-  # config.gem 'mime-types', :version => '1.16'
+  config.gem 'mongo_mapper', :version => '0.7.1'
   config.gem 'navvy', :version => '0.1.0'
   config.gem 'ruby-mp3info', :lib => 'mp3info'
   config.gem 'librmpd', :lib => 'librmpd', :version => '0.1.1'
   config.gem 'httparty', :version => '0.5.2'
-  config.gem 'rack-gridfs', :lib => 'rack/gridfs', :version => '0.2.0'
+  config.gem 'wand', :version => '0.2.1'
+  config.gem 'jnunemaker-rack-gridfs', :lib => 'rack/gridfs', :version => '0.3.0'
+  config.gem 'jnunemaker-grip', :lib => 'grip', :version => '0.1.1'
 
   # Only load the plugins named here, in the order given (default is alphabetical).
   # :all can be used as a placeholder for all plugins not explicitly named

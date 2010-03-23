@@ -20,7 +20,7 @@ class Playlist
   
   def load
     with_mpd do |mpd|
-      songs.each { |id| mpd.add "http://localhost:3333/gridfs/#{Song.find(id).mp3_path}" }
+      songs.each { |id| mpd.add "http://localhost:3333/gridfs/#{Song.find(id).mp3_id.to_s}" }
     end
   end
 
