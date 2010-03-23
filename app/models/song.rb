@@ -61,10 +61,10 @@ class Song
     tags = {}
     begin
       Mp3Info.open(file_path) do |song|
-        tags["title"]     = song.tag.title.blank?   ? file_path.split('/')[-1] : song.tag.title
-        tags["artist"]    = song.tag.artist.blank?  ? nil                      : song.tag.artist
+        tags["title"]     = song.tag.title.blank?   ? file_path.split('/')[-1].make_utf8 : song.tag.title.make_utf8
+        tags["artist"]    = song.tag.artist.blank?  ? nil                      : song.tag.artist.make_utf8
         tags["duration"]  = song.length.blank?      ? nil                      : song.length
-        tags["album"]     = song.tag.album.blank?   ? nil                      : song.tag.album
+        tags["album"]     = song.tag.album.blank?   ? nil                      : song.tag.album.make_utf8
         if song.tag.genre && (1..125).include?(song.tag.genre.to_i)
           tags["genre"] = GENRES[song.tag.genre.to_i]
         elsif song.tag.genre_s && (1..125).include?(song.tag.genre_s.gsub(/\D/,'').to_i)
@@ -74,7 +74,7 @@ class Song
         end
       end
     rescue
-      tags["title"] = file_path.split('/')[-1]
+      tags["title"] = file_path.split('/')[-1].make_utf8
     end
     return tags
   end
@@ -124,4 +124,11 @@ class Song
     return "#{minutes}:#{seconds}"
   end
   
+end
+
+class String
+  def make_utf8
+    ic = Iconv.new('UTF-8//IGNORE', 'UTF-8')
+    ic.iconv(self + ' ')[0..-2]
+  end
 end
