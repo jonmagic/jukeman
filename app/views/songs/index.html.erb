@@ -29,7 +29,22 @@
       helper: 'clone',
       opacity: 0.3
     });
-
+    // make my playlists droppable
+    $(".droppable_playlist").droppable({
+      accept: '.song',
+      over: function(){
+        $(this).addClass('selected');
+      },
+      out: function(){
+        $(this).removeClass('selected');
+      },
+      drop: function(event, ui) {
+        $(this).removeClass('selected');
+        var playlist_id = $(this).attr('data-playlist-id');
+        var song_id = ui.draggable.attr('data-song-id');
+        $.post('/playlists/'+playlist_id+'/add/'+song_id);
+      }
+    });
     // this is my trash can that deletes songs completely
     $("#sidebar .trashcan").droppable({
       accept: '.song',
@@ -54,10 +69,12 @@
     $('#new_song').bind('click', function(){
       $('#dialog').empty();
       $('#dialog').dialog('option', 'title', 'New Song');
+      $('#dialog').dialog('option', 'height', 100);
+      $('#dialog').dialog('option', 'width', 300);
       $('#dialog').load('/songs/new');
       $('#dialog').dialog('open');
     });
-    // new song
+    // edit song
     $('tr.song').bind('click', function(){
       var song_id = $(this).attr('data-song-id');
       $('#dialog').empty();

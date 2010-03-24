@@ -26,6 +26,7 @@ $(document).ready(function() {
   $("a#trash").bind('click', function(){
     $("div#trash_dialog").dialog('open');
   });
+  // import from folder dialog
   $("div#imported_from_folder").dialog({
     title: "Importing from folder...",
     autoOpen: false,

@@ -1,0 +1,34 @@
+<table class="itu" id="replace" data-highlight="library_music">
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Duration</th>
+      <th>Artist</th>
+      <th>Album</th>
+      <th>Genre</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @songs.each do |song| %>
+      <tr class="song song_<%= song.id %>" data-song-id="<%= song.id %>">
+        <td><a href="javascript:void(0)"><%= song.title %></a></td>
+        <td><a href="javascript:void(0)"><%= song.duration_converted %></a></td>
+        <td><a href="javascript:void(0)"><%= song.artist %></a></td>
+        <td><a href="javascript:void(0)"><%= song.album %></a></td>
+        <td><a href="javascript:void(0)"><%= song.genre_name %></a></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<script>
+  // add search to table
+  $('table#replace tbody tr').quicksearch({
+    position: 'before',
+    attached: 'table#replace',
+    formId: 'content_search',
+    stripeRowClass: ['odd', 'even'],
+    labelText: 'Search Songs',
+    focusOnLoad: true
+  });
+</script>

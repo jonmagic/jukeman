@@ -38,7 +38,7 @@ class PlaylistsController < ApplicationController
       flash[:notice] = "Successfully updated playlist."
       respond_to do |format|
         format.html { redirect_to playlist_url(@playlist) }
-        format.json { render :nothing => true, :response => 200 }
+        format.json { render :json => @playlist.to_json, :response => 200 }
       end
     else
       flash[:warning] = "Failed to update playlist."
@@ -59,7 +59,7 @@ class PlaylistsController < ApplicationController
       render :nothing => true, :response => 500
     end
   end
-  
+
   def destroy
     @playlist = Playlist.find(params[:id])
     if @playlist.destroy

@@ -5,6 +5,11 @@ class SongsController < ApplicationController
     @totals = load_totals(@songs)
   end
   
+  def list
+    @songs = Song.all(:destroyed_at => nil)
+    render :layout => false
+  end
+  
   def new
     @song = Song.new
     render :layout => false

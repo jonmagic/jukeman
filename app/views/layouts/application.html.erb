@@ -10,7 +10,7 @@
     <meta name="resource-type" content="document" />
     <meta name="MSSmartTagsPreventParsing" content="true" />
     <%= stylesheet_link_tag "blueprint/screen", "flick/jquery-ui-1.7.2.custom.css", "common", "playlists" %>
-    <%= javascript_include_tag "jquery-1.4.min.js", "jquery-ui", "jquery.tablesorter", "common" %>
+    <%= javascript_include_tag "jquery-1.4.min.js", "jquery-ui", "jquery.tablesorter", "underscore", "common" %>
     <% if controller.controller_name == "locations" %>
       <%= javascript_include_tag "locations" %>
     <% else %>
@@ -75,6 +75,7 @@
       </div>
     </div>
     <div id="dialog"></div>
+    <div id="rdialog"></div>
     <div id="trash_dialog">
       <p>You just clicked on the trash can :-)</p>
       <p>The trash can is useful for two things. <br />1. When you are in your Music Library you can drag a song to the trash to delete it. <br />2. When you are in a playlist you can drag a song to the trash to remove it from the playlist.</p>

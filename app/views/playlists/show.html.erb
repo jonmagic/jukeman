@@ -22,8 +22,17 @@
     <% end %>
   </tbody>
 </table>
+<div id="rdialog"></div>
 
 <script>
+  function replace(arrayName,replaceTo, replaceWith)
+  {
+    for(var i=0; i<arrayName.length;i++ )
+    {  
+      if(arrayName[i]==replaceTo)
+        arrayName.splice(i,1,replaceWith);          
+    }        
+  };
   $(function(){
     // setup my footer button
     $("#footer div.col2").prepend("<a href='javascript:void(0)' class='remove_playlist' style='margin-right:5px'><img src='/images/icons/delete.png' /> Playlist</a>");
@@ -50,8 +59,118 @@
           data: 'playlist[items]='+song_array(),
           type: 'PUT',
           dataType: 'json'
-        })
+        });
       }
+    });
+    // edit playlist
+    $('a.edit_playlist').live('click', function(){
+      var playlist_id = $("#songs").attr('data-playlist-id');
+      $("#dialog").dialog('option', 'title', 'Edit Playlist');
+      $('#dialog').dialog('option', 'height', 100);
+      $('#dialog').dialog('option', 'width', 300);
+      $('#dialog').load('/playlists/'+playlist_id+'/edit');
+      $('#dialog').dialog('open');
+    });
+    // bind my delete playlist button
+    $('a.remove_playlist').live('click', function(){
+      var playlist_id = $("#songs").attr('data-playlist-id');
+      var answer = confirm("Are you sure you want to delete this playlist?");
+      if (answer){
+        $.ajax({
+          url: '/playlists/'+playlist_id,
+          type: "POST",
+          data: '_method=delete',
+          success: function(){
+            window.location.href="/"
+          }
+        });
+      };
+    });
+    // make songs replaceable/deletable
+    var rdialog = $('#rdialog').dialog({
+      autoOpen: false,
+      modal: true,
+      resizable: false
+    });
+    $('tr.song.item').live('click', function(){
+      var id = $(this).attr('data-song-id');
+      $(this).attr('data-song-id', 'replace');
+      var array = song_array();
+      console.log("Before", id, array);
+      rdialog.append('<p>Do you want to remove this item from the playlist, remove every instance of this item from the playlist, or replace this item?</p>');
+      rdialog.dialog('option', 'buttons', {
+        "Remove just this item": function(){
+          array = _.without(array, "replace");
+          $.ajax({
+            url: '/playlists/<%= @playlist.id %>',
+            data: 'playlist[items]='+array,
+            type: 'PUT',
+            dataType: 'json',
+            success: function(){
+              window.location.reload();
+            }
+          });
+        },
+        "Remove every instance of this item": function(){
+          array = _.without(array, "replace" , id);
+          $.ajax({
+            url: '/playlists/<%= @playlist.id %>',
+            data: 'playlist[items]='+array,
+            type: 'PUT',
+            dataType: 'json',
+            success: function(){
+              window.location.reload();
+            }
+          });
+        },
+        "Replace this item": function(){
+          rdialog.dialog('close');
+          rdialog.empty();
+          rdialog.dialog('option', 'height', $(window).height() - 100);
+          rdialog.dialog('option', 'width', $(window).width() - 100);
+          rdialog.dialog('option', 'buttons', {})
+          rdialog.load('/songs/list', function(){
+            buildTables();
+            rdialog.dialog('open');
+            $('tr.song').live('click', function(){
+              var nid = $(this).attr('data-song-id');
+              rdialog.dialog('close');
+              rdialog.empty();
+              rdialog.dialog('option', 'height', 150);
+              rdialog.dialog('option', 'width', 400);
+              rdialog.dialog('option', 'buttons', {
+                "Replace just this item": function(){
+                  replace(array, "replace", nid);
+                  $.ajax({
+                    url: '/playlists/<%= @playlist.id %>',
+                    data: 'playlist[items]='+array,
+                    type: 'PUT',
+                    dataType: 'json',
+                    success: function(){
+                      window.location.reload();
+                    }
+                  });
+                },
+                "Replace every instance of this item": function(){
+                  replace(array, "replace", nid);
+                  replace(array, id, nid);
+                  $.ajax({
+                    url: '/playlists/<%= @playlist.id %>',
+                    data: 'playlist[items]='+array,
+                    type: 'PUT',
+                    dataType: 'json',
+                    success: function(){
+                      window.location.reload();
+                    }
+                  });
+                }
+              });
+              rdialog.dialog('open');
+            });
+          });
+        }
+      });
+      rdialog.dialog('open');
     });
     // this is my trashcan that just removes a song from a playlist
     $("#sidebar .trashcan").droppable({

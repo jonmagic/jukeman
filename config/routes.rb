@@ -1,5 +1,6 @@
 ActionController::Routing::Routes.draw do |map|
   # songs
+  map.list      '/songs/list', :controller => 'songs', :action => 'list'
   map.import    '/songs/import', :controller => 'songs', :action => 'import'
   map.resources :songs
   # playlists
