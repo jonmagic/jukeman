@@ -24,7 +24,4 @@ $(document).ready(function(){
     labelText: 'Search Songs',
     focusOnLoad: true
   });
-  // add tablesorting
-  $("table#songs").tablesorter();
-
 });
