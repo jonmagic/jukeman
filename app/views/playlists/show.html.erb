@@ -1,4 +1,4 @@
-<table class="itu" id="songs" data-playlist-id="<%= @playlist.id %>" data-highlight="playlist_<%= @playlist.id %>">
+<table class="itu" id="songs" data-playlist-id="<%= @playlist.id %>" data-playlist-name="<%= @playlist.name %>" data-highlight="playlist_<%= @playlist.id %>">
   <thead>
     <tr>
       <th></th>
@@ -35,15 +35,9 @@
   };
   $(function(){
     // setup my footer button
+    $("#footer div.col2").prepend("<a href='javascript:void(0)' class='clone_playlist' style='margin-right:5px'><img src='/images/icons/application_double.png' /> Playlist</a>");
     $("#footer div.col2").prepend("<a href='javascript:void(0)' class='remove_playlist' style='margin-right:5px'><img src='/images/icons/delete.png' /> Playlist</a>");
     $("#footer div.col2").prepend("<a href='javascript:void(0)' class='edit_playlist' style='margin-right:5px'><img src='/images/icons/cd_edit.png' /> Playlist</a>");
-    // make my songs draggable
-    // $(".song").draggable({
-    //   handle: 'td.grabbable',
-    //   cursorAt: { left: 100 },
-    //   helper: 'clone',
-    //   opacity: 0.3,
-    // });
     // make my playlist songs sortable
     $('table#songs').sortable({
       items: 'tr.sortable',
@@ -64,12 +58,25 @@
     });
     // edit playlist
     $('a.edit_playlist').live('click', function(){
-      var playlist_id = $("#songs").attr('data-playlist-id');
+      var playlist_id = $("table#songs").attr('data-playlist-id');
       $("#dialog").dialog('option', 'title', 'Edit Playlist');
       $('#dialog').dialog('option', 'height', 100);
       $('#dialog').dialog('option', 'width', 300);
       $('#dialog').load('/playlists/'+playlist_id+'/edit');
       $('#dialog').dialog('open');
+    });
+    // clone playlist
+    $('a.clone_playlist').live('click', function(){
+      var name = $("table#songs").attr('data-playlist-name');
+      var array = song_array();
+      $("#dialog").dialog('option', 'title', 'Clone Playlist');
+      $('#dialog').dialog('option', 'height', 100);
+      $('#dialog').dialog('option', 'width', 300);
+      $('#dialog').load('/playlists/new', function(){
+        $('#dialog').find('#playlist_name').val('Copy of '+name);
+        $('#dialog').find('#playlist_items').val(array);
+        $('#dialog').dialog('open');
+      });
     });
     // bind my delete playlist button
     $('a.remove_playlist').live('click', function(){
