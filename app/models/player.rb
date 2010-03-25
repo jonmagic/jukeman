@@ -10,7 +10,7 @@ class Player
   
   def self.current_song
     with_mpd do |mpd|
-      mpd.current_song.blank? ? '' : Song.find(mpd.current_song["file"].split("/")[-1]).title
+      mpd.current_song.blank? ? '' : Song.first(:mp3_id => mpd.current_song["file"].split("/")[-1]).title
     end
   end
   
