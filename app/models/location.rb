@@ -11,11 +11,9 @@ class Location
   has_one :playlist
   
   def activate_playlist(playlist_id)
-    if self.update_attributes(:playlist_id => playlist_id)
-      Player.clear
-      Playlist.find(self.playlist_id).load
-      Player.play
-    end
+    Player.clear
+    Playlist.find(self.playlist_id).load
+    Player.play
   end
   
   def self.startup
