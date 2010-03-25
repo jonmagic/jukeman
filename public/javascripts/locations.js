@@ -60,10 +60,13 @@ $(document).ready(function(){
       }
     });
   };
-  update_location(url);
-  setTimeout(function(){
+  function update_location_loop(){
     update_location(url);
-  }, 3000);
+    setTimeout(function(){
+      update_location_loop();
+    }, 3000);
+  };
+  update_location_loop();
   
   // select a playlist
   $('div#playlists').dialog({
