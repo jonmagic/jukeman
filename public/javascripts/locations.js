@@ -61,6 +61,9 @@ $(document).ready(function(){
     });
   };
   update_location(url);
+  setTimeout(function(){
+    update_location(url);
+  }, 3000);
   
   // select a playlist
   $('div#playlists').dialog({
@@ -81,7 +84,7 @@ $(document).ready(function(){
   $('div#header a').live('click', function(){
     control_jukebox(url, "player_action="+$(this).attr('data-action'));
   });
-  // edit playlist
+  // edit location
   $('a.edit_location').live('click', function(){
     var location_id = $("div#center h2").attr('data-location-id');
     $("#dialog").dialog('option', 'title', 'Edit Location');
