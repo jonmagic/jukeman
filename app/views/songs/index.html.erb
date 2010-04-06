@@ -44,7 +44,18 @@
         $(this).removeClass('selected');
         var playlist_id = $(this).attr('data-playlist-id');
         var song_id = ui.draggable.attr('data-song-id');
-        $.post('/playlists/'+playlist_id+'/add/'+song_id);
+        // $.post('/playlists/'+playlist_id+'/add/'+song_id);
+        $.ajax({
+          url: '/playlists/'+playlist_id+'/add/'+song_id,
+          type: 'POST',
+          data: '',
+          success: function(data, result){
+            console.log(result);
+          },
+          error: function(data, result){
+            console.log(result);
+          }
+        });
       }
     });
     // this is my trash can that deletes songs completely

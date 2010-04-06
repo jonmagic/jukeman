@@ -15,7 +15,7 @@ Rails::Initializer.run do |config|
   # config.load_paths += %W( #{RAILS_ROOT}/extras )
 
   # Specify gems that this application depends on and have them installed with rake gems:install
-  config.gem 'mongo_mapper', :version => '0.7.1'
+  config.gem 'mongo_mapper'
   config.gem 'navvy', :version => '0.1.0'
   config.gem 'ruby-mp3info', :lib => 'mp3info'
   config.gem 'librmpd', :lib => 'librmpd', :version => '0.1.1'
