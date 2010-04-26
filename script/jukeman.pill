@@ -15,14 +15,14 @@ Bluepill.application("jukeman", :log_file => "/var/log/bluepill.logg") do |app|
     process.checks :flapping, :times => 2, :within => 30.seconds, :retry_in => 20.seconds
   end
   
-  app.process("navvy") do |process|
-    process.start_command = "/usr/local/bin/rake navvy:work"
-    process.daemonize = true
-    process.checks :cpu_usage, :every => 10.seconds, :below => 50, :times => 3
-    process.checks :mem_usage, :every => 10.seconds, :below => 200.megabytes, :times => [3,5]
-    process.start_grace_time = 5.seconds
-    process.stop_grace_time = 5.seconds
-    process.restart_grace_time = 10.seconds
-    process.checks :flapping, :times => 2, :within => 30.seconds, :retry_in => 20.seconds
-  end
+  # app.process("navvy") do |process|
+  #   process.start_command = "/usr/local/bin/rake navvy:work"
+  #   process.daemonize = true
+  #   process.checks :cpu_usage, :every => 10.seconds, :below => 50, :times => 3
+  #   process.checks :mem_usage, :every => 10.seconds, :below => 200.megabytes, :times => [3,5]
+  #   process.start_grace_time = 5.seconds
+  #   process.stop_grace_time = 5.seconds
+  #   process.restart_grace_time = 10.seconds
+  #   process.checks :flapping, :times => 2, :within => 30.seconds, :retry_in => 20.seconds
+  # end
 end

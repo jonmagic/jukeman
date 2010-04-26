@@ -18,6 +18,8 @@ class Playlist
     update_attributes(:destroyed_at => Time.zone.now) unless destroyed_at?
   end
   
+  # l = Location.first(:name => APP_CONFIG[:location])
+  # p = Playlist.find(l.playlist_id)
   def load
     with_mpd do |mpd|
       songs.each { |id| mpd.add "http://localhost:3333/gridfs/#{Song.find(id).mp3_id.to_s}" }
