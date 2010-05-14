@@ -1,7 +1,7 @@
 require 'httparty'
 
 class Location
-  include HTTParty  
+  include HTTParty
   include MongoMapper::Document
   
   key :name, String, :unique => true, :required => true
