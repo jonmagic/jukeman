@@ -1,0 +1,10 @@
+#!/bin/sh
+SERVICE='rsync'
+
+if ps ax | grep -v grep | grep $SERVICE > /dev/null
+then
+    echo "$SERVICE service already running"
+else
+    echo "$SERVICE is not running, starting rsync"
+    rsync -avz -e ssh jukeman@192.168.9.6:apps/jukeman/public/songs /home/jukeman/apps/jukeman/public/
+fi
