@@ -7,9 +7,9 @@ Song.all.each do |song|
 end
 
 # export all the records so they can be reimported
-include Mongo
-db   = Connection.new.db('jukeman-development')
-files = db.collection('fs.files')
-files.drop
-chunks = db.collection('fs.chunks')
-chunks.drop
+# include Mongo
+# db   = Connection.new.db('jukeman-development')
+# files = db.collection('fs.files')
+# files.drop
+# chunks = db.collection('fs.chunks')
+# chunks.drop
