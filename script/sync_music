@@ -1,10 +1,11 @@
 #!/bin/sh
-SERVICE='rsync'
+# add to crontab
+# 0-59/5 * * * * /home/jukeman/apps/jukeman/script/sync_music > /dev/null
 
-if ps ax | grep -v grep | grep $SERVICE > /dev/null
-then
-    echo "$SERVICE service already running"
-else
-    echo "$SERVICE is not running, starting rsync"
-    rsync -avz -e ssh jukeman@192.168.9.6:apps/jukeman/public/songs /home/jukeman/apps/jukeman/public/
+if [ -z "$(pgrep rsync)" ]
+  then
+     echo "$SERVICE is not running, starting rsync"
+     rsync -avz -e ssh jukeman@192.168.9.6:apps/jukeman/public/songs /home/jukeman/apps/jukeman/public/
+  else
+     echo "$SERVICE service already running"
 fi
