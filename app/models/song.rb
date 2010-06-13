@@ -1,9 +1,7 @@
 class Song
   include MongoMapper::Document
-  plugin Grip
+  mount_uploader :mp3, Mp3Uploader
   
-  attachment :mp3
-
   key :title, String
   key :artist, String
   key :album, String
@@ -13,9 +11,9 @@ class Song
   
   before_validation_on_create :set_id3_tags
   def set_id3_tags
-    tags  = Song.read_id3_tags(self.class.attachment_definitions[:mp3].path)
+    tags  = Song.read_id3_tags(self.mp3.file.file)
     self.title, self.artist, self.album, self.genre, self.duration = tags["title"], tags["artist"], tags["album"], tags["genre"], tags["duration"]
-    self.title = self.mp3_name if self.title.include?("RackMultiPart")
+    self.title = self.mp3_name if self.title.include?("RackMultipart")
   end
   validate_on_create :unique_song
   def unique_song

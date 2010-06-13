@@ -20,9 +20,7 @@ Rails::Initializer.run do |config|
   config.gem 'ruby-mp3info', :lib => 'mp3info'
   config.gem 'librmpd', :lib => 'librmpd', :version => '0.1.1'
   config.gem 'httparty', :version => '0.5.2'
-  config.gem 'wand', :version => '0.2.1'
-  config.gem 'jnunemaker-rack-gridfs', :lib => 'rack/gridfs', :version => '0.3.0'
-  config.gem 'jnunemaker-grip', :lib => 'grip', :version => '0.1.1'
+  config.gem "carrierwave"
 
   # Only load the plugins named here, in the order given (default is alphabetical).
   # :all can be used as a placeholder for all plugins not explicitly named
