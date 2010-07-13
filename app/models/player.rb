@@ -17,7 +17,7 @@ class Player
   def self.play
     with_mpd do |mpd|
       mpd.repeat = 1
-      mpd.crossfade = 2
+      mpd.crossfade = 0
       mpd.play
       mpd.volume = APP_CONFIG[:volume]
     end
