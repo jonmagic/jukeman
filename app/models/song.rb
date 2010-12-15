@@ -15,7 +15,7 @@ class Song
   def set_id3_tags
     tags  = Song.read_id3_tags(self.mp3.file.file)
     self.title, self.artist, self.album, self.genre, self.duration = tags["title"], tags["artist"], tags["album"], tags["genre"], tags["duration"]
-    self.title = self.mp3_name if self.title.include?("RackMultipart")
+    # self.title = self.mp3_name if self.title.include?("RackMultipart")
   end
   validate_on_create :unique_song
   def unique_song
@@ -45,7 +45,7 @@ class Song
   def self.import_from_folder(folder=APP_CONFIG[:import_folder_path])
     file_paths = Dir[folder+"/*.mp3"]
     songs, songs_imported = [], 0
-    Song.all.each { |song| songs << song.mp3_name }
+    Song.all.each { |song| songs << song.title+".mp3" }
     file_paths.each do |file_path|
       filename = file_path.split('/')[-1]
       if !songs.include?(filename)
