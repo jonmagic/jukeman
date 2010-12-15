@@ -13,7 +13,7 @@ class Song
 
   # before_validation_on_create :set_id3_tags
   def set_id3_tags
-    tags  = Song.read_id3_tags()
+    tags  = Song.read_id3_tags(self.mp3.file.file)
     self.title, self.artist, self.album, self.genre, self.duration = tags["title"], tags["artist"], tags["album"], tags["genre"], tags["duration"]
     self.title = self.mp3_name if self.title.include?("RackMultipart")
   end
