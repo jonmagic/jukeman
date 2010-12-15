@@ -1,17 +1,19 @@
+require "ftools"
+
 class Song
   include MongoMapper::Document
   mount_uploader :mp3, Mp3Uploader
-  
+
   key :title, String
   key :artist, String
   key :album, String
   key :genre, String
   key :duration, Float
   key :destroyed_at, Time
-  
-  before_validation_on_create :set_id3_tags
+
+  # before_validation_on_create :set_id3_tags
   def set_id3_tags
-    tags  = Song.read_id3_tags(self.mp3.file.file)
+    tags  = Song.read_id3_tags()
     self.title, self.artist, self.album, self.genre, self.duration = tags["title"], tags["artist"], tags["album"], tags["genre"], tags["duration"]
     self.title = self.mp3_name if self.title.include?("RackMultipart")
   end
@@ -23,7 +25,7 @@ class Song
       self.errors.add :mp3, "song already exists!"
     end
   end
-  
+
   alias :destroy_song :destroy
   def destroy
     update_attributes(:destroyed_at => Time.zone.now) unless destroyed_at?
@@ -32,13 +34,16 @@ class Song
       playlist.save
     end
   end
-  
+
   def self.import_song(file_path)
     mp3   = File.open(file_path, 'r')
     tags  = Song.read_id3_tags(file_path)
-    Song.create(:mp3 => mp3, :title => tags["title"], :artist => tags["artist"], :album => tags["album"], :genre => tags["genre"], :duration => tags["duration"]) unless Song.first(:title => tags["title"], :duration => tags["duration"])
+    song  = Song.create(:title => tags["title"], :artist => tags["artist"], :album => tags["album"], :genre => tags["genre"], :duration => tags["duration"])
+    if song
+      File.copy(file_path, "#{RAILS_ROOT}/public/songs/#{song.id}.mp3")
+    end
   end
-  
+
   def self.import_from_folder(folder=APP_CONFIG[:import_folder_path])
     file_paths = Dir[folder+"/*.mp3"]
     songs, songs_imported = [], 0
@@ -47,10 +52,10 @@ class Song
       filename = file_path.split('/')[-1]
       if !songs.include?(filename)
         if Song.import_song(file_path)
-          songs_imported += 1 
+          songs_imported += 1
           Rails.logger.info "Imported song #{filename}"
         end
-      end 
+      end
     end
     return songs_imported
   end
@@ -102,11 +107,11 @@ class Song
     'Satire', 'Slow Jam', 'Club', 'Tango', 'Samba', 'Folklore',
     'Ballad', 'Power Ballad', 'Rhythmic Soul', 'Freestyle', 'Duet',
     'Punk Rock', 'Drum Solo', 'Acapella', 'Euro-House', 'Dance Hall']
-    
+
   def self.genres
     GENRES
   end
-  
+
   def genre_name
     unless self.genre.blank?
       index = self.genre.to_i - 1
@@ -115,13 +120,13 @@ class Song
       ""
     end
   end
-    
+
   def duration_converted
     minutes = (duration/60).to_i
     seconds = (((duration/60 - minutes)/100)*60*100).round
     return "#{minutes}:#{seconds}"
   end
-  
+
 end
 
 class String
