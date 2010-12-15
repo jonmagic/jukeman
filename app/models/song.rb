@@ -11,7 +11,7 @@ class Song
   key :duration, Float
   key :destroyed_at, Time
 
-  # before_validation_on_create :set_id3_tags
+  before_validation_on_create :set_id3_tags
   def set_id3_tags
     tags  = Song.read_id3_tags(self.mp3.file.file)
     self.title, self.artist, self.album, self.genre, self.duration = tags["title"], tags["artist"], tags["album"], tags["genre"], tags["duration"]
@@ -38,10 +38,8 @@ class Song
   def self.import_song(file_path)
     mp3   = File.open(file_path, 'r')
     tags  = Song.read_id3_tags(file_path)
-    song  = Song.create(:title => tags["title"], :artist => tags["artist"], :album => tags["album"], :genre => tags["genre"], :duration => tags["duration"])
-    if song
-      File.copy(file_path, "#{RAILS_ROOT}/public/songs/#{song.id}.mp3")
-    end
+    song  = Song.new(:mp3 => mp3, :title => tags["title"], :artist => tags["artist"], :album => tags["album"], :genre => tags["genre"], :duration => tags["duration"])
+    song.save
   end
 
   def self.import_from_folder(folder=APP_CONFIG[:import_folder_path])
